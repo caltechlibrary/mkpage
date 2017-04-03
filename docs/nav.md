@@ -4,6 +4,7 @@
 + [mkpage](./mkpage.html)
 + [mkrss](./mkrss.html)
 + [mkslides](./mkslides.html)
++ [publisher](./publisher.html)
 + [reldocpath](./reldocpath.html)
 + [sitemapper](./sitemapper.html)
 + [titleline](./titleline.html)

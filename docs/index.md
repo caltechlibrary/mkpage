@@ -9,6 +9,7 @@ line tools.
 + [mkpage](mkpage.html) -- assembles a web pages and other text files
 + [mkrss](mkrss.html) -- assembles RSS files based on the Markdown files with related HTML files
 + [mkslides](mkslides.html) -- assembles a HTML slide show from a Markdown file
++ [publisher](publisher.html) -- manages mkpage site elements on remote site storage
 + [reldocpath](reldocpath.html) -- calculates a relative path (useful for getting the path to CSS right)
 + [sitemapper](sitemapper.html) -- sitemapper generates an XML sitemap file based on found HTML content
 + [titleline](titleline.html) -- extracts the first title (first single # line) from a Markdown document

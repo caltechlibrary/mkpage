@@ -29,41 +29,54 @@
 </nav>
 
 <section>
-<h1>urlencode</h1>
+<h1>publisher</h1>
 
 <h2>USAGE</h2>
 
-<pre><code>urlencode [OPTIONS] [STRING_TO_ENCODE]
+<pre><code>publisher [OPTIONS]
 </code></pre>
 
-<h2>SYNOPSIS</h2>
-
-<p>urlencode is a simple command line utility to URL encode content. By default
-it reads from standard input and writes to standard out.  You can
-also specifty the string to encode as a command line parameter.</p>
+<p>publisher is a tool to interact with a mkpage project published on AWS S3.
+It support the basic CRUD operations in your S3 bucket.</p>
 
 <h2>OPTIONS</h2>
 
-<pre><code>	-h	display help
+<pre><code>	-create	create the named object in bucket
+	-delete	delete an item in the bucket
+	-h	display help
 	-help	display help
-	-i	set input filename
-	-input	set input filename
 	-l	display license
 	-license	display license
-	-o	set output filename
-	-output	set output filename
+	-local	local name of object, needed by create and update options
+	-read	read the named object in bucket writing to stdout locally
+	-update	update (delete,create) an object in a bucket
 	-v	display version
 	-version	display version
 </code></pre>
 
 <h2>EXAMPLES</h2>
 
-<pre><code class="language-shell">    echo &quot;This is the string to encode &amp; nothing else!&quot; | urlencode
+<p>Examples assume you&rsquo;ve previously setup your AWS access via environment
+variables on configuration files.</p>
+
+<p>Create an index.html file in your AWS Bucket.</p>
+
+<pre><code class="language-shell">	publisher -create /index.html -local index.html
 </code></pre>
 
-<p>would yield</p>
+<p>Read an item from the bucket (writes to stdout)</p>
 
-<pre><code>    This%20is%20the%20string%20to%20encode%20&amp;%20nothing%20else%0A
+<pre><code class="language-shell">	publisher -read /index.html
+</code></pre>
+
+<p>Update (actually a delete, followed by create) a file</p>
+
+<pre><code class="language-shell">	publisher -update /index.html -local index.html
+</code></pre>
+
+<p>Delete removes the copy in the bucket</p>
+
+<pre><code class="language-shell">    publisher -delete /index.html
 </code></pre>
 
 </section>
