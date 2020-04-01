@@ -1,4 +1,4 @@
-// Package mkpongo.go
+// Package mkpage is an experimental static site generator
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
@@ -35,10 +35,14 @@ func MakePongo(wr io.Writer, templateName string, keyValues map[string]string) e
 	if err != nil {
 		return fmt.Errorf("Reading Template %q, %s", templateName, err)
 	}
-	out, err := tpl.Execute(data)
+	/* NOTE: We're processing Markdown from our local disc so
+	   we're trusting it to be sensible! */
+	pongo2.SetAutoescape(false)
+	ctx := pongo2.Context{}
+	src, err := tpl.Execute(pongo2.Context.Update(ctx, data))
 	if err != nil {
-		return fmt.Errorf("Template %q, %s", templateName, err)
+		return fmt.Errorf("Executing template %q, %s", templateName, err)
 	}
-	wr.Write([]byte(out))
+	wr.Write([]byte(src))
 	return nil
 }

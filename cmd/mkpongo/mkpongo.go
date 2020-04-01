@@ -28,6 +28,9 @@ import (
 	// Caltech Library packages
 	"github.com/caltechlibrary/cli"
 	"github.com/rsdoiel/mkpage"
+
+	// 3rd Party
+	"github.com/flosch/pongo2"
 )
 
 var (
@@ -191,6 +194,7 @@ func main() {
 	}
 
 	// Make the page
+	pongo2.SetAutoescape(false)
 	err = mkpage.MakePongo(app.Out, templateName, data)
 	cli.ExitOnError(app.Eout, err, quiet)
 }
