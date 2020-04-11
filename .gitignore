@@ -24,6 +24,7 @@ _testmain.go
 *.prof
 
 # Project ignores
+.DS_Store
 bin/*
 dist/*
 demo/*

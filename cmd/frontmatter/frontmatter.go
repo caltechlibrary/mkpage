@@ -2,9 +2,9 @@
 // frontmatter.go - is a command line tool that reads a Markdown file
 // and returns the frontmatter portion.
 //
-// @Author R. S. Doiel, <rsdoiel@caltech.edu>
+// @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
-// Copyright (c) 2019, Caltech
+// Copyright (c) 2020, Caltech
 // All rights not granted herein are expressly reserved by Caltech.
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

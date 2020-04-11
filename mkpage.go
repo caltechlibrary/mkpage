@@ -3,8 +3,8 @@
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
-// Copyright (c) 2019, Caltech
-// All rights not granted herein are expressly reserved by Caltech.
+// Copyright (c) 2020, Caltech
+// All rights not granted herein are expressly reserved by Caltech
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 //
@@ -56,7 +56,7 @@ import (
 
 const (
 	// Version holds the semver assocaited with this version of mkpage.
-	Version = `v0.0.31`
+	Version = `v0.0.32`
 
 	// LicenseText provides a string template for rendering cli license info
 	LicenseText = `

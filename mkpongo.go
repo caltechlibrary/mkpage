@@ -1,4 +1,4 @@
-// Package mkpage codesnip.go - extracts code snippets from markdown
+// Package mkpage is an experimental static site generator
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
@@ -18,40 +18,31 @@
 package mkpage
 
 import (
-	"bufio"
 	"fmt"
 	"io"
-	"strings"
+
+	// 3rd Party, Pongo2 library
+	"github.com/flosch/pongo2"
 )
 
-// Codesnip works on io.Reader and ioWriter and string used
-// to identified the langauge. It reads a Markdown block looking
-// for code fenses and snips out the code to write to a file.
-func Codesnip(in io.Reader, out io.Writer, language string) error {
-	var (
-		inCodeBlock bool
-	)
-	scanner := bufio.NewScanner(in)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.HasPrefix(line, "```") {
-			if inCodeBlock {
-				inCodeBlock = false
-			} else if strings.HasPrefix(line, "```"+language) {
-				inCodeBlock = true
-				continue
-			}
-		}
-		if inCodeBlock {
-			switch {
-			case strings.HasPrefix(line, "    "):
-				fmt.Fprintln(out, strings.TrimPrefix(line, "    "))
-			case strings.HasPrefix(line, "\t"):
-				fmt.Fprintln(out, strings.TrimPrefix(line, "\t"))
-			default:
-				fmt.Fprintln(out, line)
-			}
-		}
+// MakePongo applies the key/value map to the named template in tmpl and renders to writer and returns an error if something goes wrong
+func MakePongo(wr io.Writer, templateName string, keyValues map[string]string) error {
+	data, err := ResolveData(keyValues)
+	if err != nil {
+		return fmt.Errorf("Can't resolve data source %s", err)
 	}
-	return scanner.Err()
+	tpl, err := pongo2.FromFile(templateName)
+	if err != nil {
+		return fmt.Errorf("Reading Template %q, %s", templateName, err)
+	}
+	/* NOTE: We're processing Markdown from our local disc so
+	   we're trusting it to be sensible! */
+	pongo2.SetAutoescape(false)
+	ctx := pongo2.Context{}
+	src, err := tpl.Execute(pongo2.Context.Update(ctx, data))
+	if err != nil {
+		return fmt.Errorf("Executing template %q, %s", templateName, err)
+	}
+	wr.Write([]byte(src))
+	return nil
 }

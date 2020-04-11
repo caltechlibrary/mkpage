@@ -6,7 +6,7 @@
     "codeRepository": "https://github.com/caltechlibrary/mkpage",
     "issueTracker": "https://github.com/caltechlibrary/mkpage/issues",
     "license": "https://data.caltech.edu/license",
-    "version": "0.0.31",
+    "version": "0.0.32",
     "author": [
         {
             "@type": "Person",

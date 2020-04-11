@@ -11,6 +11,7 @@
 + [byline](./byline.html)
 + [ws](./ws.html)
 + [frontmatter](./frontmatter.html)
++ [mkpongo](./mkpongo.html)
 + [urldecode](./urldecode.html)
 + [sitemapper](./sitemapper.html)
 + [reldocpath](./reldocpath.html)

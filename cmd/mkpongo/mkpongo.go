@@ -1,6 +1,7 @@
 //
-// mkpage is a thought experiment in a light weight template and
-// markup (markdown, fountain) processing.
+// mkpongo is an experimental in a light weight markup
+// (mmark, markdown, fountain) processing and
+// Pongo2 (Django/Jinja) template processor.
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
@@ -21,15 +22,15 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
-	"path"
 	"strings"
 
 	// Caltech Library packages
 	"github.com/caltechlibrary/cli"
-	"github.com/caltechlibrary/mkpage"
-	"github.com/caltechlibrary/tmplfn"
+	"github.com/rsdoiel/mkpage"
+
+	// 3rd Party
+	"github.com/flosch/pongo2"
 )
 
 var (
@@ -43,41 +44,41 @@ Using the key/value pairs populate the template(s) and render to stdout.
 
 EXAMPLE
 
-Template (named "examples/weather.tmpl")
+Template (named "examples/pongo/weather.tmpl")
 
-    {{ define "weather.tmpl" }}
-    Date: {{- .now}}
+    Date: {{ now }}
 
-    Hello {{.name -}},
+    Hello {{ name }},
     
     The current weather is
 
-    {{index .weatherForecast.data.weather 0}}
+    {{ weatherForecast.data.weather.0 }}
 
     Thank you
 
-    {{.signature}}
-	{{ end }}
+    {{ signature }}
 
-Render the template above (i.e. examples/weather.tmpl) would be accomplished from 
-the following data sources--
+Render the template above (i.e. examples/pongo/weather.tmpl) 
+would be accomplished from the following data sources--
 
  + "now" and "name" are strings
- + "weatherForecast" is JSON data retrieved from a URL
- 	+ ".data.weather" is a data path inside the JSON document
-	+ "index" let's us pull our the "0"-th element (i.e. the initial element of the array)
- + "signature" comes from a file in our local disc (i.e. examples/signature.txt)
+ + "weatherForecast.data.weather.0" is a data path inside the 
+    JSON document retrieved from a URL, ".0" references the
+    "0"-th element of the array
+ + "signature" comes from a file in our local disc 
+   (i.e. examples/signature.txt)
 
 That would be expressed on the command line as follows
 
     %s "now=text:$(date)" "name=text:Little Frieda" \
         "weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
         signature=examples/signature.txt \
-        examples/weather.tmpl     
+        examples/pongo/weather.tmpl     
 
-Golang's text/template docs can be found at 
+Pongo2 is a Django/Jinga2 inspired template langauge
+implemeted in Go.
 
-      https://golang.org/pkg/text/template/
+      https://github.com/flosch/pongo2
 
 `
 
@@ -93,10 +94,9 @@ Golang's text/template docs can be found at
 	generateManPage  bool
 
 	// Application Options
-	templateFNames string
-	showTemplate   bool
-	codesnip       bool
-	codeType       string
+	templateFName string
+	codesnip      bool
+	codeType      string
 )
 
 func main() {
@@ -104,15 +104,12 @@ func main() {
 	appName := app.AppName()
 
 	// Document expected parameters
-	app.SetParams(`[KEY/VALUE DATA PAIRS]`, `[TEMPLATE_FILENAMES]`)
+	app.SetParams(`[KEY/VALUE DATA PAIRS]`, `TEMPLATE_FILENAME`)
 
 	// Add Help docs
 	app.AddHelp("license", []byte(fmt.Sprintf(mkpage.LicenseText, appName, mkpage.Version)))
 	app.AddHelp("description", []byte(fmt.Sprintf(description)))
 	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName)))
-
-	// Setup Environment variables
-	app.EnvStringVar(&templateFNames, "MKPAGE_TEMPLATES", "", "set the default template path")
 
 	// Standard Options
 	app.BoolVar(&showHelp, "h,help", false, "display help")
@@ -126,10 +123,6 @@ func main() {
 	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Application specific options
-	app.BoolVar(&showTemplate, "s", false, "display the default template")
-	app.BoolVar(&showTemplate, "show-template", false, "display the default template")
-	app.StringVar(&templateFNames, "t", "", "colon delimited list of templates to use")
-	app.StringVar(&templateFNames, "templates", "", "colon delimited list of templates to use")
 	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks")
 	app.StringVar(&codeType, "code", "", "outout just code blocks for language, e.g. shell or json")
 
@@ -153,25 +146,13 @@ func main() {
 		os.Exit(0)
 	}
 
-	if showTemplate {
-		fmt.Fprintln(app.Out, mkpage.DefaultTemplateSource)
-		os.Exit(0)
-	}
-
 	// Default template name is page.tmpl
-	templateName := "page.tmpl"
-	templateSources := []string{}
-
-	// Make sure we have a configured command to run
-	if len(templateFNames) > 0 {
-		for _, fname := range strings.Split(templateFNames, ":") {
-			templateSources = append(templateSources, fname)
-		}
-	}
+	var (
+		templateName string
+		err          error
+	)
 
 	// Setup IO
-	var err error
-
 	app.Eout = os.Stderr
 	app.In, err = cli.Open(inputFName, os.Stdin)
 	cli.ExitOnError(app.Eout, err, quiet)
@@ -208,35 +189,12 @@ func main() {
 			}
 			data[pair[0]] = pair[1]
 		} else {
-			// Must be the template source
-			templateSources = append(templateSources, arg)
+			templateName = arg[:]
 		}
 	}
 
-	// Create our Tmpl struct with our function map
-	tmpl := tmplfn.New(tmplfn.AllFuncs())
-
-	// Load any user supplied templates
-	if len(templateSources) > 0 {
-		err = tmpl.ReadFiles(templateSources...)
-		cli.ExitOnError(app.Eout, err, quiet)
-		templateName = path.Base(templateSources[0])
-	} else if inputFName != "" {
-		// Read any templates from stdin that might be present
-		buf, err := ioutil.ReadAll(app.In)
-		cli.ExitOnError(app.Eout, err, quiet)
-		tmpl.Add(templateName, buf)
-	} else {
-		// Load our default template maps
-		err = tmpl.Add(templateName, mkpage.Defaults["/templates/page.tmpl"])
-		cli.ExitOnError(app.Eout, err, quiet)
-	}
-
-	// Build a template and send to MakePage
-	t, err := tmpl.Assemble()
-	cli.ExitOnError(app.Eout, err, quiet)
-
 	// Make the page
-	err = mkpage.MakePage(app.Out, templateName, t, data)
+	pongo2.SetAutoescape(false)
+	err = mkpage.MakePongo(app.Out, templateName, data)
 	cli.ExitOnError(app.Eout, err, quiet)
 }

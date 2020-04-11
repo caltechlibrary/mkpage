@@ -20,7 +20,7 @@ endif
 build: bin/mkpage$(EXT) bin/mkslides$(EXT) bin/mkrss$(EXT) \
 	bin/sitemapper$(EXT) bin/byline$(EXT) bin/titleline$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
-	bin/ws$(EXT) bin/frontmatter$(EXT)
+	bin/ws$(EXT) bin/frontmatter$(EXT) bin/mkpongo
 
 mkpage.go: assets.go codesnip.go
 
@@ -61,6 +61,8 @@ bin/ws$(EXT): mkpage.go cmd/ws/ws.go
 bin/frontmatter$(EXT): mkpage.go cmd/frontmatter/frontmatter.go
 	go build -o bin/frontmatter$(EXT) cmd/frontmatter/frontmatter.go
 
+bin/mkpongo$(EXT): mkpage.go mkpongo.go cmd/mkpongo/mkpongo.go
+	go build -o bin/mkpongo$(EXT) cmd/mkpongo/mkpongo.go
 
 lint:
 	golint mkpage.go
@@ -76,6 +78,7 @@ lint:
 	golint cmd/urldecode/urldecode.go
 	golint cmd/ws/ws.go
 	golint cmd/frontmatter/frontmatter.go
+	golint cmd/mkpongo/mkpongo.go
 
 format:
 	gofmt -w mkpage.go
@@ -91,11 +94,12 @@ format:
 	gofmt -w cmd/urldecode/urldecode.go
 	gofmt -w cmd/ws/ws.go
 	gofmt -w cmd/frontmatter/frontmatter.go
+	gofmt -w cmd/mkpongo/mkpongo.go
 
 test: bin/mkpage$(EXT) bin/mkslides$(EXT) bin/mkrss$(EXT) \
 	bin/sitemapper$(EXT) bin/byline$(EXT) bin/titleline$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
-	bin/ws$(EXT) bin/frontmatter$(EXT)  FORCE
+	bin/ws$(EXT) bin/frontmatter$(EXT) bin/mkpongo$(EXT) FORCE
 	go test
 	bash test_cmd.bash
 
@@ -125,6 +129,7 @@ man: build
 	bin/urlencode -generate-manpage | nroff -Tutf8 -man > man/man1/urlencode.1
 	bin/ws -generate-manpage | nroff -Tutf8 -man > man/man1/ws.1
 	bin/frontmatter -generate-manpage | nroff -Tutf8 -man > man/man1/frontmatter.1
+	bin/mkpongo -generate-manpage | nroff -Tutf8 -man > man/man1/mkpongo.1
 
 install: assets.go
 	env GOBIN=$(GOPATH)/bin go install cmd/mkpage/mkpage.go
@@ -138,6 +143,7 @@ install: assets.go
 	env GOBIN=$(GOPATH)/bin go install cmd/urldecode/urldecode.go
 	env GOBIN=$(GOPATH)/bin go install cmd/ws/ws.go
 	env GOBIN=$(GOPATH)/bin go install cmd/frontmatter/frontmatter.go
+	env GOBIN=$(GOPATH)/bin go install cmd/mkpongo/mkpongo.go
 
 
 dist/linux-amd64:
@@ -153,6 +159,7 @@ dist/linux-amd64:
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
+	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/mkpongo cmd/mkpongo/mkpongo.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -171,6 +178,7 @@ dist/windows-amd64:
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/urldecode.exe cmd/urldecode/urldecode.go
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/ws.exe cmd/ws/ws.go
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/frontmatter.exe cmd/frontmatter/frontmatter.go
+	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/mkpongo.exe cmd/mkpongo/mkpongo.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -187,6 +195,7 @@ dist/macosx-amd64:
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
+	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkpongo cmd/mkpongo/mkpongo.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-macosx-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -203,6 +212,7 @@ dist/raspbian-arm7:
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
+	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/mkpongo cmd/mkpongo/mkpongo.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm7.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -223,6 +233,7 @@ distribute_docs:
 	cp -v docs/urlencode.md dist/docs/
 	cp -v docs/ws.md dist/docs/
 	cp -v docs/frontmatter.md dist/docs/
+	cp -v docs/mkpongo.md dist/docs/
 	cp -v how-to/go-template-recipes.md dist/how-to/
 	cp -v how-to/the-basics.md dist/how-to/
 	cp -vR templates dist/
