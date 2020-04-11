@@ -27,7 +27,7 @@ import (
 
 	// Caltech Library packages
 	"github.com/caltechlibrary/cli"
-	"github.com/rsdoiel/mkpage"
+	"github.com/caltechlibrary/mkpage"
 
 	// 3rd Party
 	"github.com/flosch/pongo2"
