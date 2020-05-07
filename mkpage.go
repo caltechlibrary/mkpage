@@ -178,6 +178,36 @@ func SplitFrontMatter(input []byte) (int, []byte, []byte) {
 	return ConfigIsUnknown, []byte(""), input
 }
 
+// UnmarshalFrontMatter takes a []byte of front matter source
+// and unmarshalls using either JSON, TOML and YAML unmarshalling
+// methods.
+func UnmarshalFrontMatter(srcType int, src []byte, obj *map[string]interface{}) error {
+	switch srcType {
+	case ConfigIsTOML:
+		// Make sure we have valid Toml
+		if err := toml.Unmarshal(src, &obj); err != nil {
+			return err
+		}
+	case ConfigIsYAML:
+		// With YAML we go through two step conversion
+		// YAML to JSON then Unmarshal JSON into our
+		// map.
+		if jsonSrc, err := yaml.YAMLToJSON(src); err != nil {
+			return err
+		} else {
+			if err := json.Unmarshal(jsonSrc, &obj); err != nil {
+				return err
+			}
+		}
+	default:
+		// Make sure we have valid JSON
+		if err := json.Unmarshal(src, &obj); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // ProcessorConfig takes front matter and returns
 // a map[string]interface{} containing configuration
 func ProcessorConfig(configType int, frontMatterSrc []byte) (map[string]interface{}, error) {

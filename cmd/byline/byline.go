@@ -1,6 +1,9 @@
 //
 // byline reads a Markdown file and returns the first byline
-// encountered.  A byline, by default, is identified by the RegExp
+// encountered.  By default it looks for the byline in the Markdown
+// documents front matter, if not found then it looks for a pattern
+// in the body of the Markdown document identified with a RegExp.
+// A byline the default RegExp
 // `^[B|b]y\s+(\w|\s)+ [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$`
 // This can be overwritten with another definition using an option.
 //
@@ -23,7 +26,9 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	// My packages
@@ -127,7 +132,40 @@ func main() {
 		os.Exit(0)
 	}
 
-	scanner := bufio.NewScanner(app.In)
+	// First try for front matter.
+	//NOTE: read input and pass front matter to output.
+	buf, err := ioutil.ReadAll(app.In)
+	if err != nil {
+		fmt.Fprintf(app.Eout, "%s", err)
+		os.Exit(1)
+	}
+	srcType, src, _ := mkpage.SplitFrontMatter(buf)
+	if len(src) > 0 {
+		obj := make(map[string]interface{})
+		if err := mkpage.UnmarshalFrontMatter(srcType, src, &obj); err != nil {
+			fmt.Fprintf(app.Eout, "%s", err)
+			os.Exit(1)
+		}
+		if s, ok := obj["byline"]; ok == true {
+			fmt.Fprintf(app.Out, "%s", s)
+		} else {
+			author, ok := obj["author"]
+			if ok == false {
+				author = ""
+			}
+			pubDate, ok := obj["date"]
+			if ok == false {
+				pubDate = ""
+			}
+			if author != "" && pubDate != "" {
+				fmt.Fprintf(app.Out, "By %s, %s", author, pubDate)
+				os.Exit(0)
+			}
+			// If we get to this point look for by line in text.
+		}
+	}
+
+	scanner := bufio.NewScanner(bytes.NewReader(buf))
 	for scanner.Scan() {
 		s := mkpage.Grep(bylineExp, scanner.Text())
 		if len(s) > 0 {
@@ -135,5 +173,6 @@ func main() {
 			os.Exit(0)
 		}
 	}
+
 	os.Exit(1)
 }
