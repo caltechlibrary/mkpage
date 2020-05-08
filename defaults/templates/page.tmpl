@@ -4,6 +4,11 @@
 <head>
   {{ with .title -}}<title>{{- . -}}</title>{{- end}}
   {{ if .csspath -}}<link href="{{- .csspath -}}" rel="stylesheet" />{{- else -}}
+{{- if .css }}
+  <style>
+{{- .css }}
+  </style>
+{{- else -}}
   <style>
 /**
  * site.css - stylesheet for the Library's Digital Library Development Group's sandbox.
@@ -271,7 +276,7 @@ p {
     max-width: 96%;
 }
   </style>
-  {{- end }}
+{{- end }}{{- end }}
 </head>
 <body>
   {{ with .header -}}<header>{{- . -}}</header>{{- end }}
