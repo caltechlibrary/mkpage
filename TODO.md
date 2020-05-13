@@ -7,11 +7,14 @@
 
 ## Next (road to v1.0.0)
 
-+ [ ] **byline** should pickup a by line from front matter OR the regexp
++ [x] **byline** should pickup a by line from front matter OR the regexp
 + [ ] **titleline** should pickup a title from front matter OR the regexp
 + [ ] **mkslides** should be depreciated in favor of **mkpage** using front matter to indicate an output format of slides.
 + [ ] **sitemapper** should consider front matter in deciding the structure of sitemap.xml, also should allow for more than once sitemap.xml to be generated (E.g. a blog might have its own sitemap, see https://www.sitemaps.org/protocol.html
-+ [ ] Read in mkpage.toml, mkpage.json or mkpage.yaml for mkpage config
++ [ ] **mkrss** should be driven from front matter, optionally pickup channel info from front matter of an index.md
++ [ ] **mknav**, a new tool to generate nav.md files based on front matter analysis
++ [ ] **mktagcloud**, a new tool to generate tags.md tag cloud based on front matter analysis
++ [ ] **mklunr**, a new tool generate Lunrjs indexes for site search
 + [ ] Add support for rendering remarkjs content
 + [ ] Add support for passing configuration to markup engine from front matter
 + [ ] Figure out how to co-mingle Markdown, Fountain, remarkjs safely 
@@ -26,13 +29,17 @@
     + [ ] `.draft` (bool)
     + [ ] `.keywords`
     + [ ] `.linkTitle`
-    + [ ] `.markdup` (e.g. markdown, fountain, maybe remarkjs)
+    + [ ] `.markup` (e.g. markdown, fountain, maybe remarkjs)
     + [ ] `.series`
+    + [ ] `.issue`
+    + [ ] `.volume`
+    + [ ] `.no`
     + [ ] `.slug`
     + [ ] `.type` (e.g. post, article, homepage)
     + [ ] `.permalink`  (e.g. resolver URL)
     + [ ] `.language`
     + [ ] `.remarkjs` holds the settings for our remarkjs engine
+    + [ ] `.lunr` holds settings for lunr js indexing
 + [ ] mkpage Sitemap support
     + Current sitemap cli is too naive for sites more than a couple dozen pages
     + Need to support possibly nested sitemap XML references
