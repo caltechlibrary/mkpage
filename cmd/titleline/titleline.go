@@ -22,7 +22,9 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	// My packages
@@ -126,7 +128,28 @@ func main() {
 	cli.ExitOnError(app.Eout, err, quiet)
 	defer cli.CloseFile(outputFName, app.Out)
 
-	scanner := bufio.NewScanner(app.In)
+	// First try for front matter.
+	//NOTE: read input and pass front matter to output.
+	buf, err := ioutil.ReadAll(app.In)
+	if err != nil {
+		fmt.Fprintf(app.Eout, "%s", err)
+		os.Exit(1)
+	}
+	srcType, src, _ := mkpage.SplitFrontMatter(buf)
+	if len(src) > 0 {
+		obj := make(map[string]interface{})
+		if err := mkpage.UnmarshalFrontMatter(srcType, src, &obj); err != nil {
+			fmt.Fprintf(app.Eout, "%s", err)
+			os.Exit(1)
+		}
+		if s, ok := obj["title"]; ok == true {
+			fmt.Fprintf(app.Out, "%s", s)
+			os.Exit(0)
+		}
+		// If we get to this point look for title in text.
+	}
+
+	scanner := bufio.NewScanner(bytes.NewReader(buf))
 	for scanner.Scan() {
 		s := mkpage.Grep(titlelineExp, scanner.Text())
 		if len(s) > 0 {

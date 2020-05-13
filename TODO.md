@@ -7,14 +7,11 @@
 
 ## Next (road to v1.0.0)
 
-+ [ ] **byline** should pickup a by line from front matter OR the regexp
-+ [ ] **titleline** should pickup a title from front matter OR the regexp
++ [ ] Figure out how to co-mingle Markdown, Fountain, safely 
++ [x] **byline** should pickup a by line from front matter OR the regexp
++ [x] **titleline** should pickup a title from front matter OR the regexp
 + [ ] **mkslides** should be depreciated in favor of **mkpage** using front matter to indicate an output format of slides.
 + [ ] **sitemapper** should consider front matter in deciding the structure of sitemap.xml, also should allow for more than once sitemap.xml to be generated (E.g. a blog might have its own sitemap, see https://www.sitemaps.org/protocol.html
-+ [ ] Read in mkpage.toml, mkpage.json or mkpage.yaml for mkpage config
-+ [ ] Add support for rendering remarkjs content
-+ [ ] Add support for passing configuration to markup engine from front matter
-+ [ ] Figure out how to co-mingle Markdown, Fountain, remarkjs safely 
 + [ ] mkpage front matter based on library metadata practices, codemeta.json and relavant Scheme.org scheme
     + [ ] `.doi` the DOI associated with a page
     + [ ] `.creator` should be an array of creator info (e.g. ORCID, given_name, family_name)
@@ -36,15 +33,18 @@
 + [ ] mkpage Sitemap support
     + Current sitemap cli is too naive for sites more than a couple dozen pages
     + Need to support possibly nested sitemap XML references
-    + Review Hugo's sitemap support for ideas
     + Need some sort of front matter to identify where/if content would show up in sitemap
-+ [ ] mkpage slide support needs to align with remarkjs
-    + See https://github.com/gnab/remark, https://remarkjs.com and https://github.com/gnab/remark/wiki
-    + [ ] Consider merging mkpage and mkslide (fewer tools less to learn), consider front matter changes
-    + [ ] Add support for slide notes delimited by `???`
 
 ## Someday, Maybe
 
++ [ ] mkpage slide support for remarkjs
+    + See https://github.com/gnab/remark, https://remarkjs.com and https://github.com/gnab/remark/wiki
+    + [ ] Consider merging mkpage and mkslide (fewer tools less to learn), consider front matter changes
+    + [ ] Add support for slide notes delimited by `???`
++ [ ] Look at pandoc template language
++ [ ] Add support for rendering remarkjs content
++ [ ] evaluate using it in `mkpage` as front end source to pandoc template processing.
++ [ ] Create a **mkBibTeX** from front matter and markdown content?
 + [ ] Should **mkpage** continue to support Toml and Yaml frontmatter?
 + [ ] Should **mkpage** support Django 3/Jinja2 style templates?
 + [ ] Should **mkpage** support [RMarkdown](https://rmarkdown.rstudio.com/)?

@@ -255,6 +255,14 @@ func main() {
 		if err != nil {
 			return err
 		}
+		fMatter := map[string]interface{}{}
+		fType, fSrc, _ := mkpage.SplitFrontMatter(buf)
+		if len(fSrc) > 0 {
+			if err := mkpage.UnmarshalFrontMatter(fType, fSrc, &fMatter); err != nil {
+				fMatter = map[string]interface{}{}
+			}
+		}
+
 		// Calc URL path
 		pname := strings.TrimPrefix(p, htdocs)
 		if strings.HasPrefix(pname, "/") {
@@ -268,13 +276,35 @@ func main() {
 			return err
 		}
 		// Collect metadata
+		//NOTE: Use front matter if available otherwise
+		var (
+			title, byline, author, pubDate string
+		)
 		src := fmt.Sprintf("%s", buf)
-		title := strings.TrimPrefix(mkpage.Grep(titleExp, src), "# ")
-		byline := mkpage.Grep(bylineExp, src)
-		pubDate := mkpage.Grep(dateExp, byline)
-		author := byline
-		if len(byline) > 2 {
-			author = strings.TrimSpace(strings.TrimSuffix(byline[2:], pubDate))
+		if val, ok := fMatter["title"]; ok {
+			title = val.(string)
+		} else {
+			title = strings.TrimPrefix(mkpage.Grep(titleExp, src), "# ")
+		}
+		if val, ok := fMatter["byline"]; ok {
+			byline = val.(string)
+		} else {
+			byline = mkpage.Grep(bylineExp, src)
+		}
+		if val, ok := fMatter["pubDate"]; ok {
+			pubDate = val.(string)
+		} else {
+			pubDate = mkpage.Grep(dateExp, byline)
+		}
+		if val, ok := fMatter["creator"]; ok {
+			author = val.(string)
+		} else if val, ok = fMatter["author"]; ok {
+			author = val.(string)
+		} else {
+			author = byline
+			if len(byline) > 2 {
+				author = strings.TrimSpace(strings.TrimSuffix(byline[2:], pubDate))
+			}
 		}
 		// Reformat pubDate to conform to RSS2 date formats
 		dt, err := time.Parse(`2006-01-02`, pubDate)

@@ -56,7 +56,7 @@ import (
 
 const (
 	// Version holds the semver assocaited with this version of mkpage.
-	Version = `v0.0.32c`
+	Version = `v0.0.32d`
 
 	// LicenseText provides a string template for rendering cli license info
 	LicenseText = `
@@ -147,9 +147,9 @@ func normalizeEOL(input []byte) []byte {
 	return input
 }
 
-// SplitFrontMatter takes a []byte input splits it into front matter
-// source and Markdown source. If either is missing an empty []byte
-// is returned for the missing element.
+// SplitFrontMatter takes a []byte input splits it into front matter type,
+// front matter source and Markdown source. If either is missing an
+// empty []byte is returned for the missing element.
 func SplitFrontMatter(input []byte) (int, []byte, []byte) {
 	// YAML front matter uses ---, note this conflicts with Mmark practice, do I want to support YAML like this?
 	if bytes.HasPrefix(input, []byte("---\n")) {
