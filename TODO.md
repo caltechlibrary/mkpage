@@ -12,7 +12,8 @@
 + [x] **titleline** should pickup a title from front matter OR the regexp
 + [ ] **mkslides** should be depreciated in favor of **mkpage** using front matter to indicate an output format of slides.
 + [ ] **sitemapper** should consider front matter in deciding the structure of sitemap.xml, also should allow for more than once sitemap.xml to be generated (E.g. a blog might have its own sitemap, see https://www.sitemaps.org/protocol.html
-+ [ ] mkpage front matter based on library metadata practices, codemeta.json and relavant Scheme.org scheme
++ [ ] Figure out how to co-mingle Markdown, Fountain, remarkjs safely 
++ [ ] Document mkpage front matter metadata practices based on codemeta.json and relavant Scheme.org scheme
     + [ ] `.doi` the DOI associated with a page
     + [ ] `.creator` should be an array of creator info (e.g. ORCID, given_name, family_name)
     + [ ] `.title`
@@ -23,13 +24,15 @@
     + [ ] `.draft` (bool)
     + [ ] `.keywords`
     + [ ] `.linkTitle`
-    + [ ] `.markdup` (e.g. markdown, fountain, maybe remarkjs)
+    + [ ] `.markup` (e.g. markdown, fountain, maybe remarkjs)
     + [ ] `.series`
+    + [ ] `.issue`
+    + [ ] `.volume`
+    + [ ] `.no`
     + [ ] `.slug`
     + [ ] `.type` (e.g. post, article, homepage)
     + [ ] `.permalink`  (e.g. resolver URL)
     + [ ] `.language`
-    + [ ] `.remarkjs` holds the settings for our remarkjs engine
 + [ ] mkpage Sitemap support
     + Current sitemap cli is too naive for sites more than a couple dozen pages
     + Need to support possibly nested sitemap XML references
@@ -37,13 +40,15 @@
 
 ## Someday, Maybe
 
++ [ ] Look at pandoc template language
++ [ ] Evaluate using `mkpage` as front end source to pandoc template processing.
 + [ ] mkpage slide support for remarkjs
     + See https://github.com/gnab/remark, https://remarkjs.com and https://github.com/gnab/remark/wiki
     + [ ] Consider merging mkpage and mkslide (fewer tools less to learn), consider front matter changes
     + [ ] Add support for slide notes delimited by `???`
-+ [ ] Look at pandoc template language
-+ [ ] Add support for rendering remarkjs content
-+ [ ] evaluate using it in `mkpage` as front end source to pandoc template processing.
++ [ ] **mknav**, a new tool to generate nav.md files based on front matter analysis
++ [ ] **mktagcloud**, a new tool to generate tags.md tag cloud based on front matter analysis
++ [ ] **mklunr**, a new tool generate Lunrjs indexes for site search
 + [ ] Create a **mkBibTeX** from front matter and markdown content?
 + [ ] Should **mkpage** continue to support Toml and Yaml frontmatter?
 + [ ] Should **mkpage** support Django 3/Jinja2 style templates?
