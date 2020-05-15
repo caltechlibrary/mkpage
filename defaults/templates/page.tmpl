@@ -1,14 +1,20 @@
 {{- define "page.tmpl" -}}
 <!DOCTYPE html>
-<html>
+<html {{- with .lang }}{{- print " lang=%q xml:lange=%q" . . -}}{{- end -}}{{- with .dir -}}{{- print " dir=%q " . -}}{{- end -}}>
 <head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="mkpage" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   {{ with .title -}}<title>{{- . -}}</title>{{- end}}
-  {{ if .csspath -}}<link href="{{- .csspath -}}" rel="stylesheet" />{{- else -}}
+  {{ with .creators -}}{{- range $i, $creator := . -}}
+  <meta name="author" content="{{- $creator -}}" />{{- end }}{{- end }}
+{{ with .keywords}}  <meta name="keywords" content="{{- range $i, $keyword := . -}}{{- if (gt $i 0) -}}{{- print ", " -}}{{- end }}{{- $keyword -}}{{- end }}"/>{{- end }}
+{{- if .csspath }}  <link href="{{- .csspath -}}" rel="stylesheet" />{{- else }}
 {{- if .css }}
   <style>
 {{- .css }}
   </style>
-{{- else -}}
+{{- else }}
   <style>
 /**
  * site.css - stylesheet for the Library's Digital Library Development Group's sandbox.
@@ -24,6 +30,9 @@
  *
  * Impact Pallete see: http://identity.caltech.edu/web/colors
  */
+html {
+    font-size: 12pt;
+}
 body {
      margin: 0;
      border: 0;
@@ -37,7 +46,7 @@ body {
      background-color: #AAA99F; /* #76777B;*/
      */
      font-family: Open Sans, Helvetica, Sans-Serif;
-     font-size: 16px;
+     font-size: 1rem;
 }
 
 header {
@@ -65,10 +74,22 @@ header h1 {
      margin: 0;
      border: 0;
      padding: 0;
-     font-size: 3em;
+     font-size: 1.86rem;
      font-weight: normal;
-     vertical-align: 0.78em;
+     vertical-align: 0.78rem;
      color: #FF6E1E;
+}
+
+header .title, header .sub-title {
+    display: block;
+    color: #FF6E1E;
+    padding-left: 1.24rem;
+}
+
+header .creators, header .date {
+    display: inline-block;
+    color: black;
+    padding-left: 1.24rem;
 }
 
 header a, header a:link, header a:visited, header a:active, header a:hover, header a:focus {
@@ -93,7 +114,7 @@ nav {
      width: 100%;
      margin: 0;
      padding: 0;
-     font-size: 0.78em;
+     font-size: 0.78rem;
      vertical-align: middle;
      color: black;
      background-color: #AAA99F; /* #76777B;*/
@@ -102,8 +123,8 @@ nav {
 
 nav div {
      display: inline-block;
-     /* padding-left: 10em; */
-     margin-left: 10em;
+     /* padding-left: 10rem; */
+     margin-left: 10rem;
      margin-right: 0;
 }
 
@@ -125,19 +146,19 @@ nav div h2 {
      display: block;
      min-width: 20%;
      margin: 0;
-     font-size: 1.24em;
+     font-size: 1.24rem;
      font-style: normal;
 }
 
 nav div > ul {
      display: none;
-     padding-left: 0.24em;
+     padding-left: 0.24rem;
      text-align: left;
 }
 
 nav ul {
      display: inline-block;
-     padding-left: 0.24em;
+     padding-left: 0.24rem;
      list-style-type: none;
      text-align: left;
      text-decoration: none; 
@@ -145,7 +166,7 @@ nav ul {
 
 nav ul li {
      display: inline;
-     padding: 1em;
+     padding: 1rem;
 }
 
 section {
@@ -157,22 +178,22 @@ section {
      background-color: white;
      margin: 0;
      padding-top 0;
-     padding-bottom: 2em;
-     padding-left: 1em;
+     padding-bottom: 2rem;
+     padding-left: 1rem;
      padding-right: 0;
 }
 
 section h1 {
-    font-size: 1.32em;
+    font-size: 1.32rem;
 }
 
 section h2 {
-    font-size: 1.12em;
+    font-size: 1.12rem;
     font-weight: italic;
 }
 
 section h3 {
-    font-size: 1em;
+    font-size: 1rem;
     text-transform: uppercase;
 }
 
@@ -185,20 +206,20 @@ section ul {
     list-style: inside;
     list-style-type: square;
     margin: 0;
-    padding-left: 1.24em;
+    padding-left: 1.24rem;
 }
 
 aside {
      margin: 0;
      border: 0;
-     padding-left: 1em;
+     padding-left: 1rem;
      position: relative;
      display: inline-block;
      text-align: right;
 }
 
 aside h2 {
-     font-size: 1em;
+     font-size: 1rem;
      text-transform: uppercase;
 }
 
@@ -214,12 +235,12 @@ aside ul {
 }
 
 aside ul li {
-     font-size: 0.82em;
+     font-size: 0.82rem;
 }
 
 aside ul > ul {
-     padding-left: 1em;
-     font-size: 0.72em;
+     padding-left: 1rem;
+     font-size: 0.72rem;
 }
 
 footer {
@@ -227,7 +248,7 @@ footer {
      bottom: 0;
      display: block;
      width: 100%;
-     height: 2em;
+     height: 2rem;
      color: white;
      background-color: #616265;
 
@@ -241,9 +262,9 @@ footer h1, footer span, footer address {
      position: relative;
      display: inline-block;
      margin: 0;
-     padding-left: 0.24em;
+     padding-left: 0.24rem;
      font-family: Open Sans, Helvetica, Sans-Serif;
-     font-size: 1em;
+     font-size: 1rem;
 }
 
 footer h1 {
@@ -259,7 +280,7 @@ footer a, footer a:link, footer a:visited, footer a:active, footer a:focus, foot
 }
 
 dl {
-     padding-left: 1.24em;
+     padding-left: 1.24rem;
      text-align: left;
 }
 
@@ -279,6 +300,12 @@ p {
 {{- end }}{{- end }}
 </head>
 <body>
+  {{ if .title }}<header>
+  <h1 class="title">{{- .title -}}</h1>
+  {{- with .subtitle -}}<h2 class="sub-title">{{- . -}}</h2>{{- end }}
+  {{- with .creators -}}<h3 class="creators">{{- range $i, $author := . -}}{{- if (gt $i 0) -}}{{- print ", " -}}{{- end }}{{- $author -}}{{- end }}</h3>{{- end }}
+  {{- with .date }}<h4 class="date">{{- . -}}</h4>{{- end }}
+  </header>{{ end }}
   {{ with .header -}}<header>{{- . -}}</header>{{- end }}
   {{ with .nav -}}<nav>{{- . -}}</nav>{{- end }}
   {{ with .content -}}<section>{{- . -}}</section>{{- end }}
