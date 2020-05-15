@@ -45,7 +45,7 @@
 + [ ] mkpage slide support for remarkjs
     + See https://github.com/gnab/remark, https://remarkjs.com and https://github.com/gnab/remark/wiki
     + [ ] Consider merging mkpage and mkslide (fewer tools less to learn), consider front matter changes
-    + [ ] Add support for slide notes delimited by `???`
+    + [ ] Add support for slide speaker notes delimited by `:::`
 + [ ] **mknav**, a new tool to generate nav.md files based on front matter analysis
 + [ ] **mktagcloud**, a new tool to generate tags.md tag cloud based on front matter analysis
 + [ ] **mklunr**, a new tool generate Lunrjs indexes for site search
