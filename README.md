@@ -47,17 +47,17 @@ and integrating data from the [NOAA weather website](http://weather.gov).
 
 ```template
     {{ define "weather.tmpl" }}
-    Date: {{- .now}}
+    Date: {{ .now }}
     
-    Hello {{.name -}},
+    Hello {{ .name -}},
         
     The current weather is
     
-    {{index .weatherForecast.data.weather 0}}
+    {{ index .weatherForecast.data.weather 0 }}
     
     Thank you
     
-    {{.signature}}
+    {{ .signature }}
     
     {{ end }}
 ```
@@ -77,11 +77,11 @@ This break down is as follows.
 Here is how we would express the key/value pairs on the command line.
 
 ```shell
-    mkpage "now=text:$(date)" \
-        "name=text:Little Frieda" \
-        "weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
-        signature=examples/signature.txt \
-        examples/weather.tmpl
+    mkpage 'now=text:$(date)' \
+        'name=text:Little Frieda' \
+        'weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json' \
+        'signature=examples/signature.txt' \
+        'examples/weather.tmpl'
 ```
 
 Notice the two explicit strings are prefixed with "text:" (other possible formats are "markdown:", "json:").
