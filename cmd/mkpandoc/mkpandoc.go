@@ -14,8 +14,8 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"os/exec"
+	"os"
+	"strings"
 
 	// Caltech Library Packages
 	"github.com/caltechlibrary/cli"
@@ -87,11 +87,6 @@ See https://pandoc.org/MANUAL.html#templates
 )
 
 func main() {
-	pandoc, err := exec.LookPath("pandoc")
-	if err != nil {
-		log.Fatal("Can't find pandoc, see https://pandoc.org")
-	}
-
 	app := cli.NewCli(mkpage.Version)
 	appName := app.AppName()
 

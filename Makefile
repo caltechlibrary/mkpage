@@ -20,7 +20,7 @@ endif
 build: bin/mkpage$(EXT) bin/mkslides$(EXT) bin/mkrss$(EXT) \
 	bin/sitemapper$(EXT) bin/byline$(EXT) bin/titleline$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
-	bin/ws$(EXT) bin/frontmatter$(EXT) bin/mkpongo
+	bin/ws$(EXT) bin/frontmatter$(EXT) bin/mkpongo bin/mkpandoc$(EXT)
 
 mkpage.go: assets.go codesnip.go
 
@@ -63,6 +63,9 @@ bin/frontmatter$(EXT): mkpage.go cmd/frontmatter/frontmatter.go
 
 bin/mkpongo$(EXT): mkpage.go mkpongo.go cmd/mkpongo/mkpongo.go
 	go build -o bin/mkpongo$(EXT) cmd/mkpongo/mkpongo.go
+
+bin/mkpandoc$(EXT): mkpage.go mkpandoc.go cmd/mkpandoc/mkpandoc.go
+	go build -o bin/mkpandoc$(EXT) cmd/mkpandoc/mkpandoc.go
 
 lint:
 	golint mkpage.go

@@ -56,7 +56,7 @@ import (
 
 const (
 	// Version holds the semver assocaited with this version of mkpage.
-	Version = `v0.0.32e`
+	Version = `v0.0.32f`
 
 	// LicenseText provides a string template for rendering cli license info
 	LicenseText = `
@@ -798,6 +798,18 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 				if err != nil {
 					return out, err
 				}
+				fmType, fmSrc, docSrc := SplitFrontMatter(buf)
+				if len(fmSrc) > 0 {
+					buf = docSrc
+					fmData := map[string]interface{}{}
+					if err := UnmarshalFrontMatter(fmType, fmSrc, &fmData); err != nil {
+						return out, fmt.Errorf("Can't process front matter (%s), %q, %q", key, val, err)
+					}
+					// Update, Overwrite `out` with front matter values
+					for k, v := range fmData {
+						out[k] = v
+					}
+				}
 				if contentTypes, ok := resp.Header["Content-Type"]; ok == true {
 					switch {
 					case isContentType(contentTypes, "application/json") == true:
@@ -830,6 +842,18 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 			buf, err := ioutil.ReadFile(val)
 			if err != nil {
 				return out, fmt.Errorf("Can't read (%s) %q, %s", key, val, err)
+			}
+			fmType, fmSrc, docSrc := SplitFrontMatter(buf)
+			if len(fmSrc) > 0 {
+				buf = docSrc
+				fmData := map[string]interface{}{}
+				if err := UnmarshalFrontMatter(fmType, fmSrc, &fmData); err != nil {
+					return out, fmt.Errorf("Can't process front matter (%s), %q, %q", key, val, err)
+				}
+				// Update, Overwrite `out` with front matter values
+				for k, v := range fmData {
+					out[k] = v
+				}
 			}
 			ext := path.Ext(val)
 			switch {

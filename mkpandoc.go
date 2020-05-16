@@ -18,10 +18,13 @@
 package mkpage
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
+	"os"
 	"os/exec"
 )
 
@@ -36,16 +39,35 @@ func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) 
 	if err != nil {
 		return fmt.Errorf("Can't resolve data source %s", err)
 	}
-	src, err := json.Marashal(data)
+	// NOTE: Pandocs default template expects content to be called $body$.
+	// we need to remap from data["content"] to data["body"]
+	if val, ok := data["content"]; ok == true {
+		delete(data, "content")
+		data["body"] = val
+	}
+	src, err := json.Marshal(data)
 	if err != nil {
 		log.Fatalf("Marshal error, %q", err)
 	}
-	tmpfile, err := ioutil.TempFile("", "pandoc.*.json")
+	metadata, err := ioutil.TempFile(".", "pandoc.*.json")
 	if err != nil {
 		log.Fatalf("Cannot create temp metadata file, %s", err)
 	}
-	defer os.Remove(tmpfile.Name())
+	if _, err := metadata.Write(src); err != nil {
+		log.Fatalf("Write error, %q", err)
+	}
+	// Check if document has front matter, split and write to temp files.
+	defer os.Remove(metadata.Name())
 	//FIXME: take temp metadata file, pass to pandoc command and render output.
-
+	// pandoc -s -f markdown -t html  --metadata-file=/var/folders/14/d4r81n210gq5p00l3_byft400000gn/T/pandoc.690211801.json
+	cmd := exec.Command(pandoc, "-s", "-f", "markdown", "-t", "html", "--metadata-file", metadata.Name())
+	var (
+		out bytes.Buffer
+	)
+	cmd.Stdout = &out
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("%s, %s", pandoc, err)
+	}
+	wr.Write(out.Bytes())
 	return nil
 }
