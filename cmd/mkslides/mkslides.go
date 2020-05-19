@@ -35,7 +35,7 @@ import (
 const (
 	description = `
 
-SYNOPSIS
+SYNOPSIS for --mkslides
 
 %s converts a Markdown file into a sequence of HTML5 slides using the
 key/value pairs to populate the templates and render to stdout.

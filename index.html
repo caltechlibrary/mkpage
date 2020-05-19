@@ -71,17 +71,17 @@ and integrating data from the <a href="http://weather.gov">NOAA weather website<
 <h3>a basic template</h3>
 
 <pre><code class="language-template">    {{ define &quot;weather.tmpl&quot; }}
-    Date: {{- .now}}
+    Date: {{ .now }}
     
-    Hello {{.name -}},
+    Hello {{ .name -}},
         
     The current weather is
     
-    {{index .weatherForecast.data.weather 0}}
+    {{ index .weatherForecast.data.weather 0 }}
     
     Thank you
     
-    {{.signature}}
+    {{ .signature }}
     
     {{ end }}
 </code></pre>
@@ -108,11 +108,11 @@ This break down is as follows.</p>
 
 <p>Here is how we would express the key/value pairs on the command line.</p>
 
-<pre><code class="language-shell">    mkpage &quot;now=text:$(date)&quot; \
-        &quot;name=text:Little Frieda&quot; \
-        &quot;weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
-        signature=examples/signature.txt \
-        examples/weather.tmpl
+<pre><code class="language-shell">    mkpage 'now=text:$(date)' \
+        'name=text:Little Frieda' \
+        'weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json' \
+        'signature=examples/signature.txt' \
+        'examples/weather.tmpl'
 </code></pre>
 
 <p>Notice the two explicit strings are prefixed with &ldquo;text:&rdquo; (other possible formats are &ldquo;markdown:&rdquo;, &ldquo;json:&rdquo;).

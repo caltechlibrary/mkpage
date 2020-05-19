@@ -23,17 +23,40 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 )
 
+// pandocProcessor accepts an array of bytes as input and returns
+// a `pandoc -f markdown -t html` output of an array if
+// bytes and error.
+func pandocProcessor(input []byte) ([]byte, error) {
+	var out bytes.Buffer
+
+	pandoc, err := exec.LookPath("pandoc")
+	if err != nil {
+		return nil, err
+	}
+	cmd := exec.Command(pandoc, "-f", "markdown", "-t", "html")
+	cmd.Stdin = bytes.NewReader(input)
+	cmd.Stdout = &out
+	if err := cmd.Run(); err != nil {
+		return nil, err
+	}
+	return out.Bytes(), nil
+}
+
 // MakePandoc resolves key/value map rendering metadata suitable for processing with pandoc along with template information
 // rendering and returns an error if something goes wrong
 func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) error {
+	var (
+		out     bytes.Buffer
+		options []string
+	)
+
 	pandoc, err := exec.LookPath("pandoc")
 	if err != nil {
-		log.Fatalf("Pandoc (see https://pandoc.org): %q", err)
+		return fmt.Errorf("Pandoc (see https://pandoc.org): %q", err)
 	}
 	data, err := ResolveData(keyValues)
 	if err != nil {
@@ -47,26 +70,28 @@ func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) 
 	}
 	src, err := json.Marshal(data)
 	if err != nil {
-		log.Fatalf("Marshal error, %q", err)
+		return fmt.Errorf("Marshal error, %q", err)
 	}
 	metadata, err := ioutil.TempFile(".", "pandoc.*.json")
 	if err != nil {
-		log.Fatalf("Cannot create temp metadata file, %s", err)
+		return fmt.Errorf("Cannot create temp metadata file, %s", err)
 	}
 	if _, err := metadata.Write(src); err != nil {
-		log.Fatalf("Write error, %q", err)
+		return fmt.Errorf("Write error, %q", err)
 	}
 	// Check if document has front matter, split and write to temp files.
 	defer os.Remove(metadata.Name())
-	//FIXME: take temp metadata file, pass to pandoc command and render output.
-	// pandoc -s -f markdown -t html  --metadata-file=/var/folders/14/d4r81n210gq5p00l3_byft400000gn/T/pandoc.690211801.json
-	cmd := exec.Command(pandoc, "-s", "-f", "markdown", "-t", "html", "--metadata-file", metadata.Name())
-	var (
-		out bytes.Buffer
-	)
+	options = []string{
+		"-s", "-t", "html",
+		"--metadata-file", metadata.Name(),
+	}
+	if templateName != "" {
+		options = append(options, []string{"--template", templateName}...)
+	}
+	cmd := exec.Command(pandoc, options...)
 	cmd.Stdout = &out
 	if err := cmd.Run(); err != nil {
-		log.Fatalf("%s, %s", pandoc, err)
+		return fmt.Errorf("%s, %s", pandoc, err)
 	}
 	wr.Write(out.Bytes())
 	return nil

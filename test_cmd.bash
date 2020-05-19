@@ -81,6 +81,10 @@ function test_mkrss() {
 
 function test_mkslides() {
     echo "test_mkslides() not implemented."
+    CWD=$(pwd)
+    cd test
+    ../bin/mkpage --mkslides 'content=../testdata/presentation_demo.md'
+    cd $(CWD)
 }
 
 function test_reldocpath() {

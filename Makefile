@@ -17,10 +17,10 @@ ifeq ($(OS),Windows)
 	EXT = .exe
 endif
 
-build: bin/mkpage$(EXT) bin/mkslides$(EXT) bin/mkrss$(EXT) \
+build: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/sitemapper$(EXT) bin/byline$(EXT) bin/titleline$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
-	bin/ws$(EXT) bin/frontmatter$(EXT) bin/mkpongo bin/mkpandoc$(EXT)
+	bin/ws$(EXT) bin/frontmatter$(EXT)
 
 mkpage.go: assets.go codesnip.go
 
@@ -28,11 +28,8 @@ assets.go: defaults/templates/page.tmpl defaults/templates/slides.tmpl
 	pkgassets -o assets.go -p mkpage Defaults defaults
 	git add assets.go
 
-bin/mkpage$(EXT): mkpage.go assets.go codesnip.go cmd/mkpage/mkpage.go
+bin/mkpage$(EXT): mkpage.go assets.go codesnip.go cmd/mkpage/mkpage.go mkpandoc.go mkpongo.go
 	go build -o bin/mkpage$(EXT) cmd/mkpage/mkpage.go
-
-bin/mkslides$(EXT): mkpage.go cmd/mkslides/mkslides.go
-	go build -o bin/mkslides$(EXT) cmd/mkslides/mkslides.go
 
 bin/mkrss$(EXT): mkpage.go cmd/mkrss/mkrss.go
 	go build -o bin/mkrss$(EXT) cmd/mkrss/mkrss.go
@@ -61,8 +58,6 @@ bin/ws$(EXT): mkpage.go cmd/ws/ws.go
 bin/frontmatter$(EXT): mkpage.go cmd/frontmatter/frontmatter.go
 	go build -o bin/frontmatter$(EXT) cmd/frontmatter/frontmatter.go
 
-bin/mkpongo$(EXT): mkpage.go mkpongo.go cmd/mkpongo/mkpongo.go
-	go build -o bin/mkpongo$(EXT) cmd/mkpongo/mkpongo.go
 
 bin/mkpandoc$(EXT): mkpage.go mkpandoc.go cmd/mkpandoc/mkpandoc.go
 	go build -o bin/mkpandoc$(EXT) cmd/mkpandoc/mkpandoc.go
@@ -71,7 +66,6 @@ lint:
 	golint mkpage.go
 	golint mkpage_test.go
 	golint cmd/mkpage/mkpage.go
-	golint cmd/mkslides/mkslides.go
 	golint cmd/mkrss/mkrss.go
 	golint cmd/sitemapper/sitemapper.go
 	golint cmd/byline/byline.go
@@ -81,14 +75,11 @@ lint:
 	golint cmd/urldecode/urldecode.go
 	golint cmd/ws/ws.go
 	golint cmd/frontmatter/frontmatter.go
-	golint cmd/mkpongo/mkpongo.go
-	golint cmd/mkpandoc/mkpandoc.go
 
 format:
 	gofmt -w mkpage.go
 	gofmt -w mkpage_test.go
 	gofmt -w cmd/mkpage/mkpage.go
-	gofmt -w cmd/mkslides/mkslides.go
 	gofmt -w cmd/mkrss/mkrss.go
 	gofmt -w cmd/sitemapper/sitemapper.go
 	gofmt -w cmd/byline/byline.go
@@ -98,13 +89,11 @@ format:
 	gofmt -w cmd/urldecode/urldecode.go
 	gofmt -w cmd/ws/ws.go
 	gofmt -w cmd/frontmatter/frontmatter.go
-	gofmt -w cmd/mkpongo/mkpongo.go
-	gofmt -w cmd/mkpandoc/mkpandoc.go
 
-test: bin/mkpage$(EXT) bin/mkslides$(EXT) bin/mkrss$(EXT) \
+test: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/sitemapper$(EXT) bin/byline$(EXT) bin/titleline$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
-	bin/ws$(EXT) bin/frontmatter$(EXT) bin/mkpongo$(EXT) bin/mkpandoc$(EXT) FORCE
+	bin/ws$(EXT) bin/frontmatter$(EXT)
 	go test
 	bash test_cmd.bash
 
@@ -124,7 +113,6 @@ clean:
 man: build
 	mkdir -p man/man1
 	bin/mkpage -generate-manpage | nroff -Tutf8 -man > man/man1/mkpage.1
-	bin/mkslides -generate-manpage | nroff -Tutf8 -man > man/man1/mkslides.1
 	bin/mkrss -generate-manpage | nroff -Tutf8 -man > man/man1/mkrss.1
 	bin/sitemapper -generate-manpage | nroff -Tutf8 -man > man/man1/sitemapper.1
 	bin/byline -generate-manpage | nroff -Tutf8 -man > man/man1/byline.1
@@ -134,12 +122,9 @@ man: build
 	bin/urlencode -generate-manpage | nroff -Tutf8 -man > man/man1/urlencode.1
 	bin/ws -generate-manpage | nroff -Tutf8 -man > man/man1/ws.1
 	bin/frontmatter -generate-manpage | nroff -Tutf8 -man > man/man1/frontmatter.1
-	bin/mkpongo -generate-manpage | nroff -Tutf8 -man > man/man1/mkpongo.1
-	bin/mkpandoc -generate-manpage | nroff -Tutf8 -man > man/man1/mkpandoc.1
 
 install: assets.go
 	env GOBIN=$(GOPATH)/bin go install cmd/mkpage/mkpage.go
-	env GOBIN=$(GOPATH)/bin go install cmd/mkslides/mkslides.go
 	env GOBIN=$(GOPATH)/bin go install cmd/mkrss/mkrss.go
 	env GOBIN=$(GOPATH)/bin go install cmd/sitemapper/sitemapper.go
 	env GOBIN=$(GOPATH)/bin go install cmd/byline/byline.go
@@ -149,14 +134,11 @@ install: assets.go
 	env GOBIN=$(GOPATH)/bin go install cmd/urldecode/urldecode.go
 	env GOBIN=$(GOPATH)/bin go install cmd/ws/ws.go
 	env GOBIN=$(GOPATH)/bin go install cmd/frontmatter/frontmatter.go
-	env GOBIN=$(GOPATH)/bin go install cmd/mkpongo/mkpongo.go
-	env GOBIN=$(GOPATH)/bin go install cmd/mkpandoc/mkpandoc.go
 
 
 dist/linux-amd64:
 	mkdir -p dist/bin
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/mkpage cmd/mkpage/mkpage.go
-	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/mkslides cmd/mkslides/mkslides.go
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/mkrss cmd/mkrss/mkrss.go
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/sitemapper cmd/sitemapper/sitemapper.go
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/byline cmd/byline/byline.go
@@ -166,8 +148,6 @@ dist/linux-amd64:
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
-	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/mkpongo cmd/mkpongo/mkpongo.go
-	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/mkpandoc cmd/mkpandoc/mkpandoc.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -176,7 +156,6 @@ dist/linux-amd64:
 dist/windows-amd64:
 	mkdir -p dist/bin
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/mkpage.exe cmd/mkpage/mkpage.go
-	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/mkslides.exe cmd/mkslides/mkslides.go
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/mkrss.exe cmd/mkrss/mkrss.go
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/sitemapper.exe cmd/sitemapper/sitemapper.go
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/byline.exe cmd/byline/byline.go
@@ -186,15 +165,12 @@ dist/windows-amd64:
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/urldecode.exe cmd/urldecode/urldecode.go
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/ws.exe cmd/ws/ws.go
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/frontmatter.exe cmd/frontmatter/frontmatter.go
-	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/mkpongo.exe cmd/mkpongo/mkpongo.go
-	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/mkpandoc.exe cmd/mkpandoc/mkpandoc.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
 dist/macosx-amd64:
 	mkdir -p dist/bin
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkpage cmd/mkpage/mkpage.go
-	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkslides cmd/mkslides/mkslides.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkrss cmd/mkrss/mkrss.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/sitemapper cmd/sitemapper/sitemapper.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/byline cmd/byline/byline.go
@@ -204,15 +180,12 @@ dist/macosx-amd64:
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
-	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkpongo cmd/mkpongo/mkpongo.go
-	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkpandoc cmd/mkpandoc/mkpandoc.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-macosx-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
 dist/raspbian-arm7:
 	mkdir -p dist/bin
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/mkpage cmd/mkpage/mkpage.go
-	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/mkslides cmd/mkslides/mkslides.go
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/mkrss cmd/mkrss/mkrss.go
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/sitemapper cmd/sitemapper/sitemapper.go
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/byline cmd/byline/byline.go
@@ -222,8 +195,6 @@ dist/raspbian-arm7:
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
-	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/mkpongo cmd/mkpongo/mkpongo.go
-	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/mkpandoc cmd/mkpandoc/mkpandoc.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm7.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -244,7 +215,6 @@ distribute_docs:
 	cp -v docs/urlencode.md dist/docs/
 	cp -v docs/ws.md dist/docs/
 	cp -v docs/frontmatter.md dist/docs/
-	cp -v docs/mkpongo.md dist/docs/
 	cp -v how-to/go-template-recipes.md dist/how-to/
 	cp -v how-to/the-basics.md dist/how-to/
 	cp -vR templates dist/

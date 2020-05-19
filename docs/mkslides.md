@@ -1,14 +1,13 @@
----
 {
+    "markup": "mmark",
     "has_code": true
 }
----
 
-# mkslides
+# Make slides with mkpage
 
 ## USAGE
 
-    mkslides [OPTIONS] [KEY/VALUE DATA PAIRS] MARKDOWN_FILE [TEMPLATE_FILENAMES]
+    mkpage --mkslides -i MARKDOWN_FILENAME [OPTIONS] [KEY/VALUE DATA PAIRS] [TEMPLATE_FILENAMES]
 
 ## SYNOPSIS
 
@@ -22,9 +21,9 @@ key/value pairs to populate the templates and render to stdout.
 + Apply the default template or use your own
 + Control Layout and display with HTML5 and CSS
 
-_mkslides_ is based on _mkpage_ with the difference that multiple pages
-result from a single Markdown file. To manage the linkage between
-slides some predefined template variables is used.
+_mkslides_ option is based on _mkpage_ with the difference that 
+multiple pages result from a single Markdown file. To manage the linkage 
+between slides some predefined template variables is used.
 
 + *title* which would hold the page title for presentation
 + *csspath* which would hold the path to your CSS File.
@@ -47,38 +46,16 @@ actions like "next slide" to the space bar or mourse click.
 
 + MKPAGE_TEMPLATES - specify where to find the template(s) to use for slides
 
-## OPTIONS
-
-
-```
-	-c	Specify the CSS file to use
-	-css	Specify the CSS file to use
-	-h	display help
-	-help	display help
-	-j	Specify the JavaScript file to use
-	-js	Specify the JavaScript file to use
-	-l	display license
-	-license	display license
-	-m	Markdown filename
-	-markdown	Markdown filename
-	-p	Presentation title
-	-presentation-title	Presentation title
-	-s	display the default template
-	-show-template	display the default template
-	-t	A colon delimited list of HTML templates to use
-	-templates	A colon delimited list of HTML templates to use
-	-v	display version
-	-version	display version
-```
-
 ## EXAMPLE
 
 In this example we're using the default slide template.
 Here's an example of a three slide presentation
 
 ```
-    Welcome to [mkslides](../)
-    by R. S. Doiel, <rsdoiel@caltech.edu>
+
+    Welcome to mkpage used to make slides.
+
+    by R. S. Doiel, <rsdoiel@library.caltech.edu>
 
     --
 
@@ -92,23 +69,26 @@ Here's an example of a three slide presentation
 
     Thank you
 
-    Hope you enjoy [mkslides](https://github.com/caltechlbrary/mkslides)
+    Hope you enjoy [mkpage](https://github.com/caltechlbrary/mkpage)
+
 ```
 
 If you saved this as presentation.md you can run the following
 command to generate slides
 
 ```shell
-    mkslides "title=text:My Presentation" \
-	    "csspath=text:css/slides.css" presentation.md
+    mkpage --mkslides -i presentation.md \
+        "title=text:My Presentation" \
+	    "csspath=text:css/slides.css"
 ```
 
 Using a custom template would look like
 
 ```shell
-    mkslides -t custom-slides.tmpl \
+    mkpage --mkslides -i presentation.md \
+        -t custom-slides.tmpl \
         "title=text:My Presentation" \
-	    "csspath=text:css/slides.css" presentation.md
+	    "csspath=text:css/slides.css"
 ```
 
 This would result in the following webpages

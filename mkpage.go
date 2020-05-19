@@ -56,7 +56,7 @@ import (
 
 const (
 	// Version holds the semver assocaited with this version of mkpage.
-	Version = `v0.0.32f`
+	Version = `v0.0.32g`
 
 	// LicenseText provides a string template for rendering cli license info
 	LicenseText = `
@@ -80,6 +80,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 	// JSONPrefix designates a string as JSON formatted content
 	JSONPrefix = "json:"
+	// PandocPrefix designates to use Pandoc to render content
+	PandocPrefix = "pandoc:"
 	// MMarkPrefix designates a string as mmarkdown or MMark content
 	MMarkPrefix = "mmark:"
 	// MarkdownPrefix designates a string as Markdown (common mark) content
@@ -119,12 +121,6 @@ var (
 	// Defaults is a map to assets defined in assets.go which is build with pkgasset and
 	// the contents of the defaults folder in this repository.
 	DefaultTemplateSource string
-
-	// DefaultSlideTemplateSource provides the default HTML template for mkslides package,
-	// you probably want to override this... is defined in init by Defaults["/templates/slides.tmpl"]
-	// Defaults is a map to assets defined in assets.go which is build with pkgasset and
-	// the contents of the defaults folder in this repository.
-	DefaultSlideTemplateSource string
 
 	// Config holds a global config.
 	// Uses the same structure as Front Matter in that it is
@@ -759,6 +755,12 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 	out = make(map[string]interface{})
 	for key, val := range data {
 		switch {
+		case strings.HasPrefix(val, PandocPrefix) == true:
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, PandocPrefix)))
+			if err != nil {
+				return out, err
+			}
+			out[key] = fmt.Sprintf("%s", src)
 		case strings.HasPrefix(val, TextPrefix) == true:
 			out[key] = strings.TrimPrefix(val, TextPrefix)
 		case strings.HasPrefix(val, GomarkdownPrefix) == true:
@@ -865,6 +867,8 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 				}
 				out[key] = fmt.Sprintf("%s", src)
 			case strings.Compare(ext, ".md") == 0:
+				//FIXME: figure out how to pick pandocProcessor() versus
+				// gomarkdownProcessor().
 				src, err := gomarkdownProcessor(buf)
 				if err != nil {
 					return nil, err
@@ -935,104 +939,6 @@ func RelativeDocPath(source, target string) string {
 		return strings.TrimSuffix(p, ".")
 	}
 	return p
-}
-
-//
-// Below is addition code to support mkslides
-//
-
-// Slide is the metadata about a slide to be generated.
-type Slide struct {
-	CurNo   int    `json:"cur_no,omitemtpy"`
-	PrevNo  int    `json:"prev_no,omitempty"`
-	NextNo  int    `json:"next_no,omitempty"`
-	FirstNo int    `json:"first_no,omitempty"`
-	LastNo  int    `json:"last_no,omitempty"`
-	FName   string `json:"filename,omitempty"`
-	Title   string `json:"title,omitempty"`
-	Content string `json:"content,omitempty"`
-	CSSPath string `json:"csspath,omitempty"`
-	JSPath  string `json:"jspath,omitempty"`
-	CSS     string `json:"css,omitempty"`
-	Header  string `json:"header,omitempty"`
-	Footer  string `json:"footer,omitempty"`
-	Nav     string `json:"nav,omitempty"`
-}
-
-// MarkdownToSlides turns a markdown file into one or more Slide structs
-// Which populate predefined key/value pairs for later rendering in Markdown
-func MarkdownToSlides(fname string, mdSource []byte) ([]*Slide, error) {
-	var slides []*Slide
-
-	// Note: handle legacy CR/LF endings as well as normal LF line endings
-	if bytes.Contains(mdSource, []byte("\r\n")) {
-		mdSource = bytes.Replace(mdSource, []byte("\r\n"), []byte("\n"), -1)
-	}
-	// Note: We're only spliting on whole line that contain "---", not lines ending with where text might end with "---"
-	mdSlides := bytes.Split(mdSource, []byte("\n---\n"))
-
-	lastSlide := len(mdSlides) - 1
-	for i, s := range mdSlides {
-		src, err := gomarkdownProcessor(s)
-		if err != nil {
-			return nil, fmt.Errorf("%s slide %d error, %s", fname, i+1, err)
-		}
-		slides = append(slides, &Slide{
-			FName:   strings.TrimSuffix(path.Base(fname), path.Ext(fname)),
-			CurNo:   i,
-			PrevNo:  (i - 1),
-			NextNo:  (i + 1),
-			FirstNo: 0,
-			LastNo:  lastSlide,
-			Content: fmt.Sprintf("%s", src),
-		})
-	}
-	return slides, nil
-}
-
-// MakeSlide this takes a io.Writer, a template, key/value map pairs and Slide struct.
-// It resolves the data int key/value pairs, merges the prefined mapping from Slide struct
-// then executes the template.
-func MakeSlide(wr io.Writer, templateName string, tmpl *template.Template, keyValues map[string]string, slide *Slide) error {
-	data, err := ResolveData(keyValues)
-	if err != nil {
-		return fmt.Errorf("Can't resolve data source %s", err)
-	}
-	// Merge the slide metadata into data pairs for template
-	data["filename"] = slide.FName
-	data["cur_no"] = slide.CurNo
-	data["prev_no"] = slide.PrevNo
-	data["next_no"] = slide.NextNo
-	data["first_no"] = slide.FirstNo
-	data["last_no"] = slide.LastNo
-	data["content"] = slide.Content
-	data["header"] = slide.Header
-	data["footer"] = slide.Header
-	data["nav"] = slide.Nav
-	return tmpl.ExecuteTemplate(wr, templateName, data)
-}
-
-// MakeSlideFile this takes a template and slide and renders the results to a file.
-func MakeSlideFile(templateName string, tmpl *template.Template, keyValues map[string]string, slide *Slide) error {
-	sname := fmt.Sprintf(`%02d-%s.html`, slide.CurNo, strings.TrimSuffix(path.Base(slide.FName), path.Ext(slide.FName)))
-	fp, err := os.Create(sname)
-	if err != nil {
-		return fmt.Errorf("%s %s", sname, err)
-	}
-	defer fp.Close()
-	err = MakeSlide(fp, templateName, tmpl, keyValues, slide)
-	if err != nil {
-		return fmt.Errorf("%s %s", sname, err)
-	}
-	return nil
-}
-
-// MakeSlideString this takes a template and slide and renders the results to a string
-func MakeSlideString(templateName string, tmpl *template.Template, keyValues map[string]string, slide *Slide) (string, error) {
-	var buf bytes.Buffer
-	wr := io.Writer(&buf)
-	err := MakeSlide(wr, templateName, tmpl, keyValues, slide)
-	return buf.String(), err
 }
 
 // NormalizeDate takes a MySQL like date string and returns a time.Time or error
