@@ -23,41 +23,27 @@
 </nav>
 
 <section>
-<h1>Go text/template recipes</h1>
-
-<p><em>mkpage</em> template engine is Go&rsquo;s <a href="https://golang.org/pkg/text/template/">text/template</a>. Go&rsquo;s templates provide a flexible and simple <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL</a> describing how to assemble a document based on a data structure passed to it.  <em>mkpage</em> uses a list of key/value pairs on the command line to populate the data structure the template package expects.  This includes support for JSON formatted text from strings, files and URL response. It also support transforming markdown content into HTML before assembling the final template.</p>
-
-<p>While Go&rsquo;s template package is not complicated to use it doesn&rsquo;t come with allot of examples or tutorials.  Most articles you find on Go&rsquo;s template packages either focus on web server code or are for sophisticated static content generators like <a href="http://gohugo.io">Hugo</a>. Hugo extends Go&rsquo;s template DSL providing capabilities that rival and surpass older static content generators like <a href="https://jekyllrb.com/">Jekyll</a> and <a href="http://jade-lang.com/">Jade</a>.</p>
-
-<p><em>mkpage</em> uses Go v1.8&rsquo;s text/template as is providing little in the way of extensions.  <em>mkpage</em> is meant to be a trivially easy system for producing simple content from plain text, markdown text, and JSON. It deliberately implements a minimal feature set targetting a scripting environment like a Bash shell.</p>
-
-<h2>only three data formats are supported</h2>
-
+<h1 id="go-texttemplate-recipes">Go text/template recipes</h1>
+<p><em>mkpage</em> template engine is Go’s <a href="https://golang.org/pkg/text/template/">text/template</a>. Go’s templates provide a flexible and simple <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL</a> describing how to assemble a document based on a data structure passed to it. <em>mkpage</em> uses a list of key/value pairs on the command line to populate the data structure the template package expects. This includes support for JSON formatted text from strings, files and URL response. It also support transforming markdown content into HTML before assembling the final template.</p>
+<p>While Go’s template package is not complicated to use it doesn’t come with allot of examples or tutorials. Most articles you find on Go’s template packages either focus on web server code or are for sophisticated static content generators like <a href="http://gohugo.io">Hugo</a>. Hugo extends Go’s template DSL providing capabilities that rival and surpass older static content generators like <a href="https://jekyllrb.com/">Jekyll</a> and <a href="http://jade-lang.com/">Jade</a>.</p>
+<p><em>mkpage</em> uses Go v1.8’s text/template as is providing little in the way of extensions. <em>mkpage</em> is meant to be a trivially easy system for producing simple content from plain text, markdown text, and JSON. It deliberately implements a minimal feature set targetting a scripting environment like a Bash shell.</p>
+<h2 id="only-three-data-formats-are-supported">only three data formats are supported</h2>
 <p><em>mkpage</em> supports three document formats</p>
-
 <ul>
 <li>text/plain</li>
 <li>text/markdown</li>
 <li>application/json</li>
 </ul>
-
-<h2>only three data sources are supported</h2>
-
+<h2 id="only-three-data-sources-are-supported">only three data sources are supported</h2>
 <p><em>mkpage</em> supports three data sources</p>
-
 <ul>
 <li>files (the default data source)</li>
-<li>explicit strings (using a hint prefix, e.g. &ldquo;text:&rdquo;, &ldquo;markdown:&rdquo;, &ldquo;json:&rdquo;)</li>
+<li>explicit strings (using a hint prefix, e.g. “text:”, “markdown:”, “json:”)</li>
 <li>URLs as data sources (prefixed with http:// and https:// as appropriate)</li>
 </ul>
-
-<h2>Examples</h2>
-
-<h3>Rendering a Markdown as HTML</h3>
-
-<p>This is a minimal example of using <em>mkpage</em> to render a Markdown file as an HTML page.
-It features no navigation, just a wrapping HTML document head (with link to CSS file) and body.</p>
-
+<h2 id="examples">Examples</h2>
+<h3 id="rendering-a-markdown-as-html">Rendering a Markdown as HTML</h3>
+<p>This is a minimal example of using <em>mkpage</em> to render a Markdown file as an HTML page. It features no navigation, just a wrapping HTML document head (with link to CSS file) and body.</p>
 <pre><code>    {{ define &quot;page.tmpl&quot; }}
     &lt;!DOCTYPE html&gt;
     &lt;html&gt;
@@ -66,156 +52,104 @@ It features no navigation, just a wrapping HTML document head (with link to CSS 
         {{ .Content }}
         &lt;/body&gt;
     &lt;/html&gt;
-    {{ end }}
-</code></pre>
-
+    {{ end }}</code></pre>
 <p>Rendering a markdown document named <em>myfile.md</em> as <em>myfile.html</em> would look like</p>
-
-<pre><code class="language-shell">    mkpage Content=myfile.md page.tmpl &gt; myfile.html
-</code></pre>
-
-<h3>explicit stings, a get well card</h3>
-
+<pre class="shell"><code>    mkpage Content=myfile.md page.tmpl &gt; myfile.html</code></pre>
+<h3 id="explicit-stings-a-get-well-card">explicit stings, a get well card</h3>
 <p>In this example we want to add a name to a simple get well message.</p>
-
 <p>Our template is called <strong>get-well.tmpl</strong>. It looks like</p>
-
-<pre><code class="language-go">    {{ define &quot;get-well.tmpl&quot; }}
-    Dear {{ .name -}},
-
-    Hope you are feeling better today.
-
-    Sencerly,
-
-    Mojo Sam
-    
-    {{ end }}
-</code></pre>
-
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1"></a>    {{ define <span class="st">&quot;get-well.tmpl&quot;</span> }}</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    Dear {{ .name -}},</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    Hope you are feeling better today.</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>    Sencerly,</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    Mojo Sam</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    </span>
+<span id="cb3-10"><a href="#cb3-10"></a>    {{ end }}</span></code></pre></div>
 <p>On the command line we can run <em>mkpage</em> with the following options</p>
-
-<pre><code class="language-shell">    mkpage &quot;name=text:Little Frieda&quot; get-well.tmpl
-</code></pre>
-
+<pre class="shell"><code>    mkpage &quot;name=text:Little Frieda&quot; get-well.tmpl</code></pre>
 <p>The output would look like</p>
-
-<pre><code class="language-text">    Little Frieda,
+<pre class="text"><code>    Little Frieda,
 
     Hope you are feeling better today.
 
     Sencerly,
 
     Mojo Sam
-
 </code></pre>
-
-<h4>Explanation</h4>
-
-<p>The key &ldquo;name&rdquo; has a string value of &ldquo;Little Frieda&rdquo;.  The template indicates this needs to be included after the word &ldquo;Dear&rdquo;. The key &ldquo;name&rdquo; is proceeded by a period or dot.  The substitution happens between the opening &ldquo;{{&rdquo; and closing &ldquo;}}&rdquo;.  Notice the &ldquo;-&rdquo; before the closing &ldquo;}}&rdquo;. This tells the template engine to not allow spacas after the value and the next non-space character (i.e. the comma of the opening line).</p>
-
-<h3>JSON data, a key/value blob report</h3>
-
+<h4 id="explanation">Explanation</h4>
+<p>The key “name” has a string value of “Little Frieda”. The template indicates this needs to be included after the word “Dear”. The key “name” is proceeded by a period or dot. The substitution happens between the opening “{{” and closing “}}”. Notice the “-” before the closing “}}”. This tells the template engine to not allow spacas after the value and the next non-space character (i.e. the comma of the opening line).</p>
+<h3 id="json-data-a-keyvalue-blob-report">JSON data, a key/value blob report</h3>
 <p>In this example we construct a JSON object as part of the key/value pairs on the command line and pass it through the blob.tmpl template that displays they pairs.</p>
-
 <p>The command envokation looks like</p>
-
-<pre><code class="language-shell">    mkpage 'blob=json:{&quot;one&quot;:1,&quot;two&quot;:2}'  blob.tmpl
-</code></pre>
-
+<pre class="shell"><code>    mkpage &#39;blob=json:{&quot;one&quot;:1,&quot;two&quot;:2}&#39;  blob.tmpl</code></pre>
 <p>The template is a simple range construct</p>
-
-<pre><code class="language-go">    {{ define &quot;blob.tmpl&quot; }}
-    {{range $key,$val := .blob }}
-        Key: {{ $key }} Value: {{ $val -}}
-    {{end}}
-    {{ end }}
-</code></pre>
-
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1"></a>    {{ define <span class="st">&quot;blob.tmpl&quot;</span> }}</span>
+<span id="cb7-2"><a href="#cb7-2"></a>    {{<span class="kw">range</span> $key,$val := .blob }}</span>
+<span id="cb7-3"><a href="#cb7-3"></a>        Key: {{ $key }} Value: {{ $val -}}</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    {{end}}</span>
+<span id="cb7-5"><a href="#cb7-5"></a>    {{ end }}</span></code></pre></div>
 <p>Results in text like</p>
-
-<pre><code class="language-text">    
+<pre class="text"><code>    
        Key: one Value: 1
        Key: two Value: 2
-
 </code></pre>
-
-<h4>Explanation</h4>
-
-<p>We use the range function to iterate over the key/value pairs of our JSON object. Additionally we assign those values to the template variables called &ldquo;<span class="math inline">\(key&quot; and &quot;\)</span>val&rdquo;. These are then used to format our output. Also notice the trailing values &ldquo;-&rdquo; which supresses and extra new line.</p>
-
-<h2>Files are data source</h2>
-
-<h3>Wraping a Markdown document in HTML</h3>
-
-<p>In this example we want to embed a &ldquo;story&rdquo; in a simple HTML document. The <em>story</em> is written in Markdown format. Here&rsquo;s the simple template</p>
-
-<pre><code class="language-go">    {{ define &quot;simple-page.tmpl&quot; }}
-    &lt;!DOCTYPE html&gt;
-    &lt;html&gt;
-        &lt;head&gt;&lt;title&gt;Stories&lt;/title&gt;&lt;/head&gt;
-        &lt;body&gt;
-        {{ .story }}
-        &lt;/body&gt;
-    &lt;/html&gt;
-    {{ end }}
-</code></pre>
-
+<h4 id="explanation-1">Explanation</h4>
+<p>We use the range function to iterate over the key/value pairs of our JSON object. Additionally we assign those values to the template variables called “<span class="math inline">$key" and "$</span>val”. These are then used to format our output. Also notice the trailing values “-” which supresses and extra new line.</p>
+<h2 id="files-are-data-source">Files are data source</h2>
+<h3 id="wraping-a-markdown-document-in-html">Wraping a Markdown document in HTML</h3>
+<p>In this example we want to embed a “story” in a simple HTML document. The <em>story</em> is written in Markdown format. Here’s the simple template</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb9-1"><a href="#cb9-1"></a>    {{ define <span class="st">&quot;simple-page.tmpl&quot;</span> }}</span>
+<span id="cb9-2"><a href="#cb9-2"></a>    &lt;!DOCTYPE html&gt;</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    &lt;html&gt;</span>
+<span id="cb9-4"><a href="#cb9-4"></a>        &lt;head&gt;&lt;title&gt;Stories&lt;/title&gt;&lt;/head&gt;</span>
+<span id="cb9-5"><a href="#cb9-5"></a>        &lt;body&gt;</span>
+<span id="cb9-6"><a href="#cb9-6"></a>        {{ .story }}</span>
+<span id="cb9-7"><a href="#cb9-7"></a>        &lt;/body&gt;</span>
+<span id="cb9-8"><a href="#cb9-8"></a>    &lt;/html&gt;</span>
+<span id="cb9-9"><a href="#cb9-9"></a>    {{ end }}</span></code></pre></div>
 <p>The command line would look something like</p>
-
-<pre><code class="language-shell">    mkpage &quot;story=my-story.md&quot; simple-page.tmpl &gt; my-story.html
-</code></pre>
-
-<h4>Explanation</h4>
-
-<p>On the command line <em>story</em> is assumed to point to a file named &ldquo;my-story.md&rdquo;. The reason a file is assumed is because there is no hint prefix or URL prefix at the start of the value. Because the file ends in the file extension &ldquo;.md&rdquo; it is assume to be a Markdown file and processed accordingly before being assemble in the template.</p>
-
-<h2>URL as data source</h2>
-
-<h3>JSON data, a weather forecast</h3>
-
-<p>In this example we get the current weather forecast for Guam.  The source of the weather information is <a href="http://noaa.gov">NOAA</a>&rsquo;s <a href="http://weather.gov">National Weather Services</a> website.  By including the parameter &ldquo;FcstType=json&rdquo; at the end of the URL you get a JSON version of the weather forecast rather than the HTML or XML alternatives.</p>
-
+<pre class="shell"><code>    mkpage &quot;story=my-story.md&quot; simple-page.tmpl &gt; my-story.html</code></pre>
+<h4 id="explanation-2">Explanation</h4>
+<p>On the command line <em>story</em> is assumed to point to a file named “my-story.md”. The reason a file is assumed is because there is no hint prefix or URL prefix at the start of the value. Because the file ends in the file extension “.md” it is assume to be a Markdown file and processed accordingly before being assemble in the template.</p>
+<h2 id="url-as-data-source">URL as data source</h2>
+<h3 id="json-data-a-weather-forecast">JSON data, a weather forecast</h3>
+<p>In this example we get the current weather forecast for Guam. The source of the weather information is <a href="http://noaa.gov">NOAA</a>’s <a href="http://weather.gov">National Weather Services</a> website. By including the parameter “FcstType=json” at the end of the URL you get a JSON version of the weather forecast rather than the HTML or XML alternatives.</p>
 <ul>
-<li>data source: <a href="http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json">http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json</a></li>
+<li>data source: http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json</li>
 </ul>
-
 <p>Our template will be call <strong>forecast.tmpl</strong>. It will be used to produce a Markdown file of weather related information obtained from the JSON response.</p>
-
-<pre><code class="language-go">    {{ define &quot;forecast.tmpl&quot; }}
-    {{with $co := .forecast.currentobservation}}
-    Current Observation:
-
-        + {{ $co.name }}
-        + Elevation: {{ $co.elev }}
-        + Latitude: {{ $co.latitude }}
-        + Longitude: {{ $co.longitude }}
-        + Date: {{ $co.Date }}
-        + Temp: {{ $co.Temp }}
-        + Dew Point: {{ $co.Dewp }}
-        + Relative Humidity: {{ $co.Relh }}
-        + Winds: {{ $co.Winds }}
-        + Wind direction: {{ $co.Windd }}
-        + Gust: {{ $co.Gust }}
-        + Visibility: {{ $co.Visibility }}
-
-    {{end}}
-
-    Forecast:
-    {{range .forecast.data.text }}
-        + {{ . -}}
-    {{end}}
-
-    {{ end }}
-</code></pre>
-
+<div class="sourceCode" id="cb11"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1"></a>    {{ define <span class="st">&quot;forecast.tmpl&quot;</span> }}</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    {{with $co := .forecast.currentobservation}}</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    Current Observation:</span>
+<span id="cb11-4"><a href="#cb11-4"></a></span>
+<span id="cb11-5"><a href="#cb11-5"></a>        + {{ $co.name }}</span>
+<span id="cb11-6"><a href="#cb11-6"></a>        + Elevation: {{ $co.elev }}</span>
+<span id="cb11-7"><a href="#cb11-7"></a>        + Latitude: {{ $co.latitude }}</span>
+<span id="cb11-8"><a href="#cb11-8"></a>        + Longitude: {{ $co.longitude }}</span>
+<span id="cb11-9"><a href="#cb11-9"></a>        + Date: {{ $co.Date }}</span>
+<span id="cb11-10"><a href="#cb11-10"></a>        + Temp: {{ $co.Temp }}</span>
+<span id="cb11-11"><a href="#cb11-11"></a>        + Dew Point: {{ $co.Dewp }}</span>
+<span id="cb11-12"><a href="#cb11-12"></a>        + Relative Humidity: {{ $co.Relh }}</span>
+<span id="cb11-13"><a href="#cb11-13"></a>        + Winds: {{ $co.Winds }}</span>
+<span id="cb11-14"><a href="#cb11-14"></a>        + Wind direction: {{ $co.Windd }}</span>
+<span id="cb11-15"><a href="#cb11-15"></a>        + Gust: {{ $co.Gust }}</span>
+<span id="cb11-16"><a href="#cb11-16"></a>        + Visibility: {{ $co.Visibility }}</span>
+<span id="cb11-17"><a href="#cb11-17"></a></span>
+<span id="cb11-18"><a href="#cb11-18"></a>    {{end}}</span>
+<span id="cb11-19"><a href="#cb11-19"></a></span>
+<span id="cb11-20"><a href="#cb11-20"></a>    Forecast:</span>
+<span id="cb11-21"><a href="#cb11-21"></a>    {{<span class="kw">range</span> .forecast.data.text }}</span>
+<span id="cb11-22"><a href="#cb11-22"></a>        + {{ . -}}</span>
+<span id="cb11-23"><a href="#cb11-23"></a>    {{end}}</span>
+<span id="cb11-24"><a href="#cb11-24"></a></span>
+<span id="cb11-25"><a href="#cb11-25"></a>    {{ end }}</span></code></pre></div>
 <p>The command line for <em>mkpage</em> would look like</p>
-
-<pre><code class="language-shell">    mkpage &quot;forecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; forecast.tmpl
-</code></pre>
-
+<pre class="shell"><code>    mkpage &quot;forecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; forecast.tmpl</code></pre>
 <p>The resulting page should look something like</p>
-
-<pre><code class="language-text">
+<pre class="text"><code>
     Current Observation:
 
         + Agana, Guam International Airport
@@ -246,56 +180,40 @@ It features no navigation, just a wrapping HTML document head (with link to CSS 
         + Scattered showers and thunderstorms.  Mostly cloudy, with a low around 79. Chance of precipitation is 40%.
         + Scattered showers and thunderstorms.  Mostly cloudy, with a high near 89. Chance of precipitation is 40%.
         + Scattered showers and thunderstorms.  Mostly cloudy, with a low around 79. Chance of precipitation is 40%.
-        + Partly sunny, with a high near 89.
-</code></pre>
-
-<h2>JSON with Dashes in property names</h2>
-
-<p>Some JSON APIs come with objects containing property names with dashes in them.  This is valid JSON but throws a monkey wrench into addressing them with Go template&rsquo;s usual dot notation. Go&rsquo;s templates provides a <em>index</em> function to address those types of property names.</p>
-
-<pre><code class="language-JSON">    [
-        {
-            &quot;journal-title&quot;:&quot;Favorite adventures&quot;, 
-            &quot;article-title&quot;: &quot;Zamborra and Beyond&quot;,
-            &quot;author-list&quot;:[
-                {&quot;family-name&quot;: &quot;Frieda&quot;, &quot;other-name&quot;: &quot;Little&quot;},
-                {&quot;family-name&quot;: &quot;Sam&quot;, &quot;other-name&quot;: &quot;Mojo&quot;},
-                {&quot;family-name&quot;: &quot;Flanders&quot;, &quot;other-name&quot;: &quot;Jack&quot;}
-            ]
-        }
-    ]
-</code></pre>
-
+        + Partly sunny, with a high near 89.</code></pre>
+<h2 id="json-with-dashes-in-property-names">JSON with Dashes in property names</h2>
+<p>Some JSON APIs come with objects containing property names with dashes in them. This is valid JSON but throws a monkey wrench into addressing them with Go template’s usual dot notation. Go’s templates provides a <em>index</em> function to address those types of property names.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1"></a>    <span class="ot">[</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>        <span class="fu">{</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>            <span class="dt">&quot;journal-title&quot;</span><span class="fu">:</span><span class="st">&quot;Favorite adventures&quot;</span><span class="fu">,</span> </span>
+<span id="cb14-4"><a href="#cb14-4"></a>            <span class="dt">&quot;article-title&quot;</span><span class="fu">:</span> <span class="st">&quot;Zamborra and Beyond&quot;</span><span class="fu">,</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>            <span class="dt">&quot;author-list&quot;</span><span class="fu">:</span><span class="ot">[</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>                <span class="fu">{</span><span class="dt">&quot;family-name&quot;</span><span class="fu">:</span> <span class="st">&quot;Frieda&quot;</span><span class="fu">,</span> <span class="dt">&quot;other-name&quot;</span><span class="fu">:</span> <span class="st">&quot;Little&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>                <span class="fu">{</span><span class="dt">&quot;family-name&quot;</span><span class="fu">:</span> <span class="st">&quot;Sam&quot;</span><span class="fu">,</span> <span class="dt">&quot;other-name&quot;</span><span class="fu">:</span> <span class="st">&quot;Mojo&quot;</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>                <span class="fu">{</span><span class="dt">&quot;family-name&quot;</span><span class="fu">:</span> <span class="st">&quot;Flanders&quot;</span><span class="fu">,</span> <span class="dt">&quot;other-name&quot;</span><span class="fu">:</span> <span class="st">&quot;Jack&quot;</span><span class="fu">}</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>            <span class="ot">]</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a>        <span class="fu">}</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a>    <span class="ot">]</span></span></code></pre></div>
 <p>Iterating over this list in a template</p>
-
-<pre><code class="language-html">    &lt;ul&gt;
-        {{with .data -}}
-        &lt;li&gt;
-           {{with (index &quot;article-title&quot; .)}}Article: {{ . }}{{end -}}
-           {{with (index &quot;journal-title&quot; .)}} Journal: {{ . }}{{end -}}
-           {{with (index &quot;author-list&quot; .)}}&lt;br /&gt;
-           Authors: {{range $i, $author := (index &quot;author-list&quot; .)}}
-                    {{if gt $i 0}}; {{end-}}
-                    {{index &quot;family-name&quot; $author}}, {{index &quot;other-name&quot; $author}}
-                {{end}}
-           {{end}}
-        &lt;/li&gt;
-        {{- end}}
-    &lt;/ul&gt;
-</code></pre>
-
+<div class="sourceCode" id="cb15"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb15-1"><a href="#cb15-1"></a>    <span class="kw">&lt;ul&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>        {{with .data -}}</span>
+<span id="cb15-3"><a href="#cb15-3"></a>        <span class="kw">&lt;li&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>           {{with (index &quot;article-title&quot; .)}}Article: {{ . }}{{end -}}</span>
+<span id="cb15-5"><a href="#cb15-5"></a>           {{with (index &quot;journal-title&quot; .)}} Journal: {{ . }}{{end -}}</span>
+<span id="cb15-6"><a href="#cb15-6"></a>           {{with (index &quot;author-list&quot; .)}}<span class="kw">&lt;br</span> <span class="kw">/&gt;</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>           Authors: {{range $i, $author := (index &quot;author-list&quot; .)}}</span>
+<span id="cb15-8"><a href="#cb15-8"></a>                    {{if gt $i 0}}; {{end-}}</span>
+<span id="cb15-9"><a href="#cb15-9"></a>                    {{index &quot;family-name&quot; $author}}, {{index &quot;other-name&quot; $author}}</span>
+<span id="cb15-10"><a href="#cb15-10"></a>                {{end}}</span>
+<span id="cb15-11"><a href="#cb15-11"></a>           {{end}}</span>
+<span id="cb15-12"><a href="#cb15-12"></a>        <span class="kw">&lt;/li&gt;</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a>        {{- end}}</span>
+<span id="cb15-14"><a href="#cb15-14"></a>    <span class="kw">&lt;/ul&gt;</span></span></code></pre></div>
 <p>The <em>index</em> function can be used to build a nested path too</p>
-
-<pre><code>    {{index &quot;top-level&quot; &quot;middle-level&quot; &quot;bottom-level&quot; .someData}}
-</code></pre>
-
-<h2>Including sub-templates</h2>
-
-<p>In complex pages it is nice to be able to include sub templates. In this example
-We have a <em>signature.tmpl</em> and <em>postscript.tmpl</em> files as sub templates to <em>letter.tmpl</em>.</p>
-
-<h4>letter.tmpl</h4>
-
+<pre><code>    {{index &quot;top-level&quot; &quot;middle-level&quot; &quot;bottom-level&quot; .someData}}</code></pre>
+<h2 id="including-sub-templates">Including sub-templates</h2>
+<p>In complex pages it is nice to be able to include sub templates. In this example We have a <em>signature.tmpl</em> and <em>postscript.tmpl</em> files as sub templates to <em>letter.tmpl</em>.</p>
+<h4 id="letter.tmpl">letter.tmpl</h4>
 <pre><code>    {{ define &quot;letter.tmpl&quot; }}
     Dear {{ .ToName }},
 
@@ -305,33 +223,21 @@ We have a <em>signature.tmpl</em> and <em>postscript.tmpl</em> files as sub temp
     {{template &quot;signature.tmpl&quot; .}}
 
     {{template &quot;postscript.tmpl&quot; .}}
-    {{ end }}
-</code></pre>
-
-<h4>signature.tmpl</h4>
-
+    {{ end }}</code></pre>
+<h4 id="signature.tmpl">signature.tmpl</h4>
 <pre><code>    {{ define &quot;signature.tmpl&quot; }}
     Sincerly,
 
     {{ .Name }}, somewhere next door to reality
 
-    {{ end }}
-</code></pre>
-
-<h4>postscript.tmpl</h4>
-
+    {{ end }}</code></pre>
+<h4 id="postscript.tmpl">postscript.tmpl</h4>
 <pre><code>    {{ define &quot;postscript.tmpl&quot; }}
     (P.S. What is comming at you is coming from you, {{rfc3339 &quot;now&quot;}})
-    {{ end }}
-</code></pre>
-
-<h4>Putting it all together</h4>
-
-<pre><code>    mkpage &quot;ToName=text:Mojo Sam&quot; &quot;Name=text:Jack Flanders&quot; letter.tmpl signature.tmpl postscript.tmpl
-</code></pre>
-
+    {{ end }}</code></pre>
+<h4 id="putting-it-all-together">Putting it all together</h4>
+<pre><code>    mkpage &quot;ToName=text:Mojo Sam&quot; &quot;Name=text:Jack Flanders&quot; letter.tmpl signature.tmpl postscript.tmpl</code></pre>
 <p>This should output somthing like</p>
-
 <pre><code>    Dear Mojo Sam,
 
     Hope all is well.  I will be with you shortly though not necessarily
@@ -341,8 +247,7 @@ We have a <em>signature.tmpl</em> and <em>postscript.tmpl</em> files as sub temp
 
     Jack Flanders, somewhere next door to reality
 
-    (P.S. What is comming at you is coming from you, 2016-12-12T16:17:14-08:00)
-</code></pre>
+    (P.S. What is comming at you is coming from you, 2016-12-12T16:17:14-08:00)</code></pre>
 
 </section>
 

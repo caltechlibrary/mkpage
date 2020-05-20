@@ -21,7 +21,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -240,11 +239,6 @@ func main() {
 			err = tmpl.ReadFiles(templateSources...)
 			cli.ExitOnError(app.Eout, err, quiet)
 			templateName = path.Base(templateSources[0])
-		} else if inputFName != "" {
-			// Read any templates from stdin that might be present
-			buf, err := ioutil.ReadAll(app.In)
-			cli.ExitOnError(app.Eout, err, quiet)
-			tmpl.Add(templateName, buf)
 		} else {
 			// Load our default template maps
 			err = tmpl.Add(templateName, mkpage.Defaults["/templates/page.tmpl"])

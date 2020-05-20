@@ -10,33 +10,17 @@
 </header>
 
 <section>
-<h1>Simple Theme</h1>
-
-<p>This theme demonstates the replacement of three content elements in the
-template. Two are explicit text lines and one like the one element theme
-is a Markdown file.</p>
-
-<p>This theme supports using a common Title element and CSSPath element across
-all the pages in the website. The <a href="mk-website.bash">mk-website.bash</a> will
-traverse all the Markdown files and render corresponding HTML pages.</p>
-
-<p>This theme relies on three <em>mkpage</em> project commands - <em>mkpage</em>,
-<em>reldocpath</em> and <em>ws</em> (for testing the website and viewing from your web
-browser over <a href="http://localhost:8000)">http://localhost:8000)</a></p>
-
-<p>To test this theme do the following run the following commands in this
-directory.</p>
-
-<pre><code class="language-shell">    export WEBSITE_TITLE=&quot;Simple Theme Demo&quot;
+<h1 id="simple-theme">Simple Theme</h1>
+<p>This theme demonstates the replacement of three content elements in the template. Two are explicit text lines and one like the one element theme is a Markdown file.</p>
+<p>This theme supports using a common Title element and CSSPath element across all the pages in the website. The <a href="mk-website.bash">mk-website.bash</a> will traverse all the Markdown files and render corresponding HTML pages.</p>
+<p>This theme relies on three <em>mkpage</em> project commands - <em>mkpage</em>, <em>reldocpath</em> and <em>ws</em> (for testing the website and viewing from your web browser over http://localhost:8000)</p>
+<p>To test this theme do the following run the following commands in this directory.</p>
+<pre class="shell"><code>    export WEBSITE_TITLE=&quot;Simple Theme Demo&quot;
     ./mk-website.bash
-    ws
-</code></pre>
-
-<p>Point your webbrowser at <a href="http://localhost:8000">http://localhost:8000</a> and view this page.</p>
-
-<h3>Template example</h3>
-
-<pre><code class="language-template">    &lt;!DOCTYPE html&gt;
+    ws</code></pre>
+<p>Point your webbrowser at http://localhost:8000 and view this page.</p>
+<h3 id="template-example">Template example</h3>
+<pre class="template"><code>    &lt;!DOCTYPE html&gt;
     &lt;html&gt;
     &lt;head&gt;
         {{with .title -}}&lt;title&gt;{{- . -}}&lt;/title&gt;{{- end }}
@@ -56,61 +40,49 @@ directory.</p>
         {{with .content }}&lt;section&gt;{{- . -}}&lt;/section&gt;{{- end}}
         &lt;footer&gt;Simple is a theme that works with  three elements Title, CSSPath, and Content&lt;/footer&gt;
     &lt;/body&gt;
-    &lt;/html&gt;
-</code></pre>
-
-<h3>Bash script</h3>
-
-<pre><code class="language-shell">    #!/bin/bash
+    &lt;/html&gt;</code></pre>
+<h3 id="bash-script">Bash script</h3>
+<pre class="shell"><code>    #!/bin/bash
 
     START=&quot;$(pwd)&quot;
     cd &quot;$(dirname &quot;$0&quot;)&quot;
 
     function SoftwareCheck() {
-    	for NAME in &quot;$@&quot;; do
-    		APP_NAME=&quot;$(which &quot;$NAME&quot;)&quot;
-    		if [ &quot;$APP_NAME&quot; = &quot;&quot; ] &amp;&amp; [ ! -f &quot;./bin/$NAME&quot; ]; then
-    			echo &quot;Missing $NAME&quot;
-    			exit 1
-    		fi
-    	done
+        for NAME in &quot;$@&quot;; do
+            APP_NAME=&quot;$(which &quot;$NAME&quot;)&quot;
+            if [ &quot;$APP_NAME&quot; = &quot;&quot; ] &amp;&amp; [ ! -f &quot;./bin/$NAME&quot; ]; then
+                echo &quot;Missing $NAME&quot;
+                exit 1
+            fi
+        done
     }
 
     echo &quot;Checking necessary software is installed&quot;
     SoftwareCheck mkpage reldocpath ws
     if [ &quot;$WEBSITE_TITLE&quot; = &quot;&quot; ]; then
-    	WEBSITE_TITLE=&quot;Simple Theme Demo&quot;
+        WEBSITE_TITLE=&quot;Simple Theme Demo&quot;
     fi
 
     echo &quot;Converting Markdown files to HTML supporting a relative document path to the CSS file&quot;
     for MARKDOWN_FILE in $(find . -type f | grep -E &quot;\.md$&quot;); do
-    	# Caltechlate DOCPath
-    	DOCPath=&quot;$(dirname &quot;$MARKDOWN_FILE&quot;)&quot;
-    	# Calculate the HTML filename
-    	HTML_FILE=&quot;$DOCPath/$(basename &quot;$MARKDOWN_FILE&quot; .md).html&quot;
-    	CSSPath=&quot;$(reldocpath &quot;$DOCPath&quot; css)&quot;
-    	mkpage \
-    		&quot;title=text:${WEBSITE_TITLE}&quot; \
-    		&quot;csspath=text:${CSSPath}/site.css&quot; \
-    		&quot;content=${MARKDOWN_FILE}&quot; \
-    		page.tmpl &gt;&quot;${HTML_FILE}&quot;
+        # Caltechlate DOCPath
+        DOCPath=&quot;$(dirname &quot;$MARKDOWN_FILE&quot;)&quot;
+        # Calculate the HTML filename
+        HTML_FILE=&quot;$DOCPath/$(basename &quot;$MARKDOWN_FILE&quot; .md).html&quot;
+        CSSPath=&quot;$(reldocpath &quot;$DOCPath&quot; css)&quot;
+        mkpage \
+            &quot;title=text:${WEBSITE_TITLE}&quot; \
+            &quot;csspath=text:${CSSPath}/site.css&quot; \
+            &quot;content=${MARKDOWN_FILE}&quot; \
+            page.tmpl &gt;&quot;${HTML_FILE}&quot;
     done
 
-    cd &quot;$START&quot;
-</code></pre>
-
-<h2>Improvements over one-element</h2>
-
-<p>The &ldquo;title&rdquo; value can be set for the whole site by modifying by setting an
-environment variable WEBSITE_TITLE.</p>
-
-<p>The &ldquo;csspath&rdquo; (CSS file path) is calculate with <em>reldocpath</em>. This means that you could
-place content rendered with this them in a subdirectory of a larger website
-and still use the CSS that comes with this theme.</p>
-
-<h2>Limitations</h2>
-
-<ol>
+    cd &quot;$START&quot;</code></pre>
+<h2 id="improvements-over-one-element">Improvements over one-element</h2>
+<p>The “title” value can be set for the whole site by modifying by setting an environment variable WEBSITE_TITLE.</p>
+<p>The “csspath” (CSS file path) is calculate with <em>reldocpath</em>. This means that you could place content rendered with this them in a subdirectory of a larger website and still use the CSS that comes with this theme.</p>
+<h2 id="limitations">Limitations</h2>
+<ol type="1">
 <li>This theme assumes this directory is the root HTML directory</li>
 <li>No unified navigation beyond what you provide in your Markdown files is available.</li>
 </ol>

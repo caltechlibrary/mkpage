@@ -21,7 +21,7 @@ _mkpage_'s minimalism turns into an advantage when you combine _mkpage_ with the
 
 The following command line tools come with _mkpage_ 
 
-+ [mkpage](docs/mkpage.html) -- a single page renderer with support for Markdown, [Mmark](https://mmark.nl),  [Fountain](https://fountain.io), JSON and Go text templates
++ [mkpage](docs/mkpage.html) -- a single page renderer and processor for Markdown, [Fountain](https://fountain.io), ReStructureText, Textile, Jira markup, JSON and Go text templates
 + [mkrss](docs/mkrss.html) -- an RSS feed generator for content authored in Markdown and rendered to HTML
 + [sitemapper](docs/sitemapper.html) -- an XML Sitemap generator
 + [frontmatter](docs/frontmatter.html) -- a front matter extractor

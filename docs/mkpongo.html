@@ -30,21 +30,13 @@
 </nav>
 
 <section>
-<h1>USAGE</h1>
-
-<pre><code>mkpongo [OPTIONS] [KEY/VALUE DATA PAIRS] TEMPLATE_FILENAME
-</code></pre>
-
-<h2>DESCRIPTION</h2>
-
+<h1 id="usage">USAGE</h1>
+<pre><code>mkpongo [OPTIONS] [KEY/VALUE DATA PAIRS] TEMPLATE_FILENAME</code></pre>
+<h2 id="description">DESCRIPTION</h2>
 <p>SYNOPSIS</p>
-
 <p>Using the key/value pairs populate the template(s) and render to stdout.</p>
-
-<h2>OPTIONS</h2>
-
+<h2 id="options">OPTIONS</h2>
 <p>Below are a set of options available.</p>
-
 <pre><code>    -code               outout just code blocks for language, e.g. shell or json
     -codesnip           output just the code bocks
     -examples           display example(s)
@@ -55,15 +47,10 @@
     -l, -license        display license
     -o, -output         output filename
     -quiet              suppress error messages
-    -v, -version        display version
-</code></pre>
-
-<h2>EXAMPLES</h2>
-
+    -v, -version        display version</code></pre>
+<h2 id="examples">EXAMPLES</h2>
 <p>EXAMPLE</p>
-
-<p>Template (named &ldquo;examples/pongo/weather.tmpl&rdquo;)</p>
-
+<p>Template (named “examples/pongo/weather.tmpl”)</p>
 <pre><code>Date: {{ now }}
 
 Hello {{ name }},
@@ -74,34 +61,20 @@ The current weather is
 
 Thank you
 
-{{ signature }}
-</code></pre>
-
-<p>Render the template above (i.e. examples/pongo/weather.tmpl)
-would be accomplished from the following data sources&ndash;</p>
-
+{{ signature }}</code></pre>
+<p>Render the template above (i.e. examples/pongo/weather.tmpl) would be accomplished from the following data sources–</p>
 <ul>
-<li>&ldquo;now&rdquo; and &ldquo;name&rdquo; are strings</li>
-<li>&ldquo;weatherForecast.data.weather.0&rdquo; is a data path inside the
-JSON document retrieved from a URL, &ldquo;.0&rdquo; references the
-&ldquo;0&rdquo;-th element of the array</li>
-<li>&ldquo;signature&rdquo; comes from a file in our local disc
-(i.e. examples/signature.txt)</li>
+<li>“now” and “name” are strings</li>
+<li>“weatherForecast.data.weather.0” is a data path inside the JSON document retrieved from a URL, “.0” references the “0”-th element of the array</li>
+<li>“signature” comes from a file in our local disc (i.e. examples/signature.txt)</li>
 </ul>
-
 <p>That would be expressed on the command line as follows</p>
-
 <pre><code>mkpongo &quot;now=text:$(date)&quot; &quot;name=text:Little Frieda&quot; \
     &quot;weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
     signature=examples/signature.txt \
-    examples/pongo/weather.tmpl     
-</code></pre>
-
-<p>Pongo2 is a Django/Jinga2 inspired template langauge
-implemeted in Go.</p>
-
-<pre><code>  https://github.com/flosch/pongo2
-</code></pre>
+    examples/pongo/weather.tmpl     </code></pre>
+<p>Pongo2 is a Django/Jinga2 inspired template langauge implemeted in Go.</p>
+<pre><code>  https://github.com/flosch/pongo2</code></pre>
 
 </section>
 

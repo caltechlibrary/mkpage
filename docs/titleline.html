@@ -30,40 +30,26 @@
 </nav>
 
 <section>
-<h1>titleline</h1>
-
-<h2>USAGE</h2>
-
-<pre><code>titleline [OPTIONS]
-</code></pre>
-
-<h2>SYNOPSIS</h2>
-
-<p>titleline extracts the first title line from a Markdown file. By default it reads
-from standard in and writes to standard out but can read/write
-to specific files using an option.</p>
-
-<h2>OPTIONS</h2>
-
-<pre><code>	-h	display help
-	-help	display help
-	-i	input filename
-	-input	input filename
-	-l	display license
-	-license	display license
-	-o	output filename
-	-output	output filename
-	-t	set title regexp
-	-title	set title regexp
-	-v	display version
-	-version	display version
-</code></pre>
-
-<h2>EXAMPLE</h2>
-
-<pre><code class="language-shell">    cat article.md | titleline
-</code></pre>
-
+<h1 id="titleline">titleline</h1>
+<h2 id="usage">USAGE</h2>
+<pre><code>titleline [OPTIONS]</code></pre>
+<h2 id="synopsis">SYNOPSIS</h2>
+<p>titleline extracts the first title line from a Markdown file. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.</p>
+<h2 id="options">OPTIONS</h2>
+<pre><code>    -h  display help
+    -help   display help
+    -i  input filename
+    -input  input filename
+    -l  display license
+    -license    display license
+    -o  output filename
+    -output output filename
+    -t  set title regexp
+    -title  set title regexp
+    -v  display version
+    -version    display version</code></pre>
+<h2 id="example">EXAMPLE</h2>
+<pre class="shell"><code>    cat article.md | titleline</code></pre>
 <p>This will display the title of an article.md.</p>
 
 </section>

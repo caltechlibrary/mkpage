@@ -20,27 +20,18 @@
 </nav>
 
 <section>
-<h1>Fountain Demo</h1>
-
-<p><strong>mkpage</strong> now supports processing <a href="https://fountain.io">Fountain</a> markup.
-This is helpful if you&rsquo;re transcribing and scriptting an interview or presentation. Of course Fountain is also used to write screenplays and plays.</p>
-
-<p><strong>mkpage</strong> will recognize fountain documents by their extensions, e.g. .spmd and .fountain. It will then invoke the fountain markup engine rather than the Markdown engine to turn the Fountain text into HTML. You can set the options for the fountain processor in the front matter of the document.</p>
-
+<h1 id="fountain-demo">Fountain Demo</h1>
+<p><strong>mkpage</strong> now supports processing <a href="https://fountain.io">Fountain</a> markup. This is helpful if you’re transcribing and scriptting an interview or presentation. Of course Fountain is also used to write screenplays and plays.</p>
+<p><strong>mkpage</strong> will recognize fountain documents by their extensions, e.g. .spmd and .fountain. It will then invoke the fountain markup engine rather than the Markdown engine to turn the Fountain text into HTML. You can set the options for the fountain processor in the front matter of the document.</p>
 <p>You can see the fountain source at <a href="interview-with-a-dog.fountain">interview-with-a-dog.fountain</a> and an HTML rendering in <a href="interview-with-a-dog.html">interview-with-a-dog.html</a>.</p>
-
 <p>The TOML front matter configures how the fountain document is rendered.</p>
-
-<pre><code class="language-TOML">    +++
+<pre class="toml"><code>    +++
     [fountain]
     page = false
     link_css = true
     css = &quot;fountain.css&quot;
-    +++
-</code></pre>
-
-<p>The &ldquo;+++&rdquo; indicate the front matter is TOML. The fountain processor is looking for a heading of &ldquo;[fountain]&rdquo; then for the various settings, e.g. page (rendering full HTML page), link_css (using a link element to bring the CSS into the page), inline_css (use an inline style element for style the content), css (the CSS file to reference, either for inline content or as a link).</p>
-
+    +++</code></pre>
+<p>The “+++” indicate the front matter is TOML. The fountain processor is looking for a heading of “[fountain]” then for the various settings, e.g. page (rendering full HTML page), link_css (using a link element to bring the CSS into the page), inline_css (use an inline style element for style the content), css (the CSS file to reference, either for inline content or as a link).</p>
 <p><strong>mkpage</strong> support three types of front matter. TOML, JSON and YAML. TOML and JSON are preferred and the best tested.</p>
 
 </section>

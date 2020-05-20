@@ -1,10 +1,11 @@
 {
     "markup": "markdown",
     "title": "mkpage, a possible future",
-    "byline": "By R. S. Doiel, 2020-05-19"
+    "byline": "By R. S. Doiel, 2020-05-19",
     "creator": [ "R. S. Doiel" ],
     "date": "2020-05-19"
 }
+
 
 # mkpage, a possible future
 

@@ -44,7 +44,7 @@ import (
 
 const (
 	// Version holds the semver assocaited with this version of mkpage.
-	Version = `v0.0.32g`
+	Version = `v0.0.32h`
 
 	// LicenseText provides a string template for rendering cli license info
 	LicenseText = `
@@ -71,6 +71,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	// MarkdownPrefix designates a string as Markdown (common mark) content
 	// to be parsed by pandoc
 	MarkdownPrefix = "markdown:"
+	// MMarkPrefix designates MMark format, for now this will just be passed to pandoc.
+	MMarkPrefix = "mmark:"
 	// TextPrefix designates a string as text/plain not needed processing
 	TextPrefix = "text:"
 	// FountainPrefix designates a string as Fountain formatted content
@@ -293,6 +295,13 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 		switch {
 		case strings.HasPrefix(val, TextPrefix) == true:
 			out[key] = strings.TrimPrefix(val, TextPrefix)
+		case strings.HasPrefix(val, MMarkPrefix) == true:
+			//NOTE: We're using pandoc as our default processor
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, MMarkPrefix)), "markdown", "html")
+			if err != nil {
+				return out, err
+			}
+			out[key] = fmt.Sprintf("%s", src)
 		case strings.HasPrefix(val, MarkdownPrefix) == true:
 			//NOTE: We're using pandoc as our default processor
 			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, MarkdownPrefix)), "markdown", "html")

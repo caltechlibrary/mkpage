@@ -122,7 +122,6 @@ func MarkdownToSlides(fname string, mdSource []byte) ([]*Slide, error) {
 // MakeSlideFile this takes a template and slide and renders the results to a file.
 func MakeSlideFile(templateName string, tmpl *template.Template, keyValues map[string]string, slide *Slide) error {
 	sname := fmt.Sprintf(`%02d-%s.html`, slide.CurNo, strings.TrimSuffix(path.Base(slide.FName), path.Ext(slide.FName)))
-	fmt.Printf("DEBUG slide name %q\n", sname)
 	fp, err := os.Create(sname)
 	if err != nil {
 		return fmt.Errorf("%s %s", sname, err)

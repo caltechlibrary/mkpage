@@ -10,42 +10,20 @@
 </header>
 
 <section>
-<h1>Simple Theme</h1>
-
-<p>This theme demonstates the replacement of three content elements in the
-template. Two are explicit text lines and one like the one element theme
-is a Markdown file.</p>
-
-<p>This theme supports using a common Title element and CSSPath element across
-all the pages in the website. The <a href="mk-website.bash">mk-website.bash</a> will
-traverse all the Markdown files and render corresponding HTML pages.</p>
-
-<p>This theme relies on three <em>mkpage</em> project commands - <em>mkpage</em>,
-<em>reldocpath</em> and <em>ws</em> (for testing the website and viewing from your web
-browser over <a href="http://localhost:8000)">http://localhost:8000)</a></p>
-
-<p>To test this theme do the following run the following commands in this
-directory.</p>
-
-<pre><code class="language-shell">    export WEBSITE_TITLE=&quot;Simple Theme Demo&quot;
+<h1 id="simple-theme">Simple Theme</h1>
+<p>This theme demonstates the replacement of three content elements in the template. Two are explicit text lines and one like the one element theme is a Markdown file.</p>
+<p>This theme supports using a common Title element and CSSPath element across all the pages in the website. The <a href="mk-website.bash">mk-website.bash</a> will traverse all the Markdown files and render corresponding HTML pages.</p>
+<p>This theme relies on three <em>mkpage</em> project commands - <em>mkpage</em>, <em>reldocpath</em> and <em>ws</em> (for testing the website and viewing from your web browser over http://localhost:8000)</p>
+<p>To test this theme do the following run the following commands in this directory.</p>
+<pre class="shell"><code>    export WEBSITE_TITLE=&quot;Simple Theme Demo&quot;
     ./mk-website.bash
-    ws
-</code></pre>
-
-<p>Point your webbrowser at <a href="http://localhost:8000">http://localhost:8000</a> and view this page.</p>
-
-<h2>Improvements over one-element</h2>
-
-<p>The Title value can be set for the whole site by modifying by setting an
-environment variable WEBSITE_TITLE.</p>
-
-<p>The CSS file path is calculate with <em>reldocpath</em>. This means that you could
-place content rendered with this them in a subdirectory of a larger website
-and still use the CSS that comes with this theme.</p>
-
-<h2>Limitations</h2>
-
-<ol>
+    ws</code></pre>
+<p>Point your webbrowser at http://localhost:8000 and view this page.</p>
+<h2 id="improvements-over-one-element">Improvements over one-element</h2>
+<p>The Title value can be set for the whole site by modifying by setting an environment variable WEBSITE_TITLE.</p>
+<p>The CSS file path is calculate with <em>reldocpath</em>. This means that you could place content rendered with this them in a subdirectory of a larger website and still use the CSS that comes with this theme.</p>
+<h2 id="limitations">Limitations</h2>
+<ol type="1">
 <li>This theme assumes this directory is the root HTML directory</li>
 <li>No unified navigation beyond what you provide in your Markdown files is available.</li>
 </ol>
