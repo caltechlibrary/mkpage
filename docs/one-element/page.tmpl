@@ -11,7 +11,7 @@
     <nav>
         <a href="/">Home</a>
     </nav>
-    {{with .Content}}<section>{{- . -}}</section>{{- end}}
+    $if(content)$<section>$content$</section>$endif$
     <footer>This template features a single replacable element</footer>
 </body>
 </html>

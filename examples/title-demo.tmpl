@@ -1,4 +1,2 @@
-{{ define "title-demo.tmpl" }}
-{{if .title}}If this title: {{.title}}{{end}}
-{{with .title}}With this title: {{ . }}{{end}}
-{{ end }}
+${if(title)}If title: ${title}${endif}
+${for(title)}For title: ${it}${endfor}

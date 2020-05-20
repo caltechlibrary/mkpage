@@ -26,7 +26,7 @@ md_fragments = [
 # @data is a dict structure that will be passed into mkpage as JSON
 #
 def mkpage(output_filename, templates = [], data = []):
-    cmd = ['mkpage', '-pandoc', '-o', output_filename]
+    cmd = ['mkpage', '-o', output_filename]
     for item in data:
         cmd.append(item)
     for tmpl in templates:

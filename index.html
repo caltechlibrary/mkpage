@@ -101,8 +101,8 @@ a basic template
         
     The weather forecast is
     
-    $if(weather.data.weather[; ])$
-      $weather.data.weather$
+    $if(weather.data.weather)$
+      $weather.data.weather[; ]$
     $endif$
     
     Thank you
@@ -122,7 +122,7 @@ To render the template above (i.e. <a href="examples/weather.tmpl">weather.tmpl
 </ul>
 </li>
 <li>
-“weatherForecast” will come from a URL which returns a JSON document
+“weather” will come from a URL which returns a JSON document
 <ul>
 <li>
 “.data.weather” is the path into the JSON document
@@ -139,7 +139,7 @@ writing the <em>mkpage</em> command
 <p>
 Here is how we would express the key/value pairs on the command line.
 </p>
-<pre class="shell"><code>    mkpage -pandoc &#39;now=text:$(date)&#39; \
+<pre class="shell"><code>    mkpage -pandoc &quot;now=text:$(date)&quot; \
         &#39;name=text:Little Frieda&#39; \
         &#39;weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&#39; \
         &#39;signature=examples/signature.txt&#39; \

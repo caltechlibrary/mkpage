@@ -2,7 +2,7 @@
 # Installation
 
 *mkpage* is a set of command line programs run from a shell like Bash. 
-It depends on [Pandoc](https://pandoc.org/installing.html).
+NOTE: *mkpage* depends on [Pandoc](https://pandoc.org/installing.html).
 
 For latest the released versions of `mkpage` go to the project page 
 on GitHub and click latest release

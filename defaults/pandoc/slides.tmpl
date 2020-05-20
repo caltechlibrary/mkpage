@@ -1,23 +1,11 @@
 <!DOCTYPE html>
-<html $if(lang)$ lang="$lang$" xml:lange="$lang$"$endif$ $if(dir)$ dir ="$dir$"$endif$>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="mkpage with pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  $if(title)$<title>$title$</title>$endif$
-  $if(creators)$$for(creators)$
-  <meta name="author" content="$it$" />
-  $endfor$$endif$
-  $if(keywords)$<meta name="keywords" content="$for(keywords)$$it$$sep$, $endfor$"/>$endif$
-  $if(csspath)$<link href="$csspath$" rel="stylesheet" />
-  $elseif(css)$
-  <style>
-$css$
-  </style>
- $else$
-  <style>
+    $if(title)$<title>$title$</title>$endif$
+	$if(csspath)$<link href="$csspath$" rel="stylesheet" />$else$
+<style>
 /**
- * site.css - stylesheet for the Library's Digital Library Development Group's sandbox.
+ * site.css - stylesheet for the Caltech Library's Digital Library Development Group's sandbox.
  *
  * orange: #FF6E1E;
  *
@@ -30,9 +18,6 @@ $css$
  *
  * Impact Pallete see: http://identity.caltech.edu/web/colors
  */
-html {
-    font-size: 12pt;
-}
 body {
      margin: 0;
      border: 0;
@@ -41,12 +26,8 @@ body {
      height: 100%;
      color: black;
      background-color: white;
-     /*
-     color: #FF6E1E;
-     background-color: #AAA99F; /* #76777B;*/
-     */
      font-family: Open Sans, Helvetica, Sans-Serif;
-     font-size: 1rem;
+     font-size: calc(1em+1vm);
 }
 
 header {
@@ -74,28 +55,17 @@ header h1 {
      margin: 0;
      border: 0;
      padding: 0;
-     font-size: 1.86rem;
+     font-size: 3em;
      font-weight: normal;
-     vertical-align: 0.78rem;
+     vertical-align: 0.78em;
      color: #FF6E1E;
-}
-
-header .title, header .sub-title {
-    display: block;
-    color: #FF6E1E;
-    padding-left: 1.24rem;
-}
-
-header .creators, header .date {
-    display: inline-block;
-    color: black;
-    padding-left: 1.24rem;
 }
 
 header a, header a:link, header a:visited, header a:active, header a:hover, header a:focus {
      color: #FF6E1E;
      background-color: inherit;
 }
+
 
 a, a:link, a:visited {
      color: #76777B;
@@ -114,7 +84,7 @@ nav {
      width: 100%;
      margin: 0;
      padding: 0;
-     font-size: 0.78rem;
+     font-size: 0.78em;
      vertical-align: middle;
      color: black;
      background-color: #AAA99F; /* #76777B;*/
@@ -123,8 +93,8 @@ nav {
 
 nav div {
      display: inline-block;
-     /* padding-left: 10rem; */
-     margin-left: 10rem;
+     /* padding-left: 10em; */
+     margin-left: 10em;
      margin-right: 0;
 }
 
@@ -146,19 +116,19 @@ nav div h2 {
      display: block;
      min-width: 20%;
      margin: 0;
-     font-size: 1.24rem;
+     font-size: 1.24em;
      font-style: normal;
 }
 
 nav div > ul {
      display: none;
-     padding-left: 0.24rem;
+     padding-left: 0.24em;
      text-align: left;
 }
 
 nav ul {
      display: inline-block;
-     padding-left: 0.24rem;
+     padding-left: 0.24em;
      list-style-type: none;
      text-align: left;
      text-decoration: none; 
@@ -166,35 +136,35 @@ nav ul {
 
 nav ul li {
      display: inline;
-     padding: 1rem;
+     padding: 1em;
 }
 
 section {
      position: relative;
      display: inline-block;
      width: 100%;
-     min-height: 84%;
+     height: 100%;
      color: black;
      background-color: white;
      margin: 0;
      padding-top 0;
-     padding-bottom: 2rem;
-     padding-left: 1rem;
+     padding-bottom: 2em;
+     padding-left: 1em;
      padding-right: 0;
 }
 
 section h1 {
-    font-size: 1.32rem;
+    font-size: 1.32em;
 }
 
 section h2 {
-    font-size: 1.12rem;
+    font-size: 1.12em;
     font-weight: italic;
 }
 
 section h3 {
-    font-size: 1rem;
-    text-transform: uppercase;
+    font-size: 1em;
+    /*text-transform: uppercase;*/
 }
 
 section p {
@@ -204,22 +174,42 @@ section p {
 section ul {
     display: block;
     list-style: inside;
-    list-style-type: square;
+    list-style-type: circle;
     margin: 0;
-    padding-left: 1.24rem;
+    padding-left: 1.24em;
+}
+
+section ul ul {
+    list-style-type: disc;
+}
+
+section ul ul ul {
+    list-style-type: square;
+}
+
+section ul ul ul ul {
+    list-style-type: circle;
+}
+
+section ul ul ul ul ul {
+    list-style-type: disc;
+}
+
+section ul ul ul ul ul ul {
+    list-style-type: square;
 }
 
 aside {
      margin: 0;
      border: 0;
-     padding-left: 1rem;
+     padding-left: 1em;
      position: relative;
      display: inline-block;
      text-align: right;
 }
 
 aside h2 {
-     font-size: 1rem;
+     font-size: 1em;
      text-transform: uppercase;
 }
 
@@ -235,12 +225,12 @@ aside ul {
 }
 
 aside ul li {
-     font-size: 0.82rem;
+     font-size: 0.82em;
 }
 
 aside ul > ul {
-     padding-left: 1rem;
-     font-size: 0.72rem;
+     padding-left: 1em;
+     font-size: 0.72em;
 }
 
 footer {
@@ -248,7 +238,7 @@ footer {
      bottom: 0;
      display: block;
      width: 100%;
-     height: 2rem;
+     height: auto;
      color: white;
      background-color: #616265;
 
@@ -262,9 +252,9 @@ footer h1, footer span, footer address {
      position: relative;
      display: inline-block;
      margin: 0;
-     padding-left: 0.24rem;
+     padding-left: 0.24em;
      font-family: Open Sans, Helvetica, Sans-Serif;
-     font-size: 1rem;
+     font-size: 1em;
 }
 
 footer h1 {
@@ -279,8 +269,15 @@ footer a, footer a:link, footer a:visited, footer a:active, footer a:focus, foot
      text-decoration: none;
 }
 
+section.slide {
+    display: flex;
+    justify-content: center;
+    min-width: 40%;
+    padding: 2.5%;
+}
+
 dl {
-     padding-left: 1.24rem;
+     padding-left: 1.24em;
      text-align: left;
 }
 
@@ -296,20 +293,83 @@ dd {
 p {
     max-width: 96%;
 }
-  </style>
-$endif$
+</style>
+{{- end }}
 </head>
 <body>
-  $if(title)$<header>
-  <h1 class="title">$title$</h1>
-  $if(subtitle)$<h2 class="sub-title">$subtitle$</h2>$endif$
-  $if(creators)$<h3 class="creators">$for(creators)$$it$$sep$, $endfor$</h3>$endif$
-  $if(date)$<h4 class="date">$date$</h4>$endif$
-  </header>$elseif(header)$
-  <header>$header$</header>
-  $endif$
-  $if(nav)$<nav>$nav$</nav>$endif$
-  $if(content)$<section>$content$</section>$endif$
-  $if(footer)$<footer>$footer$</footer>$endif$
+$if(header)$<header>$header$</header>$endif$
+$if(nav)$<nav>$nav$</nav>$else$
+<nav>
+$if(first_no)$
+    <a id="start-slide" href="$first_no$-$filename$.html">Home</a>
+$else$
+    <span id="start-slide">Home</span>
+$endif$
+$if(prev_no)$
+    <a id="prev-slide" href="$prev_no$-$filename$.html">Prev</a>
+$else$
+    <span id="prev-slide">Prev</span>
+$endif$
+$if(next_no)$
+    <a id="next-slide" href="$next_no$-$filename$.html">Next</a>
+$else$
+    <span id="next-slide">Next</span>
+$endif$
+$if(last_no)$
+    <a id="end-slide" href="$last_no$-$filename$.html">End</a>
+$else$
+    <span id="end-slide">End</span>
+$endif$
+</nav>
+$endif$
+
+$if(content)$<section class="slide"><div class="slide">$content$</div></section>$endif$
+$if(footer)$<footer>$footer$</footer>$endif$
+$if(jspath)$<script>$jspath$</script>$else$
+<script>
+(function (document, window) {
+    'use strict';
+    var start = document.getElementById('start-slide'),
+        prev = document.getElementById('prev-slide'),
+        next = document.getElementById('next-slide'),
+        end = document.getElementById('end-slide');
+    
+    window.addEventListener("keydown", function(e) {
+        switch (e.key) {
+        case "PageDown":
+        case "ArrowRight":
+        case "ArrowDown":
+        case "Enter":
+        case " ":
+            if (next != null) {
+                next.click();
+            }
+            break;
+        case "PageUp":
+        case "ArrowLeft":
+        case "ArrowUp":
+        case "Backspace":
+            if (prev != null) {
+                prev.click();
+            }
+            break;
+        case "Home":
+            if (start != null) {
+                start.click();
+            }
+            break;
+        case "End":
+            if (end != null) {
+                end.click();
+            }
+            break;
+        default:
+            return;
+        }
+        e.preventDefault();
+    }, true);
+}(document, window));
+</script>
+$endif$
 </body>
 </html>

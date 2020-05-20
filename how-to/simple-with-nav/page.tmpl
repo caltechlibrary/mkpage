@@ -1,18 +1,16 @@
-{{ define "page.tmpl" }}
 <!DOCTYPE html>
 <html>
 <head>
-    {{with .Title -}}<title>{{- . -}}</title>{{- end }}
-    {{with .CSSPath -}}<link rel="stylesheet" href="{{- . -}}">{{- end}}
-    {{with .CSS -}}<style>{{- . -}}</style>{{- end }} 
+    $if(title)}<title>${title}</title>${endif}
+    ${if(csspath)}<link rel="stylesheet" href="${csspath}">${endif}
+    ${if(css)}<style>${css}</style>${endif} 
 </head>
 <body>
     <header>
-        {{with .Title -}}<h1>{{- . -}}</h1>{{- end}}
+        ${if(title)}<h1>${title}</h1>${endif}
     </header>
-    {{with .Nav}}<nav>{{- . -}}</nav>{{- end}}
-    {{with .Content}}<section>{{- . -}}</section>{{- end}}
-    {{with .Footer -}}<footer>{{- . -}}</footer>{{- end -}}
+    ${if(nav)}<nav>${nav}</nav>${endif}
+    ${if(content)}<section>${content}</section>${endif}
+    ${if(footer)}<footer>${footer}</footer>${endif}
 </body>
 </html>
-{{ end }}

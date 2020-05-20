@@ -44,13 +44,13 @@ import (
 
 const (
 	// Version holds the semver assocaited with this version of mkpage.
-	Version = `v0.0.32h`
+	Version = `v0.0.32i`
 
 	// LicenseText provides a string template for rendering cli license info
 	LicenseText = `
 %s %s
 
-Copyright (c) 2020, Caltech
+Copyright (c) 2015-2020, Caltech
 All rights not granted herein are expressly reserved by Caltech.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -83,8 +83,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	ReStructureTextPrefix = "rst:"
 	// Jira markup designates source as Jire text for processing by pandoc
 	JiraPrefix = "jira:"
-
-	// SOMEDAY: should add XML, BibTeX, YaML support...
 
 	// DateExp is the default format used by mkpage utilities for date exp
 	DateExp = `[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]`

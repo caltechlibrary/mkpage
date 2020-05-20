@@ -2,7 +2,7 @@
 
 # mkpage
 
-_mkpage_ is a collection of tools and static website renderer.
+_mkpage_ is a collection of tools that form a static website renderer.
 It was inspired by deconstructing more complex content management
 systems and distilling the rendering functions down to a core set
 of command line tools.  It is well suited to building sites hosted 
@@ -40,7 +40,7 @@ that best fits your needs.
 
 The following command line tools come with _mkpage_ 
 
-+ [mkpage](docs/mkpage.html) -- a single page renderer and processor for Markdown, [Fountain](https://fountain.io), ReStructureText, Textile, Jira markup, JSON and Go text templates
++ [mkpage](docs/mkpage.html) -- a single page renderer and processor for Markdown, [Fountain](https://fountain.io), ReStructureText, Textile, Jira markup, JSON and Go text templates, using [Pandoc](https://pandoc.org) as its engine
 + [mkrss](docs/mkrss.html) -- an RSS feed generator for content authored in Markdown and rendered to HTML
 + [sitemapper](docs/sitemapper.html) -- an XML Sitemap generator
 + [frontmatter](docs/frontmatter.html) -- a front matter extractor
@@ -57,11 +57,12 @@ _mkpage_ assembles the metadata and content and sends them along to
 Pandoc for processing. In this example and the template 
 is implemented as a Pandoc's template language. 
 
-The "key" in our key/value pairs is used to map into the template 
-you want rendered.  If a key was called "content" the template element 
-would be like `$content$`.  The value of "content" would replace 
-`$content$`.  Pandoc templates are combine logic and iteration to 
-make more complex pages.
+The "key" in our key/value pairs is used to map into the 
+[Pandoc](https://pandoc.org/MANUAL.html) templates you want rendered. 
+If a key was called "content" the template element would be like 
+`$content$`.  The value of "content" would replace `$content$`.  
+Pandoc templates are combine logic and iteration to make more 
+complex pages.
 
 On the "value" side of the key/value pair you have strings of one of 
 several formats - plain text, markdown, [fountain](https://fountain.io),
@@ -82,8 +83,8 @@ and integrating data from the [NOAA weather website](http://weather.gov).
         
     The weather forecast is
     
-    $if(weather.data.weather[; ])$
-      $weather.data.weather$
+    $if(weather.data.weather)$
+      $weather.data.weather[; ]$
     $endif$
     
     Thank you
@@ -98,7 +99,7 @@ This break down is as follows.
 
 + "now" and "name" will be explicit strings
     + "now" integrates getting data from the Unix _date_ command
-+ "weatherForecast" will come from a URL which returns a JSON document
++ "weather" will come from a URL which returns a JSON document
     + ".data.weather" is the path into the JSON document
 + "signature" will come from a plain text file in your local disc
 
@@ -107,7 +108,7 @@ This break down is as follows.
 Here is how we would express the key/value pairs on the command line.
 
 ```shell
-    mkpage -pandoc "now=text:$(date)" \
+    mkpage "now=text:$(date)" \
         'name=text:Little Frieda' \
         'weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json' \
         'signature=examples/signature.txt' \
@@ -127,19 +128,7 @@ files we rely on the file extension to identify content type, e.g. ".md"
 is markdown, ".rst" is ReStructureText, ".json" is a JSON document.
 If no content type is decernable then we assume the content is plain text.
 
-The option `-pandoc` indicates we want to use 
-[Pandoc's template language](https://pandoc.org/MANUAL.html#templates).
-This is simpler and much better documented than the default 
-Go text/template language.
-
-#### If you must learn about Go text/template
-
-*mkpage* default template engine is the Go [text/template](https://golang.org/pkg/text/template/) package.  You can 
-get a feel for working with Go templates and _mkpage_ by exploring _mkpage_'s [How To](how-to/). A good place
-to start is [how to/the basics](how-to/the-basics.html) and then proceed to [How To/One element](how-to/one-element/).
-
-
-### companion utilities
+### the utilities
 
 #### mkpage
 

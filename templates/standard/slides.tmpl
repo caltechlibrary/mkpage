@@ -1,9 +1,8 @@
-{{- define "slides.tmpl" -}}
 <!DOCTYPE html>
 <html>
 <head>
-	{{ with .title -}}<title>{{- . -}}</title>{{- end }}
-	{{ with .csspath -}}<link href="{{- . -}}" rel="stylesheet" />{{- else -}}
+	${if(title)}<title>${title}</title>${endif}
+	${if(csspath)}<link href="${csspath}" rel="stylesheet" />${else}
 <style>
 /**
  * site.css - stylesheet for the Caltech Library's Digital Library Development Group's sandbox.
@@ -297,37 +296,37 @@ p {
 }
 
 </style>
-{{- end }}
+${endif}
 </head>
 <body>
-{{ with .header -}}<header>{{- . -}}</header>{{- end }}
-{{ with .nav -}}<nav>{{- . -}}</nav>{{- else -}}
+${if(header)}<header>${header}</header>${endif}
+${if(nav)}<nav>${nav}</nav>${else}
 <nav>
-{{ if ne .cur_no .first_no -}}
-    <a id="start-slide" href="{{printf "%02d-%s.html" .first_no .filename}}">Home</a>
-{{- else -}}
+${if(first_no)}
+    <a id="start-slide" href="${first_no}-${filename}.html">Home</a>
+${else}
     <span id="start-slide">Home</span>
-{{- end }}
-{{ if gt .cur_no .first_no -}} 
-    <a id="prev-slide" href="{{printf "%02d-%s.html" .prev_no .filename}}">Prev</a>
-{{- else -}}
+${endif}
+${if(prev_no)} 
+    <a id="prev-slide" href="${prev_no}-${filename}.html">Prev</a>
+${else}
     <span id="prev-slide">Prev</span>
-{{- end }}
-{{ if lt .cur_no .last_no -}} 
-    <a id="next-slide" href="{{printf "%02d-%s.html" .next_no .filename}}">Next</a>
-{{- else -}}
+${endif}
+${if(next_no)} 
+    <a id="next-slide" href="${next_no}-${filename}.html">Next</a>
+${else}
     <span id="next-slide">Next</span>
-{{- end }}
-{{ if ne .cur_no .last_no -}}
-    <a id="end-slide" href="{{printf "%02d-%s.html" .last_no .filename}}">End</a>
-{{- else -}}
+${endif}
+${if(last_no)}
+    <a id="end-slide" href="${last_no}-${filename}.html">End</a>
+${else}
     <span id="end-slide">End</span>
-{{- end }}
+${endif}
 </nav>
-{{- end }}
-{{ with .content -}}<section class="slide"><div class="slide">{{- . -}}</div></section>{{- end }}
-{{ with .footer -}}<footer>{{- . -}}</footer>{{- end }}
-{{ with .jspath -}}<script>{{- . }}</script>{{- else -}}
+${endif}
+${if(content)}<section class="slide"><div class="slide">${content}</div></section>${endif}
+${if(footer)}<footer>${footer}</footer>${endif}
+${if(jspath)}<script>${jspath}</script>${else}
 <script>
 (function (document, window) {
     'use strict';
@@ -372,7 +371,6 @@ p {
     }, true);
 }(document, window));
 </script>
-{{- end }}
+${endif}
 </body>
 </html>
-{{- end }}

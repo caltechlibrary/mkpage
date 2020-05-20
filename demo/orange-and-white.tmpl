@@ -1,8 +1,7 @@
-{{ define "orange-and-white.tmpl" }}
 <!DOCTYPE html>
 <html>
 <head>
-	{{if .Title -}}<title>{{- .Title -}}</title>{{- end}}
+	$if(title)$<title>$title$</title>$endif$
 <style>
     body {
     	width: 100%;
@@ -44,17 +43,17 @@
 </head>
 <body>
 	<nav>
-{{ if ne .CurNo .FirstNo -}}
-<a id="start-slide" href="{{printf "%02d-%s.html" .FirstNo .FName}}">Home</a>
-{{- end}}
-{{ if gt .CurNo .FirstNo -}} 
-<a id="previ-slide" href="{{printf "%02d-%s.html" .PrevNo .FName}}">Prev</a>
-{{- end}}
-{{ if lt .CurNo .LastNo -}} 
-<a id="next-slide" href="{{printf "%02d-%s.html" .NextNo .FName}}">Next</a>
-{{- end}}
+$if(first_no)$
+<a id="start-slide" href="$first_no$-$filename$.html">Home</a>
+$endif$
+$if(prev_no)$
+<a id="prev-slide" href="$prev_no$-$filename$.html">Prev</a>
+$endif$
+$if(next_no)$
+<a id="next-slide" href="$next_no$-$filename$.html">Next</a>
+$endif$
 	</nav>
-	<section>{{ .Content }}</section>
+	<section>$content$</section>
 <script>
 (function (document, window) {
     'use strict';
@@ -85,4 +84,3 @@
 </script>
 </body>
 </html>
-{{ end }}

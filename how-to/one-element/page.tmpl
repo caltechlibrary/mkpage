@@ -1,4 +1,4 @@
-{{ define "page.tmpl" }}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +15,7 @@
             <li><a href="../">Up</a></li>
         </ul>
     </nav>
-    {{with .Content}}<section>{{- . -}}</section>{{- end}}
+    ${for(content)}<section>${it}</section>${endfor}
     <footer>This template features a single replacable element</footer>
 </body>
 </html>

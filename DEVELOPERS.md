@@ -3,18 +3,14 @@
 
 ## Requirements
 
-+ go 1.12 or better
++ Pandoc needs to be installed, it is used to convert markup formats to HTMLand as the template engine for HTML output.
++ go 1.14 or better
 + _make_ if you want to the _Makefile_ to build the project.
 + [pkgassets](https://github.com/caltechlibrary/pkgassets) for generating a new _assets.go_
 + Caltech Library Go Packages
     + github.com/caltechlibrary/cli
     + github.com/caltechlibrary/tmplfn
     + github.com/caltechlibrary/rss2
-+ 3rd Party Go packages used by _mkpage_ project
-    + github.com/gomarkdown/markdown
-    + github.com/gomarkdown/markdown/parser
-    + github.com/gomarkdown/markdown/html
-    + github.com/mmarkdown/mmark
 
 ## Compiling from source
 
