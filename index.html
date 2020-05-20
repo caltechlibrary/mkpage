@@ -99,11 +99,11 @@ a basic template
     
     Hello $name$,
         
-    The current weather is
+    The weather forecast is
     
-    $for(weatherForecast.data.weather)$
-      $weatherForecast.data.weather$
-    $endfor$
+    $if(weather.data.weather[; ])$
+      $weather.data.weather$
+    $endif$
     
     Thank you
     

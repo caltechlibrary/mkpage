@@ -107,7 +107,7 @@ This break down is as follows.
 Here is how we would express the key/value pairs on the command line.
 
 ```shell
-    mkpage -pandoc 'now=text:$(date)' \
+    mkpage -pandoc "now=text:$(date)" \
         'name=text:Little Frieda' \
         'weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json' \
         'signature=examples/signature.txt' \
