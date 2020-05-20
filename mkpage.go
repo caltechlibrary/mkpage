@@ -38,18 +38,6 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/ghodss/yaml"
 
-	// Gomarkdown implementation of markdown
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/ast"
-	"github.com/gomarkdown/markdown/html"
-	"github.com/gomarkdown/markdown/parser"
-
-	// Mmarkdown implementation
-	"github.com/mmarkdown/mmark/lang"
-	"github.com/mmarkdown/mmark/mast"
-	"github.com/mmarkdown/mmark/mparser"
-	"github.com/mmarkdown/mmark/render/mhtml"
-
 	// Fountain support for scripts, interviews and narration
 	"github.com/rsdoiel/fountain"
 )
@@ -62,7 +50,7 @@ const (
 	LicenseText = `
 %s %s
 
-Copyright (c) 2019, Caltech
+Copyright (c) 2020, Caltech
 All rights not granted herein are expressly reserved by Caltech.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -80,20 +68,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 	// JSONPrefix designates a string as JSON formatted content
 	JSONPrefix = "json:"
-	// PandocPrefix designates to use Pandoc to render content
-	PandocPrefix = "pandoc:"
-	// MMarkPrefix designates a string as mmarkdown or MMark content
-	MMarkPrefix = "mmark:"
 	// MarkdownPrefix designates a string as Markdown (common mark) content
-	// to be parsed by 'defaultProcessor' (i.e. gomarkdown)
+	// to be parsed by pandoc
 	MarkdownPrefix = "markdown:"
-	// GomarkdownPrefix designates a string to be parsed explicitly by
-	// Gomarkdown
-	GomarkdownPrefix = "gomarkdown:"
 	// TextPrefix designates a string as text/plain not needed processing
 	TextPrefix = "text:"
 	// FountainPrefix designates a string as Fountain formatted content
 	FountainPrefix = "fountain:"
+	// TextilePrefix designates source as Textile for processing by pandoc.
+	TextilePrefix = "textile:"
+	// ReStructureText designates source as ReStructureText for processing by pandoc
+	ReStructureTextPrefix = "rst:"
+	// Jira markup designates source as Jire text for processing by pandoc
+	JiraPrefix = "jira:"
 
 	// SOMEDAY: should add XML, BibTeX, YaML support...
 
@@ -117,11 +104,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 )
 
 var (
-	// DefaultTemplateSource is defined in init by Defaults["/templates/page.tmpl"]
-	// Defaults is a map to assets defined in assets.go which is build with pkgasset and
-	// the contents of the defaults folder in this repository.
-	DefaultTemplateSource string
-
 	// Config holds a global config.
 	// Uses the same structure as Front Matter in that it is
 	// the result of parsing TOML, YAML or JSON into a
@@ -240,452 +222,6 @@ func ProcessorConfig(configType int, frontMatterSrc []byte) (map[string]interfac
 	return m, nil
 }
 
-// mmarkExtensions takes a config (map[string]interface{}) and
-// returns the ORed exentions flags for map["mmark"]
-func mmarkExtensions(config map[string]interface{}) parser.Extensions {
-	ext := parser.NoExtensions
-	if thing, ok := config["gomarkdown"]; ok == true {
-		extensions := thing.(map[string]interface{})
-		for k, v := range extensions {
-			onoff := false
-			option := k
-			switch v.(type) {
-			case int:
-				onoff = v.(int) == 1
-			case int64:
-				onoff = v.(int64) == 1
-			case bool:
-				onoff = v.(bool)
-			case string:
-				onoff = strings.ToLower(v.(string)) == "true"
-			}
-			if onoff {
-				switch option {
-				case "NoIntraEmphasis":
-					ext |= parser.NoIntraEmphasis
-				case "Tables":
-					ext |= parser.Tables
-				case "FencedCode":
-					ext |= parser.FencedCode
-				case "Autolink":
-					ext |= parser.Autolink
-				case "Strikethrough":
-					ext |= parser.Strikethrough
-				case "LaxHTMLBlocks":
-					ext |= parser.LaxHTMLBlocks
-				case "SpaceHeadings":
-					ext |= parser.SpaceHeadings
-				case "HardLineBreak":
-					ext |= parser.HardLineBreak
-				case "TabSizeEight":
-					ext |= parser.TabSizeEight
-				case "Footnotes":
-					ext |= parser.Footnotes
-				case "NoEmptyLineBeforeBlock":
-					ext |= parser.NoEmptyLineBeforeBlock
-				case "HeadingIDs":
-					ext |= parser.HeadingIDs
-				case "Titleblock":
-					ext |= parser.Titleblock
-				case "AutoHeadingIDs":
-					ext |= parser.AutoHeadingIDs
-				case "BackslashLineBreak":
-					ext |= parser.BackslashLineBreak
-				case "DefinitionLists":
-					ext |= parser.DefinitionLists
-				case "MathJax":
-					ext |= parser.MathJax
-				case "OrderedListStart":
-					ext |= parser.OrderedListStart
-				case "Attributes":
-					ext |= parser.Attributes
-				case "SuperSubscript":
-					ext |= parser.SuperSubscript
-				case "CommonExtensions":
-					ext |= parser.CommonExtensions
-				}
-			}
-		}
-	}
-	return ext
-}
-
-// mmarkRenderOptions config (map[string]interface{}) and
-// returns the ORed extenions flags for map["mmark"].
-func mmarkRenderOptions(config map[string]interface{}) html.Flags {
-	flag := html.FlagsNone
-	if thing, ok := config["mmark"]; ok == true {
-		flags := thing.(map[string]interface{})
-		for k, v := range flags {
-			option := k
-			onoff := false
-			switch v.(type) {
-			case int:
-				onoff = v.(int) == 1
-			case int64:
-				onoff = v.(int64) == 1
-			case bool:
-				onoff = v.(bool)
-			case string:
-				onoff = strings.ToLower(v.(string)) == "true"
-			}
-			if onoff {
-				switch option {
-				case "SkipHTML":
-					flag |= html.SkipHTML
-				case "SkipImages":
-					flag |= html.SkipImages
-				case "SkipLinks":
-					flag |= html.SkipLinks
-				case "Safelink":
-					flag |= html.Safelink
-				case "NofollowLinks":
-					flag |= html.NofollowLinks
-				case "NoreferrerLinks":
-					flag |= html.NoreferrerLinks
-				case "HrefTargetBlank":
-					flag |= html.HrefTargetBlank
-				case "CompletePage":
-					flag |= html.CompletePage
-				case "UseXHTML":
-					flag |= html.UseXHTML
-				case "FootnoteReturnLinks":
-					flag |= html.FootnoteReturnLinks
-				case "FootnoteNoHRTag":
-					flag |= html.FootnoteNoHRTag
-				case "Smartypants":
-					flag |= html.Smartypants
-				case "SmartypantsFractions":
-					flag |= html.SmartypantsFractions
-				case "SmartypantsDashes":
-					flag |= html.SmartypantsDashes
-				case "SmartypantsLatexDashes":
-					flag |= html.SmartypantsLatexDashes
-				case "SmartypantsAngledQuotes":
-					flag |= html.SmartypantsAngledQuotes
-				case "SmartypantsQuotesNBSP":
-					flag |= html.SmartypantsQuotesNBSP
-				case "TOC":
-					flag |= html.TOC
-				case "CommonFlags":
-					flag |= html.CommonFlags
-				}
-			}
-		}
-	}
-	return flag
-}
-
-// ConfigMmark tames a map[string]interface{} and updates
-// the configuration returning parser.Extensions and html.Flag
-// based on the processed map. NOTE: Settings for markdown are
-// objects under m["mmark"]. This lets you pass your whole
-// app config map and still have control of the markdown bit
-// independently.
-func ConfigMmark(config map[string]interface{}) (parser.Extensions, html.Flags, error) {
-	ext := mmarkExtensions(config)
-	// Set markdown to Mmark
-	ext |= parser.Mmark
-	htmlFlags := mmarkRenderOptions(config)
-	return ext, htmlFlags, nil
-}
-
-// mmarkProcessor runs gomarkdown engine using the Mmark extentions and an HTML renderer setup
-func mmarkProcessor(fName string, input []byte) ([]byte, error) {
-	configType, frontMatterSrc, mmarkSrc := SplitFrontMatter(input)
-	//NOTE: should inspect front matter for Markdown parsing configuration
-	config, err := ProcessorConfig(configType, frontMatterSrc)
-	if err != nil {
-		return nil, err
-	}
-	ext, htmlFlags, err := ConfigMmark(config)
-	// Used when processing XML versus man or HTML output.
-	parserFlags := parser.FlagsNone
-	p := parser.NewWithExtensions(mparser.Extensions | ext)
-	init := mparser.NewInitial(fName)
-	documentTitle := "" // hack to get document title from TOML title block and then set it here.
-	p.Opts = parser.Options{
-		ParserHook: func(data []byte) (ast.Node, []byte, int) {
-			node, data, consumed := mparser.Hook(data)
-			if t, ok := node.(*mast.Title); ok {
-				if !t.IsTriggerDash() {
-					documentTitle = t.TitleData.Title
-				}
-			}
-			return node, data, consumed
-		},
-		ReadIncludeFn: init.ReadInclude,
-		Flags:         parserFlags,
-	}
-
-	doc := markdown.Parse(mmarkSrc, p)
-	mparser.AddBibliography(doc)
-	mparser.AddIndex(doc)
-
-	documentLanguage := ""
-	mhtmlOpts := mhtml.RendererOptions{
-		Language: lang.New(documentLanguage),
-	}
-
-	opts := html.RendererOptions{
-		Comments:       [][]byte{[]byte("//"), []byte("#")}, // used for callouts.
-		RenderNodeHook: mhtmlOpts.RenderHook,
-		Flags:          htmlFlags, //html.CommonFlags | html.FootnoteNoHRTag | html.FootnoteReturnLinks | html.CompletePage,
-		Generator:      `  <meta name="GENERATOR" content="github.com/caltechylibrary/mkpage using Mmark/gomarkdown processor`,
-	}
-	opts.Title = documentTitle // hack to add-in discovered title
-
-	renderer := html.NewRenderer(opts)
-	out := markdown.Render(doc, renderer)
-	return out, nil
-}
-
-// gomarkdownExtensions takes a config (map[string]interface{}) and
-// returns the ORed extenions flags for map["gomarkdown"].
-func gomarkdownExtensions(config map[string]interface{}) parser.Extensions {
-	ext := parser.NoExtensions
-	if thing, ok := config["gomarkdown"]; ok == true {
-		extensions := thing.(map[string]interface{})
-		for k, v := range extensions {
-			onoff := false
-			option := k
-			switch v.(type) {
-			case int:
-				onoff = v.(int) == 1
-			case int64:
-				onoff = v.(int64) == 1
-			case bool:
-				onoff = v.(bool)
-			case string:
-				onoff = strings.ToLower(v.(string)) == "true"
-			}
-			if onoff {
-				switch option {
-				case "NoIntraEmphasis":
-					ext |= parser.NoIntraEmphasis
-				case "Tables":
-					ext |= parser.Tables
-				case "FencedCode":
-					ext |= parser.FencedCode
-				case "Autolink":
-					ext |= parser.Autolink
-				case "Strikethrough":
-					ext |= parser.Strikethrough
-				case "LaxHTMLBlocks":
-					ext |= parser.LaxHTMLBlocks
-				case "SpaceHeadings":
-					ext |= parser.SpaceHeadings
-				case "HardLineBreak":
-					ext |= parser.HardLineBreak
-				case "TabSizeEight":
-					ext |= parser.TabSizeEight
-				case "Footnotes":
-					ext |= parser.Footnotes
-				case "NoEmptyLineBeforeBlock":
-					ext |= parser.NoEmptyLineBeforeBlock
-				case "HeadingIDs":
-					ext |= parser.HeadingIDs
-				case "Titleblock":
-					ext |= parser.Titleblock
-				case "AutoHeadingIDs":
-					ext |= parser.AutoHeadingIDs
-				case "BackslashLineBreak":
-					ext |= parser.BackslashLineBreak
-				case "DefinitionLists":
-					ext |= parser.DefinitionLists
-				case "MathJax":
-					ext |= parser.MathJax
-				case "OrderedListStart":
-					ext |= parser.OrderedListStart
-				case "Attributes":
-					ext |= parser.Attributes
-				case "SuperSubscript":
-					ext |= parser.SuperSubscript
-				case "CommonExtensions":
-					ext |= parser.CommonExtensions
-				}
-			}
-		}
-	}
-	return ext
-}
-
-// gomarkdownRenderOptions config (map[string]interface{}) and
-// returns the ORed extenions flags for map["gomarkdown"].
-func gomarkdownRenderOptions(config map[string]interface{}) html.Flags {
-	flag := html.FlagsNone
-	if thing, ok := config["gomarkdown"]; ok == true {
-		flags := thing.(map[string]interface{})
-		for k, v := range flags {
-			option := k
-			onoff := false
-			switch v.(type) {
-			case int:
-				onoff = v.(int) == 1
-			case int64:
-				onoff = v.(int64) == 1
-			case bool:
-				onoff = v.(bool)
-			case string:
-				onoff = strings.ToLower(v.(string)) == "true"
-			}
-			if onoff {
-				switch option {
-				case "SkipHTML":
-					flag |= html.SkipHTML
-				case "SkipImages":
-					flag |= html.SkipImages
-				case "SkipLinks":
-					flag |= html.SkipLinks
-				case "Safelink":
-					flag |= html.Safelink
-				case "NofollowLinks":
-					flag |= html.NofollowLinks
-				case "NoreferrerLinks":
-					flag |= html.NoreferrerLinks
-				case "HrefTargetBlank":
-					flag |= html.HrefTargetBlank
-				case "CompletePage":
-					flag |= html.CompletePage
-				case "UseXHTML":
-					flag |= html.UseXHTML
-				case "FootnoteReturnLinks":
-					flag |= html.FootnoteReturnLinks
-				case "FootnoteNoHRTag":
-					flag |= html.FootnoteNoHRTag
-				case "Smartypants":
-					flag |= html.Smartypants
-				case "SmartypantsFractions":
-					flag |= html.SmartypantsFractions
-				case "SmartypantsDashes":
-					flag |= html.SmartypantsDashes
-				case "SmartypantsLatexDashes":
-					flag |= html.SmartypantsLatexDashes
-				case "SmartypantsAngledQuotes":
-					flag |= html.SmartypantsAngledQuotes
-				case "SmartypantsQuotesNBSP":
-					flag |= html.SmartypantsQuotesNBSP
-				case "TOC":
-					flag |= html.TOC
-				case "CommonFlags":
-					flag |= html.CommonFlags
-				}
-			}
-		}
-	}
-	return flag
-}
-
-// ConfigMarkdown takes a map[string]interface{} and updates
-// the configuration returning parser.Extensions and html.Flag
-// based on the processed map. NOTE: Settings for markdown are
-// objects under m["gomarkdown"]. This lets you pass your whole
-// app config map and still have control of the markdown bit
-// independently.
-func ConfigMarkdown(config map[string]interface{}) (parser.Extensions, html.Flags, error) {
-	ext := gomarkdownExtensions(config)
-	htmlFlags := gomarkdownRenderOptions(config)
-	return ext, htmlFlags, nil
-}
-
-// markdownProcessor applies Markdown processing with overrides
-// for gomarkdown, mmark and fountain in the
-// document's frontmatter.  You need to supply a
-// markdown processor as a func to envoke the preferred default.
-func markdownProcessor(input []byte, defaultProcessor func([]byte) ([]byte, error)) ([]byte, error) {
-	input = normalizeEOL(input)
-	configType, frontMatterSrc, mdSrc := SplitFrontMatter(input)
-	//NOTE: should inspect front matter for Markdown parsing configuration
-	config, err := ProcessorConfig(configType, frontMatterSrc)
-	if err != nil {
-		return nil, err
-	}
-
-	if thing, ok := config["markup"]; ok == true {
-		markup := thing.(string)
-		switch markup {
-		case "mmark":
-			ext, htmlFlags, err := ConfigMmark(config)
-			if err != nil {
-				return nil, err
-			}
-			p := parser.NewWithExtensions(mparser.Extensions | ext)
-			parserFlags := parser.FlagsNone
-			// We're working as if we're getting data from stdin here ...
-			init := mparser.NewInitial("")
-			documentTitle := "" // hack to get document title from TOML title block and then set it here.
-			p.Opts = parser.Options{
-				ParserHook: func(data []byte) (ast.Node, []byte, int) {
-					node, data, consumed := mparser.Hook(data)
-					if t, ok := node.(*mast.Title); ok {
-						if !t.IsTriggerDash() {
-							documentTitle = t.TitleData.Title
-						}
-					}
-					return node, data, consumed
-				},
-				ReadIncludeFn: init.ReadInclude,
-				Flags:         parserFlags,
-			}
-			doc := markdown.Parse(mdSrc, p)
-			mparser.AddBibliography(doc)
-			mparser.AddIndex(doc)
-
-			documentLanguage := ""
-			mhtmlOpts := mhtml.RendererOptions{
-				Language: lang.New(documentLanguage),
-			}
-
-			opts := html.RendererOptions{
-				Comments:       [][]byte{[]byte("//"), []byte("#")}, // used for callouts.
-				RenderNodeHook: mhtmlOpts.RenderHook,
-				Flags:          htmlFlags,
-				Generator:      `  <meta name="GENERATOR" content="github.com/mmarkdown/mmark Mmark Markdown Processor - mmark.nl`,
-			}
-			opts.Title = documentTitle // hack to add-in discovered title
-			renderer := html.NewRenderer(opts)
-			return markdown.Render(doc, renderer), nil
-		case "gomarkdown":
-			ext, htmlFlags, err := ConfigMarkdown(config)
-			if err != nil {
-				return nil, err
-			}
-
-			p := parser.NewWithExtensions(ext)
-			opts := html.RendererOptions{Flags: htmlFlags}
-			r := html.NewRenderer(opts)
-			return markdown.ToHTML(mdSrc, p, r), nil
-		case "fountain":
-			if err := ConfigFountain(config); err != nil {
-				return nil, err
-			}
-			src, err := fountain.Run(mdSrc)
-			if err != nil {
-				return nil, err
-			}
-			return src, nil
-		default:
-			return nil, fmt.Errorf("unknown markup engine")
-		}
-	}
-	return defaultProcessor(mdSrc)
-}
-
-// gomarkdownProcessor wraps gomarkdown with overrides for
-// mmark, and fountain handling the splitting off the front matter if
-// present and configuration via front matter.
-func gomarkdownProcessor(input []byte) ([]byte, error) {
-	input = normalizeEOL(input)
-	return markdownProcessor(input, func(input []byte) ([]byte, error) {
-		// Default to gomarkdown markdown processor
-		// with CommonExtensions and CommonHTMLFlags
-		p := parser.NewWithExtensions(parser.CommonExtensions)
-		opts := html.RendererOptions{Flags: html.CommonFlags}
-		r := html.NewRenderer(opts)
-		return markdown.ToHTML(input, p, r), nil
-	})
-}
-
 // ConfigFountain sets the fountain defaults then applies
 // the map[string]interface{} overwriting the defaults
 // returns error necessary.
@@ -755,23 +291,32 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 	out = make(map[string]interface{})
 	for key, val := range data {
 		switch {
-		case strings.HasPrefix(val, PandocPrefix) == true:
-			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, PandocPrefix)))
-			if err != nil {
-				return out, err
-			}
-			out[key] = fmt.Sprintf("%s", src)
 		case strings.HasPrefix(val, TextPrefix) == true:
 			out[key] = strings.TrimPrefix(val, TextPrefix)
-		case strings.HasPrefix(val, GomarkdownPrefix) == true:
-			src, err := gomarkdownProcessor([]byte(strings.TrimPrefix(val, GomarkdownPrefix)))
+		case strings.HasPrefix(val, MarkdownPrefix) == true:
+			//NOTE: We're using pandoc as our default processor
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, MarkdownPrefix)), "markdown", "html")
 			if err != nil {
 				return out, err
 			}
 			out[key] = fmt.Sprintf("%s", src)
-		case strings.HasPrefix(val, MarkdownPrefix) == true:
-			//NOTE: We're using Gomarkdown as our default processor
-			src, err := gomarkdownProcessor([]byte(strings.TrimPrefix(val, MarkdownPrefix)))
+		case strings.HasPrefix(val, JiraPrefix) == true:
+			//NOTE: We're using pandoc as our default processor
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, JiraPrefix)), "jira", "html")
+			if err != nil {
+				return out, err
+			}
+			out[key] = fmt.Sprintf("%s", src)
+		case strings.HasPrefix(val, TextilePrefix) == true:
+			//NOTE: We're using pandoc as our default processor
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, TextilePrefix)), "textile", "html")
+			if err != nil {
+				return out, err
+			}
+			out[key] = fmt.Sprintf("%s", src)
+		case strings.HasPrefix(val, ReStructureTextPrefix) == true:
+			//NOTE: We're using pandoc as our default processor
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, ReStructureTextPrefix)), "rst", "html")
 			if err != nil {
 				return out, err
 			}
@@ -822,7 +367,7 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 						}
 						out[key] = o
 					case isContentType(contentTypes, "text/markdown") == true:
-						src, err := gomarkdownProcessor(buf)
+						src, err := pandocProcessor(buf, "markdown", "html")
 						if err != nil {
 							return nil, err
 						}
@@ -867,15 +412,25 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 				}
 				out[key] = fmt.Sprintf("%s", src)
 			case strings.Compare(ext, ".md") == 0:
-				//FIXME: figure out how to pick pandocProcessor() versus
-				// gomarkdownProcessor().
-				src, err := gomarkdownProcessor(buf)
+				src, err := pandocProcessor(buf, "markdown", "html")
 				if err != nil {
 					return nil, err
 				}
 				out[key] = fmt.Sprintf("%s", src)
-			case strings.Compare(ext, ".mmark") == 0:
-				src, err := mmarkProcessor(val, buf)
+			case strings.Compare(ext, ".rst") == 0:
+				src, err := pandocProcessor(buf, "rst", "html")
+				if err != nil {
+					return nil, err
+				}
+				out[key] = fmt.Sprintf("%s", src)
+			case strings.Compare(ext, ".textile") == 0:
+				src, err := pandocProcessor(buf, "textile", "html")
+				if err != nil {
+					return nil, err
+				}
+				out[key] = fmt.Sprintf("%s", src)
+			case strings.Compare(ext, ".jira") == 0:
+				src, err := pandocProcessor(buf, "jira", "html")
 				if err != nil {
 					return nil, err
 				}
@@ -912,6 +467,7 @@ func MakePageString(templateName string, tmpl *template.Template, keyValues map[
 	return buf.String(), err
 }
 
+//
 // RelativeDocPath calculate the relative path from source to target based on
 // implied common base.
 //
@@ -989,13 +545,4 @@ func Grep(exp string, src string) string {
 		}
 	}
 	return ""
-}
-
-func init() {
-	if bString, ok := Defaults["/templates/page.tmpl"]; ok == true {
-		DefaultTemplateSource = fmt.Sprintf("%s", bString)
-	}
-	if bString, ok := Defaults["/templates/slides.tmpl"]; ok == true {
-		DefaultSlideTemplateSource = fmt.Sprintf("%s", bString)
-	}
 }

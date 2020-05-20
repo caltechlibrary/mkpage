@@ -24,8 +24,8 @@ build: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 
 mkpage.go: assets.go codesnip.go
 
-assets.go: defaults/templates/page.tmpl defaults/templates/slides.tmpl
-	pkgassets -o assets.go -p mkpage Defaults defaults
+assets.go: defaults/templates/page.tmpl defaults/templates/slides.tmpl .FORCE
+	pkgassets -verbose -o assets.go -p mkpage Defaults defaults
 	git add assets.go
 
 bin/mkpage$(EXT): mkpage.go assets.go codesnip.go cmd/mkpage/mkpage.go mkpandoc.go mkpongo.go
@@ -230,4 +230,4 @@ publish:
 	./mk-website.py
 	./publish.bash
 
-FORCE:
+.FORCE:

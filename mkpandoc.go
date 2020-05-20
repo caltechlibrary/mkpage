@@ -30,14 +30,20 @@ import (
 // pandocProcessor accepts an array of bytes as input and returns
 // a `pandoc -f markdown -t html` output of an array if
 // bytes and error.
-func pandocProcessor(input []byte) ([]byte, error) {
+func pandocProcessor(input []byte, from string, to string) ([]byte, error) {
 	var out bytes.Buffer
 
+	if from == "" {
+		from = "markdown"
+	}
+	if to == "" {
+		to = "html"
+	}
 	pandoc, err := exec.LookPath("pandoc")
 	if err != nil {
 		return nil, err
 	}
-	cmd := exec.Command(pandoc, "-f", "markdown", "-t", "html")
+	cmd := exec.Command(pandoc, "-f", from, "-t", to)
 	cmd.Stdin = bytes.NewReader(input)
 	cmd.Stdout = &out
 	if err := cmd.Run(); err != nil {
@@ -63,10 +69,15 @@ func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) 
 		return fmt.Errorf("Can't resolve data source %s", err)
 	}
 	// NOTE: Pandocs default template expects content to be called $body$.
-	// we need to remap from data["content"] to data["body"]
-	if val, ok := data["content"]; ok == true {
-		delete(data, "content")
-		data["body"] = val
+	// we need to remap from data["content"] to data["body"] otherwise
+	// we need to look in data to see if a template was specified.
+	if templateName == "" {
+		if val, ok := data["template"]; ok == true {
+			templateName = val.(string)
+		} else if val, ok := data["content"]; ok == true {
+			delete(data, "content")
+			data["body"] = val
+		}
 	}
 	src, err := json.Marshal(data)
 	if err != nil {

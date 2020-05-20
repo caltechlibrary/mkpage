@@ -23,7 +23,6 @@ You can set a local default template path by using environment variables.
 ## OPTIONS
 
 ```
-	-default-template	Use the default template
 	-h	show help
 	-help	show help
 	-l	show license

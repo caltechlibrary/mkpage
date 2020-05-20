@@ -73,7 +73,7 @@ func TestResolveData(t *testing.T) {
 		t.Error(err)
 		t.FailNow()
 	}
-	buf, err := gomarkdownProcessor(src)
+	buf, err := pandocProcessor(src, "markdown", "html")
 	expected := string(buf)
 
 	if err := checkMap("Nav", expected, data); err != nil {
@@ -86,7 +86,7 @@ func TestResolveData(t *testing.T) {
 		t.Error(err)
 		t.FailNow()
 	}
-	buf, err = gomarkdownProcessor(src)
+	buf, err = pandocProcessor(src, "markdown", "html")
 	expected = string(buf)
 
 	if err := checkMap("Content", expected, data); err != nil {
@@ -149,7 +149,7 @@ func TestBasic(t *testing.T) {
 + [mygitrepo.org](http://mygitrepo.org)
 + February 31, 2016, Somebody's University, Someplace
 
----
+--
 
 # Slide Two
 
@@ -157,7 +157,7 @@ func TestBasic(t *testing.T) {
 |-------|-------|-------|
 | A     | One   | 1     |
 
----
+--
 
 ## Slide Three
 
@@ -185,7 +185,7 @@ This is slide three, just a random paragraph of text. Blah, blah, blah, blah, bl
 	}
 	if len(slides) != 3 {
 		src, _ := json.Marshal(slides)
-		t.Errorf("Was expected three slides %+v\n%s", slides, src)
+		t.Errorf("Was expected three slides, got %d, data: %+v\n%s", len(slides), slides, src)
 	}
 
 	keyVals := map[string]string{}
@@ -276,14 +276,14 @@ This is text **in bold** in text.
 	srcCRLF := bytes.Replace(srcRaw, []byte("\n"), []byte("\r\n"), -1)
 	srcLF := srcRaw
 	// Render HTML using normalize Unix eol
-	src1, err := gomarkdownProcessor(srcLF)
+	src1, err := pandocProcessor(srcLF, "markdown", "html")
 	if err != nil {
-		t.Errorf("gomarkdownProcessor(srcCRLF) error %s", err)
+		t.Errorf("pandocProcessor(srcLF, 'markdown', 'html') error %s", err)
 	}
 	// Render HTML using normalize old DOS eol
-	src2, err := gomarkdownProcessor(srcCRLF)
+	src2, err := pandocProcessor(srcCRLF, "markdown", "html")
 	if err != nil {
-		t.Errorf("gomarkdownProcessor(srcLF) error %s", err)
+		t.Errorf("pandocProcessor(srcCRLF, 'markdown', 'html') error %s", err)
 	}
 	if bytes.Compare(src1, src2) != 0 {
 		t.Errorf("expected (eol normalized) ->\n%s\ngot ->\n%s\n",

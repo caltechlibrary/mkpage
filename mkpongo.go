@@ -31,6 +31,14 @@ func MakePongo(wr io.Writer, templateName string, keyValues map[string]string) e
 	if err != nil {
 		return fmt.Errorf("Can't resolve data source %s", err)
 	}
+
+	if templateName == "" {
+		if fName, ok := data["template"]; ok == true {
+			templateName = fName.(string)
+		} else {
+			return fmt.Errorf("Missing Pongo2 template name")
+		}
+	}
 	tpl, err := pongo2.FromFile(templateName)
 	if err != nil {
 		return fmt.Errorf("Reading Template %q, %s", templateName, err)

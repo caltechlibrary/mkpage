@@ -80,10 +80,15 @@ function test_mkrss() {
 }
 
 function test_mkslides() {
-    echo "test_mkslides() not implemented."
     CWD=$(pwd)
+    mkdir -p test
     cd test
-    ../bin/mkpage --mkslides 'content=../testdata/presentation_demo.md'
+    echo "test_mkslides() not implemented."
+    ../bin/mkpage --mkslides -i ../examples/presentation.md
+    OK="true"
+    for FNAME in "00-presentation.html" "01-presentation.html" "02-presentation.html"; do
+      assert_exists "test_mkslides (${FNAME})" "${FNAME}"
+    done
     cd $(CWD)
 }
 

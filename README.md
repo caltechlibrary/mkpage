@@ -22,7 +22,6 @@ _mkpage_'s minimalism turns into an advantage when you combine _mkpage_ with the
 The following command line tools come with _mkpage_ 
 
 + [mkpage](docs/mkpage.html) -- a single page renderer with support for Markdown, [Mmark](https://mmark.nl),  [Fountain](https://fountain.io), JSON and Go text templates
-+ [mkslides](docs/mkslides.html) -- a HTML slide generator based on the approach in _mkpage_
 + [mkrss](docs/mkrss.html) -- an RSS feed generator for content authored in Markdown and rendered to HTML
 + [sitemapper](docs/sitemapper.html) -- an XML Sitemap generator
 + [frontmatter](docs/frontmatter.html) -- a front matter extractor
@@ -30,7 +29,6 @@ The following command line tools come with _mkpage_
 + [titleline](docs/titleline.html) -- a tool for extracting the first title (H1) in a Markdown document
 + [reldocpath](docs/reldocpath.html) -- a relative path calculator, useful for pathing hrefs and src attributes in a website
 + [ws](docs/ws.html) -- a fast, small, web server for site development or deployment
-+ [mkpongo](docs/mkpongo.html) -- a experimental version of mkpage using [Pongo2](https://github.com/flosch/pongo2) style templates.
 
 ## A quick tour
 
@@ -112,10 +110,9 @@ to start is [how to/the basics](how-to/the-basics.html) and then proceed to [How
 *mkpage* comes with some helper utilities that make scripting a deconstructed
 content management system from Bash easier.
 
-#### mkslides
+##### mkslides
 
-*mkslides* generates a set of HTML5 slides from a single Markdown file. It uses
-the same template engine as *mkpage*
+*mkpage* includes an option to generate a set of HTML5 slides from a single Markdown file. It uses the same template engine as *mkpage*
 
 #### mkrss
 
