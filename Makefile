@@ -224,10 +224,10 @@ distribute_docs:
 release: clean website assets.go distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7
 
 website:
-	./mk-website.py
+	./mk_website.py
 
 publish:
-	./mk-website.py
+	./mk_website.py
 	./publish.bash
 
 .FORCE:

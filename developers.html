@@ -10,56 +10,108 @@
 </header>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="index.html">README</a></li>
-<li><a href="license.html">LICENSE</a></li>
-<li><a href="install.html">INSTALL</a></li>
-<li><a href="docs/">Documentation</a></li>
-<li><a href="how-to/">HOW TO</a></li>
-<li><a href="https://github.com/caltechlibrary/mkpage">Github</a></li>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="index.html">README</a>
+</li>
+<li>
+<a href="license.html">LICENSE</a>
+</li>
+<li>
+<a href="install.html">INSTALL</a>
+</li>
+<li>
+<a href="docs/">Documentation</a>
+</li>
+<li>
+<a href="how-to/">HOW TO</a>
+</li>
+<li>
+<a href="https://github.com/caltechlibrary/mkpage">Github</a>
+</li>
 </ul>
-
 </nav>
 
 <section>
-<h1 id="notes-on-compile-mkpage">Notes on compile <em>mkpage</em></h1>
-<h2 id="requirements">Requirements</h2>
+<h1 id="notes-on-compile-mkpage">
+Notes on compile <em>mkpage</em>
+</h1>
+<h2 id="requirements">
+Requirements
+</h2>
 <ul>
-<li>go 1.12 or better</li>
-<li><em>make</em> if you want to the <em>Makefile</em> to build the project.</li>
-<li><a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> for generating a new <em>assets.go</em></li>
-<li>Caltech Library Go Packages
+<li>
+go 1.12 or better
+</li>
+<li>
+<em>make</em> if you want to the <em>Makefile</em> to build the project.
+</li>
+<li>
+<a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> for generating a new <em>assets.go</em>
+</li>
+<li>
+Caltech Library Go Packages
 <ul>
-<li>github.com/caltechlibrary/cli</li>
-<li>github.com/caltechlibrary/tmplfn</li>
-<li>github.com/caltechlibrary/rss2</li>
-</ul></li>
-<li>3rd Party Go packages used by <em>mkpage</em> project
-<ul>
-<li>github.com/gomarkdown/markdown</li>
-<li>github.com/gomarkdown/markdown/parser</li>
-<li>github.com/gomarkdown/markdown/html</li>
-<li>github.com/mmarkdown/mmark</li>
-</ul></li>
+<li>
+github.com/caltechlibrary/cli
+</li>
+<li>
+github.com/caltechlibrary/tmplfn
+</li>
+<li>
+github.com/caltechlibrary/rss2
+</li>
 </ul>
-<h2 id="compiling-from-source">Compiling from source</h2>
-<p>Using <em>go get</em></p>
+</li>
+<li>
+3rd Party Go packages used by <em>mkpage</em> project
+<ul>
+<li>
+github.com/gomarkdown/markdown
+</li>
+<li>
+github.com/gomarkdown/markdown/parser
+</li>
+<li>
+github.com/gomarkdown/markdown/html
+</li>
+<li>
+github.com/mmarkdown/mmark
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="compiling-from-source">
+Compiling from source
+</h2>
+<p>
+Using <em>go get</em>
+</p>
 <pre class="shell"><code>    go get -u github.com/caltechlibrary/pkgassets/...
     go get -u github.com/caltechlibrary/mkpage/...</code></pre>
-<p>Manual using only the go command</p>
+<p>
+Manual using only the go command
+</p>
 <pre class="shell"><code>    for PNAME in byline mkpage mkrss mkslides reldocpath sitemapper titleline urldecode urlencode ws; do
         go build -o &quot;bin/${PNAME}&quot; &quot;cmds/${PNAME}/${PNAME}.go&quot;
     done</code></pre>
-<h3 id="regenerating-assets.go">regenerating assets.go</h3>
-<p><em>assets.go</em> holds the go source code for a map containing the contents of the <em>defaults</em> directory (e.g. templates/page.tmpl and templates/slides.tmpl). If you modify those files you’ll need to recreate <em>assets.go</em>. You can do so with the <a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> tool.</p>
+<h3 id="regenerating-assets.go">
+regenerating assets.go
+</h3>
+<p>
+<em>assets.go</em> holds the go source code for a map containing the contents of the <em>defaults</em> directory (e.g. templates/page.tmpl and templates/slides.tmpl). If you modify those files you’ll need to recreate <em>assets.go</em>. You can do so with the <a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> tool.
+</p>
 <pre class="shell"><code>    pkgassets -o assets.go -p mkpage Defaults defaults</code></pre>
-<p>If you’re not modifying the contents of the defaults directory you do not need to regenerate <em>assets.go</em>.</p>
-
+<p>
+If you’re not modifying the contents of the defaults directory you do not need to regenerate <em>assets.go</em>.
+</p>
 </section>
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>

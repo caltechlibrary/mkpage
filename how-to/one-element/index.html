@@ -8,10 +8,17 @@
 <header>
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
+<nav>
+
+</nav>
 
 <section>
-<h1 id="one-element">One Element</h1>
-<p>One element features a theme with one template, <a href="page.tmpl">page.tmpl</a>, which has one replacable element named “Content”.</p>
+<h1 id="one-element">
+One Element
+</h1>
+<p>
+One element features a theme with one template, <a href="page.tmpl">page.tmpl</a>, which has one replacable element named “Content”.
+</p>
 <pre class="template"><code>    &lt;!DOCTYPE html&gt;
     &lt;html&gt;
     &lt;head&gt;
@@ -32,7 +39,9 @@
         &lt;footer&gt;This template features a single replacable element&lt;/footer&gt;
     &lt;/body&gt;
     &lt;/html&gt;</code></pre>
-<p>To build this one template site we can use a Bash script. This example will assembling markdown files into HTML pages. The Bash script is called <a href="mk-website.bash">mk-website.bash</a>.</p>
+<p>
+To build this one template site we can use a Bash script. This example will assembling markdown files into HTML pages. The Bash script is called <a href="mk-website.bash">mk-website.bash</a>.
+</p>
 <pre class="shell"><code>    #!/bin/bash
 
     START=&quot;$(pwd)&quot;
@@ -61,21 +70,30 @@
     done
 
     cd &quot;$START&quot;</code></pre>
-<p>To test this theme do the following run the following commands in this directory.</p>
+<p>
+To test this theme do the following run the following commands in this directory.
+</p>
 <pre class="shell"><code>    ./mk-website.bash
     ws</code></pre>
-<p>Then point your webbrowser at http://localhost:8000 and view this page.</p>
-<h2 id="limitations">Limitations</h2>
+<p>
+Then point your webbrowser at http://localhost:8000 and view this page.
+</p>
+<h2 id="limitations">
+Limitations
+</h2>
 <ol type="1">
-<li>This theme assumes this directory is the root HTML directory</li>
-<li>No unified navigation beyond what you provide in your Markdown files is available.</li>
+<li>
+This theme assumes this directory is the root HTML directory
+</li>
+<li>
+No unified navigation beyond what you provide in your Markdown files is available.
+</li>
 </ol>
-
 </section>
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>

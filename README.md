@@ -2,21 +2,40 @@
 
 # mkpage
 
-_mkpage_ is a deconstructed, post modern, content management system for generating static websites.
-It is suited to building sites hosted on services like GitHub Pages or Amazon's S3. It is 
-comprised of a set of command line utilities that augment the standard suite of Unix/POSIX commands 
-available on most POSIX based operating systems (e.g. Linux, Mac OS X, Raspberry Pi and Windows systems that 
-have a port of Bash).
+_mkpage_ is a collection of tools and static website renderer.
+It was inspired by deconstructing more complex content management
+systems and distilling the rendering functions down to a core set
+of command line tools.  It is well suited to building sites hosted 
+on services like GitHub Pages or Amazon's S3. It is comprised of a 
+set of command line utilities that augment the standard suite of 
+Unix/POSIX commands available on most POSIX based operating systems 
+(e.g. Linux, Mac OS X, Raspberry Pi and Windows systems that 
+have a port of Bash). It uses the widely adopted 
+[Pandoc](https://pandoc.org) as its markup conversion tool 
+(e.g. Markdown to HTML). As such you can create your website from
+Markdown, ReStructureText or Jira text.
 
-_mkpage_ can run on machines as small as a Raspberry Pi.  Its small foot print and minimal 
-dependencies means installation usually boils down to copying the precompiled binaries to a bin directory 
-in your path. Precompiled binaries are available for Linux, Windows and Mac OS X running on Intel as 
-well as for the ARM7 versions of Raspbian running on Raspberry Pi.  _mkpage_ is built on Go's text templates.
-The template markup is similar to the [Mustache](https://mustache.github.io/) and 
-[Handlebars](http://handlebarsjs.com/). It is also similar to [Hugo](https://gohugo.io)'s template markup.   _mkpage_ has been easier for us to support when compared with 
-more established static site generators like [Jekyll](https://jekyllrb.com/) [Hugo](https://gohugo.io) and [Assemble](http://assemble.io/).
+_mkpage_ can run on machines as small as a Raspberry Pi.  Its small 
+foot print and minimal dependencies (only Pandoc) meaning installation 
+usually boils down to copying the precompiled binaries to a bin directory 
+in your path. Precompiled binaries are available for Linux, Windows and 
+Mac OS X running on Intel as well as for the ARM7 versions of 
+Raspbian running on Raspberry Pi.  _mkpage_ supports three template
+languages as this time, [Pandoc](https://pandoc.org/MANUAL.html#templates) 
+and [Go's text templates](https://golang.org/pkg/text/template/).
+Pandoc's template language is easy to learn and use than
+complex template languages used in some of the more established 
+static site generators like 
+[Jekyll](https://jekyllrb.com/), [Hugo](https://gohugo.io) and 
+[Assemble](http://assemble.io/).
 
-_mkpage_'s minimalism turns into an advantage when you combine _mkpage_ with the standard suite of text processing tools available under your typical Unix/POSIX like operating systems. This makes scripting a _mkpage_ project using languages like Bash and Python relatively straight forward.  Each _mkpage_ utility is independent. You can use as few or as many as you like when you script your website creation process. You wind up with a workflow and build process that best fits your needs.
+_mkpage_'s minimalism is an advantage when you combine _mkpage_ 
+with the standard suite of text processing tools available under your 
+typical Unix/POSIX like operating systems. This makes scripting a _mkpage_ 
+project using languages like Python, Make and Bash straight forward.  
+Each _mkpage_ utility is independent. You can use as few or as many 
+or as few as you like. You determine the workflow and build process 
+that best fits your needs.
 
 
 The following command line tools come with _mkpage_ 
@@ -32,73 +51,90 @@ The following command line tools come with _mkpage_
 
 ## A quick tour
 
-_mkpage_ command accepts key value pairs and applies them to a Golang [text/template](https://golang.org/pkg/text/template/).  
-The key side of a pair corresponds to the template element names that will be replaced in the render 
-version of the document. If a key was called "Content" the template element would look like `{{ .Content }}`. 
-The value of "Content" would replace `{{ .Content }}`. Go text/templates elements can do more than 
-that but the is the core idea.  On the value side of the key/value pair you have strings of one of 
-four formats - plain text, markdown, [fountain](https://fountain.io) and JSON.  These four formatted strings can be explicit strings, 
-data from a file or content retrieved via a URL.  Here's a basic demonstration of sampling of capabilities
+_mkpage_ command accepts key/value pairs. The pairs can be explicit data 
+types, [front matter] in files or resources from the web.
+_mkpage_ assembles the metadata and content and sends them along to 
+Pandoc for processing. In this example and the template 
+is implemented as a Pandoc's template language. 
+
+The "key" in our key/value pairs is used to map into the template 
+you want rendered.  If a key was called "content" the template element 
+would be like `$content$`.  The value of "content" would replace 
+`$content$`.  Pandoc templates are combine logic and iteration to 
+make more complex pages.
+
+On the "value" side of the key/value pair you have strings of one of 
+several formats - plain text, markdown, [fountain](https://fountain.io),
+ReStructureText, Jira text and JSON. The values can be from 
+explicit strings associated with a data type, data from a file where the
+file extension identifies the content type, or 
+content retrieved via a URL based on the mime-type sent from the web 
+service.  Here's a basic demonstration of sampling of capabilities
 and integrating data from the [NOAA weather website](http://weather.gov).
 
 ### a basic template
 
 ```template
-    {{ define "weather.tmpl" }}
-    Date: {{ .now }}
+
+    Date: $now$
     
-    Hello {{ .name -}},
+    Hello $name$,
         
-    The current weather is
+    The weather forecast is
     
-    {{ index .weatherForecast.data.weather 0 }}
+    $if(weather.data.weather[; ])$
+      $weather.data.weather$
+    $endif$
     
     Thank you
     
-    {{ .signature }}
-    
-    {{ end }}
+    $signature$
+
 ```
 
-To render the template above (i.e. [weather.tmpl](examples/weather.tmpl)) is expecting values from various data sources.
+To render the template above (i.e. [weather.tmpl](examples/weather.tmpl)) 
+is expecting values from various data sources.
 This break down is as follows.
 
-+ "now" and "name" are explicit strings
++ "now" and "name" will be explicit strings
     + "now" integrates getting data from the Unix _date_ command
-+ "weatherForecast" comes from a URL which returns a JSON document
++ "weatherForecast" will come from a URL which returns a JSON document
     + ".data.weather" is the path into the JSON document
-    + _index_ is a function that lets us pull out the initial value in the array
-+ "signature" comes from a file in our local disc
++ "signature" will come from a plain text file in your local disc
 
-### the _mkpage_ command
+### writing the _mkpage_ command
 
 Here is how we would express the key/value pairs on the command line.
 
 ```shell
-    mkpage 'now=text:$(date)' \
+    mkpage -pandoc 'now=text:$(date)' \
         'name=text:Little Frieda' \
         'weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json' \
         'signature=examples/signature.txt' \
         'examples/weather.tmpl'
 ```
 
-Notice the two explicit strings are prefixed with "text:" (other possible formats are "markdown:", "json:").
-Values without a prefix are assumed to be file paths. We see that in testdata/signature.txt.  Likewise the 
-weather data is coming from a URL. *mkpage* distinguishes that by the prefixes "http://" and "https://". 
-Since a HTTP response contains headers describing the content type (e.g.  "Content-Type: text/markdown") we 
-do not require any other prefix. Likewise a filename's extension can give us an inference of the data format 
-it contains. ".json" is a JSON document, ".md" is a Markdown document and everything else is just plain text.
+Notice the two explicit strings are prefixed with "text:" (other formats 
+include "markdown:" and "json:").  Values without a prefix are assumed 
+to be file paths. We see that in testdata/signature.txt.  Likewise the 
+weather data is coming from a URL. *mkpage* uses the "protocol" 
+prefix to distinguish between literals, file paths and URL based 
+based content. With "http:" and "https:" return with an HTTP header 
+the header is used to identify the content type for processing by
+_mkpage_ or Pandoc. E.g. "Content-Type: text/markdown" tells us
+to use Pandoc to translate from Markdown to HTML. For data contained in
+files we rely on the file extension to identify content type, e.g. ".md"
+is markdown, ".rst" is ReStructureText, ".json" is a JSON document.
+If no content type is decernable then we assume the content is plain text.
 
+The option `-pandoc` indicates we want to use 
+[Pandoc's template language](https://pandoc.org/MANUAL.html#templates).
+This is simpler and much better documented than the default 
+Go text/template language.
 
-Since we are leveraging Go's [text/template](https://golang.org/pkg/text/template/) the template itself
-can be more than a simple substitution. It can contain conditional expressions, ranges for data and even
-include blocks from other templates.
+#### If you must learn about Go text/template
 
-
-
-### About Go text/template
-
-*mkpage* template engine is the Go [text/template](https://golang.org/pkg/text/template/) package.  You can 
+*mkpage* default template engine is the Go [text/template](https://golang.org/pkg/text/template/) package.  You can 
 get a feel for working with Go templates and _mkpage_ by exploring _mkpage_'s [How To](how-to/). A good place
 to start is [how to/the basics](how-to/the-basics.html) and then proceed to [How To/One element](how-to/one-element/).
 
@@ -107,17 +143,13 @@ to start is [how to/the basics](how-to/the-basics.html) and then proceed to [How
 
 #### mkpage
 
-*mkpage* comes with some helper utilities that make scripting a deconstructed
-content management system from Bash easier.
-
-##### mkslides
-
-*mkpage* includes an option to generate a set of HTML5 slides from a single Markdown file. It uses the same template engine as *mkpage*
+*mkpage* comes with some helper utilities that make scripting a 
+deconstructed content management system from Python/Bash easier.
 
 #### mkrss
 
-*mkrss* will scan a directory tree for Markdown files and add each markdown file with
-a corresponding HTML file to the RSS feed generated.
+*mkrss* will scan a directory tree for Markdown files and add each 
+markdown file with a corresponding HTML file to the RSS feed generated.
 
 #### frontmatter
 
@@ -130,14 +162,15 @@ for use with browser side search engines like [Lunrjs](https://lunrjs.com).
 
 #### byline
 
-*byline* will look inside a markdown file and return the first _byline_ it finds
-or an empty string if it finds none. The _byline_ is identified with a regular
-expression. This regular expression can be overridden with a command line option.
+*byline* will look inside a markdown file and return the first _byline_ fromfront matter or one idendified by a regular expression. 
+It returns an empty string if it finds none. The default regular
+expression fallback can be overridden with a command line option.
 
 #### titleline
 
-*titleline* will look inside a markdown file and return the first h1 equivalent title
-it finds or an empty string if it finds none. 
+*titleline* will look inside a markdown file's front matter or 
+the return the first h1 equivalent title it finds or an empty string 
+if it finds none. 
 
 #### reldocpath
 
@@ -169,10 +202,11 @@ the output would look like
 
 #### ws
 
-*ws* is a simple static file web server.  It is suitable for viewing your local copy
-of your static website on your machine.  It runs with minimal resources and by default
-will serve content out to the URL http://localhost:8000.  It can also be used to host
-a static website and has run well on small Amazon virtual machines as well as Raspberry Pi
+*ws* is a simple static file web server.  It is suitable for viewing your 
+local copy of your static website on your machine.  It runs with minimal 
+resources and by default will serve content out to the URL 
+http://localhost:8000.  It can also be used to host a static website 
+and has run well on small Amazon virtual machines as well as Raspberry Pi
 computers acting as local private network web servers.
 
 ##### Example
@@ -181,14 +215,16 @@ computers acting as local private network web servers.
     ws Sites/mysite.example.org
 ```
 
-This would start the web server up listen for browser requests on _http://localhost:8000_.
-The content viewable by your web browser would be the files inside the _Sites/mysite.example.org_
-directory.
+This would start the web server up listen for browser requests on 
+_http://localhost:8000_.  The content viewable by your web browser would 
+be the files inside the _Sites/mysite.example.org_ directory.
 
 ```shell
     ws -url http://mysite.example.org:80 Sites/mysite.example.org
 ```
 
-Assume the machine where you are running *ws* has the name mysite.example.org then your could
-point your web browser at _http://mysite.example.org_ and see the web content you have in 
+Assume the machine where you are running *ws* has the name 
+mysite.example.org then your could point your web browser at 
+_http://mysite.example.org_ and see the web content you have in 
 _Site/mysite.example.org_ directory.
+

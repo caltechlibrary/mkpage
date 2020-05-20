@@ -1,14 +1,15 @@
-{{ define "weather.tmpl" }}
-Date: {{- .now}}
 
-Hello {{.name -}},
+Date: $now$
+
+Hello $name$,
     
-The current weather is
+The weather forcast is
 
-{{index .weatherForecast.data.weather 0}}
+$if(weather.data.weather)$
+$weather.data.weather[; ]$
+$endif$
 
 Thank you
 
-{{.signature}}
+$signature$
 
-{{ end }}
