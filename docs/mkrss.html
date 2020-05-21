@@ -9,112 +9,11 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-<ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="../">Up</a>
-</li>
-<li>
-<a href="./mkrss.html">mkrss</a>
-</li>
-<li>
-<a href="./mkpage.html">mkpage</a>
-</li>
-<li>
-<a href="./urlencode.html">urlencode</a>
-</li>
-<li>
-<a href="./go-template-recipes.html">Go text/template recipes</a>
-</li>
-<li>
-<a href="./titleline.html">titleline</a>
-</li>
-<li>
-<a href="./slides/three-slides.html">Title Page</a>
-</li>
-<li>
-<a href="./byline.html">byline</a>
-</li>
-<li>
-<a href="./ws.html">ws</a>
-</li>
-<li>
-<a href="./frontmatter.html">frontmatter</a>
-</li>
-<li>
-<a href="./mkpongo.html">mkpongo</a>
-</li>
-<li>
-<a href="./urldecode.html">urldecode</a>
-</li>
-<li>
-<a href="./sitemapper.html">sitemapper</a>
-</li>
-<li>
-<a href="./reldocpath.html">reldocpath</a>
-</li>
-</ul>
+$nav$
 </nav>
 
 <section>
-<h1 id="mkrss">
-mkrss
-</h1>
-<h2 id="usage">
-USAGE
-</h2>
-<pre><code>mkrss [OPTION] HTDOCS [RSS_FILENAME]</code></pre>
-<h2 id="synopsis">
-SYNOPSIS
-</h2>
-<p>
-mkrss walks the file system to generate a RSS2 file. It assumes that the directory for HTDOCS is is the base directory containing subdirectories in the form of /YYYY/MM/DD/ARTICLE_HTML where YYYY/MM/DD (Year, Month, Day) corresponds to the publication date of ARTICLE_HTML.
-</p>
-<h2 id="options">
-OPTIONS
-</h2>
-<pre><code>    -b  set byline regexp
-    -byline set byline regexp
-    -c  If non-zero, limit the number of articles in the RSS file
-    -channel-builddate  Build Date for channel (e.g. 2006-01-02 15:04:05 -0700)
-    -channel-category   category for channel
-    -channel-copyright  Copyright for channel
-    -channel-description    Description of channel
-    -channel-generator  Name of RSS generator
-    -channel-language   Language, e.g. en-ca
-    -channel-link   link to channel
-    -channel-pubdate    Pub Date for channel (e.g. 2006-01-02 15:04:05 -0700)
-    -channel-title  Title of channel
-    -d  set date regexp
-    -date-format    set date regexp
-    -e  A colon delimited list of path exclusions
-    -h  display help
-    -help   display help
-    -i  set input filename
-    -input  set input filename
-    -l  display license
-    -license    display license
-    -o  set output filename
-    -output set output filename
-    -t  set title regexp
-    -title  set title regexp
-    -v  display version
-    -version    display version</code></pre>
-<h2 id="example">
-EXAMPLE
-</h2>
-<p>
-If our htdocs folder is our document root and out blog is htdocs/myblog.
-</p>
-<pre class="shell"><code>    mkrss -channel-title=&quot;This Great Beyond&quot; \
-        -channel-description=&quot;Blog to save the world&quot; \
-        -channel-link=&quot;http://blog.example.org&quot; \
-        htdocs htdocs/rss.xml</code></pre>
-<p>
-This would build an RSS 2 file in htdocs/rss.xml from the articles in htdocs/myblog/YYYY/MM/DD.
-</p>
+$content$
 </section>
 
 <footer>

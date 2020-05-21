@@ -9,98 +9,11 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-<ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="../">Up</a>
-</li>
-<li>
-<a href="./mkrss.html">mkrss</a>
-</li>
-<li>
-<a href="./mkpage.html">mkpage</a>
-</li>
-<li>
-<a href="./urlencode.html">urlencode</a>
-</li>
-<li>
-<a href="./go-template-recipes.html">Go text/template recipes</a>
-</li>
-<li>
-<a href="./titleline.html">titleline</a>
-</li>
-<li>
-<a href="./slides/three-slides.html">Title Page</a>
-</li>
-<li>
-<a href="./byline.html">byline</a>
-</li>
-<li>
-<a href="./ws.html">ws</a>
-</li>
-<li>
-<a href="./frontmatter.html">frontmatter</a>
-</li>
-<li>
-<a href="./mkpongo.html">mkpongo</a>
-</li>
-<li>
-<a href="./urldecode.html">urldecode</a>
-</li>
-<li>
-<a href="./sitemapper.html">sitemapper</a>
-</li>
-<li>
-<a href="./reldocpath.html">reldocpath</a>
-</li>
-</ul>
+$nav$
 </nav>
 
 <section>
-<h1 id="frontmatter">
-frontmatter
-</h1>
-<h2 id="usage">
-USAGE
-</h2>
-<pre><code>frontmatter [OPTIONS]</code></pre>
-<h3 id="description">
-DESCRIPTION
-</h3>
-<p>
-<em>frontmatter</em> extracts a front matter from a Markdown file. If no front matter is present then an empty file is returned. Note <em>frontmatter</em> doesn’t process the data extracted. It returns it unprocessed. Other tools can be used to process the front matter appropriately. By default <em>frontmatter</em> reads from standard in and writes to standard out. This makes it very suitable for pipeline processing or for passing JSON formatted front matter back to <em>mkpage</em> for integration into the templates processed.
-</p>
-<h3 id="options">
-OPTIONS
-</h3>
-<p>
-Below are a set of options available.
-</p>
-<pre><code>    -examples            display example(s)
-    -generate-manpage    generate man page
-    -generate-markdown   generate Markdown documentation
-    -h, -help            display help
-    -i, -input           input filename
-    -l, -license         display license
-    -o, -output          output filename
-    -quiet               suppress error messages
-    -v, -version         display version</code></pre>
-<h3 id="examples">
-EXAMPLES
-</h3>
-<p>
-Extract a front matter from article.md.
-</p>
-<pre><code>cat article.md | frontmatter</code></pre>
-<p>
-This will display the front matter if found in article.md.
-</p>
-<pre><code>frontmatter -i article.md</code></pre>
-<p>
-Will also do the same.
-</p>
+$content$
 </section>
 
 <footer>

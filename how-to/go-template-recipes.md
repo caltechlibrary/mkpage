@@ -49,7 +49,7 @@ It features no navigation, just a wrapping HTML document head (with link to CSS 
 Rendering a markdown document named _myfile.md_ as _myfile.html_ would look like
 
 ```shell
-    mkpage Content=myfile.md page.tmpl > myfile.html
+    mkpage -pandoc=false Content=myfile.md page.tmpl > myfile.html
 ```
 
 
@@ -76,7 +76,7 @@ Our template is called **get-well.tmpl**. It looks like
 On the command line we can run *mkpage* with the following options
 
 ```shell
-    mkpage "name=text:Little Frieda" get-well.tmpl
+    mkpage -pandoc=false "name=text:Little Frieda" get-well.tmpl
 ```
 
 The output would look like
@@ -103,7 +103,7 @@ In this example we construct a JSON object as part of the key/value pairs on the
 The command envokation looks like
 
 ```shell
-    mkpage 'blob=json:{"one":1,"two":2}'  blob.tmpl
+    mkpage -pandoc=false 'blob=json:{"one":1,"two":2}'  blob.tmpl
 ```
 
 The template is a simple range construct

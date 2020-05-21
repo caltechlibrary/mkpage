@@ -4,5 +4,4 @@
 + [One Element](one-element/)
 + [Simple](simple/)
 + [Simple w/Nav](simple-with-nav/)
-+ [Template Recipes](go-template-recipes.html)
 + [Fountain Demo](fountain-demo/)

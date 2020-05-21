@@ -36,13 +36,13 @@ Point your webbrowser at http://localhost:8000 and view this page.
     <!DOCTYPE html>
     <html>
     <head>
-        {{with .title -}}<title>{{- . -}}</title>{{- end }}
-        {{with .csspath -}}<link rel="stylesheet" href="{{- . -}}">{{- end}}
-        {{with .css -}}<style>{{- . -}}</style>{{- end }} 
+        ${if(title}<title>${title}</title>${endif}
+        ${if(csspath)}<link rel="stylesheet" href="${casspath}">${endif}
+        ${if(css)}<style>${css}</style>${endif} 
     </head>
     <body>
         <header>
-            {{with .title -}}<h1>{{- . -}}</h1>{{- end}}
+            ${if(title)}<h1>${title}</h1>${endif}
         </header>
         <nav>
             <ul>
@@ -50,7 +50,7 @@ Point your webbrowser at http://localhost:8000 and view this page.
                 <li><a href="../">Up</a></li>
             </ul>
         </nav>
-        {{with .content }}<section>{{- . -}}</section>{{- end}}
+        ${if(content)}<section>${content}</section>${endif}
         <footer>Simple is a theme that works with  three elements Title, CSSPath, and Content</footer>
     </body>
     </html>
