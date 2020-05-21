@@ -207,7 +207,6 @@ distribute_docs:
 	cp -v docs/byline.md dist/docs/
 	cp -v docs/mkpage.md dist/docs/
 	cp -v docs/mkrss.md dist/docs
-	cp -v docs/mkslides.md dist/docs/
 	cp -v docs/reldocpath.md dist/docs/
 	cp -v docs/sitemapper.md dist/docs/
 	cp -v docs/titleline.md dist/docs/
