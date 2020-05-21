@@ -20,7 +20,6 @@ package mkpage
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"path"
@@ -136,69 +135,6 @@ Weather: {{.weather.data.text}}
 	}
 	checkForString(out, "Hi there!")
 	checkForString(out, "<ul>")
-}
-
-func TestBasic(t *testing.T) {
-	src := `
-
-# Opening Slide
-
-## This is an introduction
-
-+ me, <me@example.org>
-+ [mygitrepo.org](http://mygitrepo.org)
-+ February 31, 2016, Somebody's University, Someplace
-
---
-
-# Slide Two
-
-| col A | col B | Col C |
-|-------|-------|-------|
-| A     | One   | 1     |
-
---
-
-## Slide Three
-
-This is slide three, just a random paragraph of text. Blah, blah, blah, blah, blah, blah, boink!
-
-
-`
-
-	tmpl, err := template.New("slides.tmpl").Parse(DefaultSlideTemplateSource)
-	if err != nil {
-		t.Errorf("Can't parse DefaultTemplateSource templates %s", err)
-		t.FailNow()
-	}
-
-	titles := []string{
-		"<h1>Opening Slide</h1>",
-		"<h1>Slide Two</h1>",
-		"<h2>Slide Three</h2>",
-	}
-
-	slides, err := MarkdownToSlides("test.html", []byte(src))
-	if err != nil {
-		t.Errorf("MarkdownToSlides(%q, ...) error %s", "test.html", err)
-		t.FailNow()
-	}
-	if len(slides) != 3 {
-		src, _ := json.Marshal(slides)
-		t.Errorf("Was expected three slides, got %d, data: %+v\n%s", len(slides), slides, src)
-	}
-
-	keyVals := map[string]string{}
-	for i, slide := range slides {
-		keyVals["Title"] = "text:" + titles[i]
-		s, err := MakeSlideString("slides.tmpl", tmpl, keyVals, slide)
-		if err != nil {
-			t.Errorf("MakeSlideString() failed %d - %s", i, err)
-		}
-		if strings.Contains(s, titles[i]) == false {
-			t.Errorf("Expected %q in slide %d -> %s", titles[i], i, s)
-		}
-	}
 }
 
 func TestGrep(t *testing.T) {

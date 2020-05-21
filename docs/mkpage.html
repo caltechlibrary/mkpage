@@ -9,11 +9,146 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-$nav$
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="./mkrss.html">mkrss</a>
+</li>
+<li>
+<a href="./mkpage.html">mkpage</a>
+</li>
+<li>
+<a href="./urlencode.html">urlencode</a>
+</li>
+<li>
+<a href="./go-template-recipes.html">Go text/template recipes</a>
+</li>
+<li>
+<a href="./titleline.html">titleline</a>
+</li>
+<li>
+<a href="./slides/three-slides.html">Title Page</a>
+</li>
+<li>
+<a href="./byline.html">byline</a>
+</li>
+<li>
+<a href="./ws.html">ws</a>
+</li>
+<li>
+<a href="./frontmatter.html">frontmatter</a>
+</li>
+<li>
+<a href="./mkpongo.html">mkpongo</a>
+</li>
+<li>
+<a href="./urldecode.html">urldecode</a>
+</li>
+<li>
+<a href="./sitemapper.html">sitemapper</a>
+</li>
+<li>
+<a href="./reldocpath.html">reldocpath</a>
+</li>
+</ul>
 </nav>
 
 <section>
-$content$
+<h1 id="mkpage">
+mkpage
+</h1>
+<h2 id="usage">
+USAGE
+</h2>
+<pre><code>mkpage [OPTION] [KEY/VALUE DATA PAIRS] TEMPLATE_FILENAME [TEMPLATE_FILENAMES]</code></pre>
+<h2 id="synopsis">
+SYNOPSIS
+</h2>
+<p>
+Using the key/value pairs populate the template(s) and render to stdout.
+</p>
+<h2 id="configuration">
+CONFIGURATION
+</h2>
+<p>
+You can set a local default template path by using environment variables.
+</p>
+<ul>
+<li>
+MKPAGE_TEMPLATES - is the colon delimited list of template paths
+</li>
+</ul>
+<p>
+Templates, by default, are <a href="https://pandoc.org/MANUAL.html#templates">Pandoc templates</a>
+</p>
+<h2 id="options">
+OPTIONS
+</h2>
+<pre><code>    -h  show help
+    -help   show help
+    -l  show license
+    -license    show license
+    -s  display the default template
+    -show-template  display the default template
+    -t  colon delimited list of templates to use
+    -templates  colon delimited list of templates to use
+    -v  show version
+    -version    show version</code></pre>
+<h2 id="example">
+EXAMPLE
+</h2>
+<p>
+Template (named “examples/weather.tmpl”)
+</p>
+<pre><code>    
+    Date: $now$
+    
+    Hello $name$,
+        
+    The weather forcast is
+    
+    $if(weather.data.weather)$
+      $weather.data.weather[; ]$
+    $endif$
+    
+    Thank you
+    
+    $signature$
+    </code></pre>
+<p>
+Render the template above (i.e. examples/weather.tmpl) would be accomplished from the following data sources–
+</p>
+<ul>
+<li>
+“now” and “name” are strings
+</li>
+<li>
+“weatherForecast” is JSON data retrieved from a URL
+<ul>
+<li>
+“.data.weather” is a data path inside the JSON document
+</li>
+<li>
+“index” let’s us pull our the “0”-th element (i.e. the initial element of the array)
+</li>
+</ul>
+</li>
+<li>
+“signature” comes from a file in our local disc (i.e. examples/signature.txt)
+</li>
+</ul>
+<p>
+That would be expressed on the command line as follows
+</p>
+<pre class="shell"><code>    mkpage &quot;now=text:$(date)&quot; &quot;name=text:Little Frieda&quot; \
+        &quot;weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
+        signature=examples/signature.txt \
+        examples/weather.tmpl     </code></pre>
 </section>
 
 <footer>

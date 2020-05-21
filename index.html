@@ -9,11 +9,225 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-$nav$
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="index.html">README</a>
+</li>
+<li>
+<a href="license.html">LICENSE</a>
+</li>
+<li>
+<a href="install.html">INSTALL</a>
+</li>
+<li>
+<a href="docs/">Documentation</a>
+</li>
+<li>
+<a href="how-to/">HOW TO</a>
+</li>
+<li>
+<a href="https://github.com/caltechlibrary/mkpage">Github</a>
+</li>
+</ul>
 </nav>
 
 <section>
-$content$
+<p>
+<a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed." /></a>
+</p>
+<h1 id="mkpage">
+mkpage
+</h1>
+<p>
+<em>mkpage</em> is a collection of tools that form a static website renderer. It was inspired by deconstructing more complex content management systems and distilling the rendering functions down to a core set of command line tools. It is well suited to building sites hosted on services like GitHub Pages or Amazon’s S3. It is comprised of a set of command line utilities that augment the standard suite of Unix/POSIX commands available on most POSIX based operating systems (e.g. Linux, Mac OS X, Raspberry Pi and Windows systems that have a port of Bash). It uses the widely adopted <a href="https://pandoc.org">Pandoc</a> as its markup conversion tool (e.g. Markdown to HTML). As such you can create your website from Markdown, ReStructureText or Jira text.
+</p>
+<p>
+<em>mkpage</em> can run on machines as small as a Raspberry Pi. Its small foot print and minimal dependencies (only Pandoc) meaning installation usually boils down to copying the precompiled binaries to a bin directory in your path. Precompiled binaries are available for Linux, Windows and Mac OS X running on Intel as well as for the ARM7 versions of Raspbian running on Raspberry Pi. <em>mkpage</em> supports three template languages as this time, <a href="https://pandoc.org/MANUAL.html#templates">Pandoc</a> and <a href="https://golang.org/pkg/text/template/">Go’s text templates</a>. Pandoc’s template language is easy to learn and use than complex template languages used in some of the more established static site generators like <a href="https://jekyllrb.com/">Jekyll</a>, <a href="https://gohugo.io">Hugo</a> and <a href="http://assemble.io/">Assemble</a>.
+</p>
+<p>
+<em>mkpage</em>’s minimalism is an advantage when you combine <em>mkpage</em> with the standard suite of text processing tools available under your typical Unix/POSIX like operating systems. This makes scripting a <em>mkpage</em> project using languages like Python, Make and Bash straight forward.<br /> Each <em>mkpage</em> utility is independent. You can use as few or as many or as few as you like. You determine the workflow and build process that best fits your needs.
+</p>
+<p>
+The following command line tools come with <em>mkpage</em>
+</p>
+<ul>
+<li>
+<a href="docs/mkpage.html">mkpage</a> – a single page renderer and processor for Markdown, <a href="https://fountain.io">Fountain</a>, ReStructureText, Textile, Jira markup, JSON and Go text templates, using <a href="https://pandoc.org">Pandoc</a> as its engine
+</li>
+<li>
+<a href="docs/mkrss.html">mkrss</a> – an RSS feed generator for content authored in Markdown and rendered to HTML
+</li>
+<li>
+<a href="docs/sitemapper.html">sitemapper</a> – an XML Sitemap generator
+</li>
+<li>
+<a href="docs/frontmatter.html">frontmatter</a> – a front matter extractor
+</li>
+<li>
+<a href="docs/byline.html">byline</a> – a tool for extracting bylines from Markdown files
+</li>
+<li>
+<a href="docs/titleline.html">titleline</a> – a tool for extracting the first title (H1) in a Markdown document
+</li>
+<li>
+<a href="docs/reldocpath.html">reldocpath</a> – a relative path calculator, useful for pathing hrefs and src attributes in a website
+</li>
+<li>
+<a href="docs/ws.html">ws</a> – a fast, small, web server for site development or deployment
+</li>
+</ul>
+<h2 id="a-quick-tour">
+A quick tour
+</h2>
+<p>
+<em>mkpage</em> command accepts key/value pairs. The pairs can be explicit data types, [front matter] in files or resources from the web. <em>mkpage</em> assembles the metadata and content and sends them along to Pandoc for processing. In this example and the template is implemented as a Pandoc’s template language.
+</p>
+<p>
+The “key” in our key/value pairs is used to map into the <a href="https://pandoc.org/MANUAL.html">Pandoc</a> templates you want rendered. If a key was called “content” the template element would be like <code><span class="math inline"><em>c</em><em>o</em><em>n</em><em>t</em><em>e</em><em>n</em><em>t</em></span></code>. The value of “content” would replace <code><span class="math inline"><em>c</em><em>o</em><em>n</em><em>t</em><em>e</em><em>n</em><em>t</em></span></code>.<br /> Pandoc templates are combine logic and iteration to make more complex pages.
+</p>
+<p>
+On the “value” side of the key/value pair you have strings of one of several formats - plain text, markdown, <a href="https://fountain.io">fountain</a>, ReStructureText, Jira text and JSON. The values can be from explicit strings associated with a data type, data from a file where the file extension identifies the content type, or content retrieved via a URL based on the mime-type sent from the web service. Here’s a basic demonstration of sampling of capabilities and integrating data from the <a href="http://weather.gov">NOAA weather website</a>.
+</p>
+<h3 id="a-basic-template">
+a basic template
+</h3>
+<pre class="template"><code>
+    Date: $now$
+    
+    Hello $name$,
+        
+    The weather forecast is
+    
+    $if(weather.data.weather)$
+      $weather.data.weather[; ]$
+    $endif$
+    
+    Thank you
+    
+    $signature$
+</code></pre>
+<p>
+To render the template above (i.e. <a href="examples/weather.tmpl">weather.tmpl</a>) is expecting values from various data sources. This break down is as follows.
+</p>
+<ul>
+<li>
+“now” and “name” will be explicit strings
+<ul>
+<li>
+“now” integrates getting data from the Unix <em>date</em> command
+</li>
+</ul>
+</li>
+<li>
+“weather” will come from a URL which returns a JSON document
+<ul>
+<li>
+“.data.weather” is the path into the JSON document
+</li>
+</ul>
+</li>
+<li>
+“signature” will come from a plain text file in your local disc
+</li>
+</ul>
+<h3 id="writing-the-mkpage-command">
+writing the <em>mkpage</em> command
+</h3>
+<p>
+Here is how we would express the key/value pairs on the command line.
+</p>
+<pre class="shell"><code>    mkpage &quot;now=text:$(date)&quot; \
+        &#39;name=text:Little Frieda&#39; \
+        &#39;weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&#39; \
+        &#39;signature=examples/signature.txt&#39; \
+        &#39;examples/weather.tmpl&#39;</code></pre>
+<p>
+Notice the two explicit strings are prefixed with “text:” (other formats include “markdown:” and “json:”). Values without a prefix are assumed to be file paths. We see that in testdata/signature.txt. Likewise the weather data is coming from a URL. <em>mkpage</em> uses the “protocol” prefix to distinguish between literals, file paths and URL based based content. With “http:” and “https:” return with an HTTP header the header is used to identify the content type for processing by <em>mkpage</em> or Pandoc. E.g. “Content-Type: text/markdown” tells us to use Pandoc to translate from Markdown to HTML. For data contained in files we rely on the file extension to identify content type, e.g. “.md” is markdown, “.rst” is ReStructureText, “.json” is a JSON document. If no content type is decernable then we assume the content is plain text.
+</p>
+<h3 id="the-utilities">
+the utilities
+</h3>
+<h4 id="mkpage-1">
+mkpage
+</h4>
+<p>
+<em>mkpage</em> comes with some helper utilities that make scripting a deconstructed content management system from Python/Bash easier.
+</p>
+<h4 id="mkrss">
+mkrss
+</h4>
+<p>
+<em>mkrss</em> will scan a directory tree for Markdown files and add each markdown file with a corresponding HTML file to the RSS feed generated.
+</p>
+<h4 id="frontmatter">
+frontmatter
+</h4>
+<p>
+<em>frontmatter</em> will extract a Markdown files’ front matter so you can process it with another tool. When you used in conjunction with <em>mkpage</em> you can render the same file into metadata about the file and HTML output. This is handy if you’re using the front matter to build up metadata in an HTML template or building a corpus JSON document for use with browser side search engines like <a href="https://lunrjs.com">Lunrjs</a>.
+</p>
+<h4 id="byline">
+byline
+</h4>
+<p>
+<em>byline</em> will look inside a markdown file and return the first <em>byline</em> fromfront matter or one idendified by a regular expression. It returns an empty string if it finds none. The default regular expression fallback can be overridden with a command line option.
+</p>
+<h4 id="titleline">
+titleline
+</h4>
+<p>
+<em>titleline</em> will look inside a markdown file’s front matter or the return the first h1 equivalent title it finds or an empty string if it finds none.
+</p>
+<h4 id="reldocpath">
+reldocpath
+</h4>
+<p>
+<em>reldocpath</em> is intended to simplify the calculation of relative asset paths (e.g. common CSS files, images, feeds) when working from a common project directory.
+</p>
+<h5 id="example">
+Example
+</h5>
+<p>
+You know the path from the source document to target document from the project root folder.
+</p>
+<ul>
+<li>
+Source is <em>course/week/01/readings.html</em><br />
+</li>
+<li>
+Target is <em>css/site.css</em>.
+</li>
+</ul>
+<p>
+In Bash this would look like–
+</p>
+<pre class="shell"><code>    # We know the paths relative to the project directory
+    DOC_PATH=&quot;course/week/01/readings.html&quot;
+    CSS_PATH=&quot;css/site.css&quot;
+    echo $(reldocpath $DOC_PATH $CSS_PATH)</code></pre>
+<p>
+the output would look like
+</p>
+<pre class="shell"><code>    ../../../css/site.css</code></pre>
+<h4 id="ws">
+ws
+</h4>
+<p>
+<em>ws</em> is a simple static file web server. It is suitable for viewing your local copy of your static website on your machine. It runs with minimal resources and by default will serve content out to the URL http://localhost:8000. It can also be used to host a static website and has run well on small Amazon virtual machines as well as Raspberry Pi computers acting as local private network web servers.
+</p>
+<h5 id="example-1">
+Example
+</h5>
+<pre class="shell"><code>    ws Sites/mysite.example.org</code></pre>
+<p>
+This would start the web server up listen for browser requests on <em>http://localhost:8000</em>. The content viewable by your web browser would be the files inside the <em>Sites/mysite.example.org</em> directory.
+</p>
+<pre class="shell"><code>    ws -url http://mysite.example.org:80 Sites/mysite.example.org</code></pre>
+<p>
+Assume the machine where you are running <em>ws</em> has the name mysite.example.org then your could point your web browser at <em>http://mysite.example.org</em> and see the web content you have in <em>Site/mysite.example.org</em> directory.
+</p>
 </section>
 
 <footer>

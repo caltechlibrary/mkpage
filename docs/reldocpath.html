@@ -9,11 +9,89 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-$nav$
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="./mkrss.html">mkrss</a>
+</li>
+<li>
+<a href="./mkpage.html">mkpage</a>
+</li>
+<li>
+<a href="./urlencode.html">urlencode</a>
+</li>
+<li>
+<a href="./go-template-recipes.html">Go text/template recipes</a>
+</li>
+<li>
+<a href="./titleline.html">titleline</a>
+</li>
+<li>
+<a href="./slides/three-slides.html">Title Page</a>
+</li>
+<li>
+<a href="./byline.html">byline</a>
+</li>
+<li>
+<a href="./ws.html">ws</a>
+</li>
+<li>
+<a href="./frontmatter.html">frontmatter</a>
+</li>
+<li>
+<a href="./mkpongo.html">mkpongo</a>
+</li>
+<li>
+<a href="./urldecode.html">urldecode</a>
+</li>
+<li>
+<a href="./sitemapper.html">sitemapper</a>
+</li>
+<li>
+<a href="./reldocpath.html">reldocpath</a>
+</li>
+</ul>
 </nav>
 
 <section>
-$content$
+<h1 id="reldocpath">
+reldocpath
+</h1>
+<h2 id="usage">
+USAGE
+</h2>
+<pre><code>reldocpath SOURCE_DOC_PATH TARGET_DOC_PATH </code></pre>
+<h2 id="synopsis">
+SYNOPSIS
+</h2>
+<p>
+Given a source document path, a target document path calculate and the implied common base path calculate the relative path for target.
+</p>
+<h2 id="options">
+OPTIONS
+</h2>
+<pre><code>    -h  display help
+    -help   display help
+    -l  display license
+    -license    display license
+    -v  display version
+    -version    display version</code></pre>
+<h2 id="example">
+EXAMPLE
+</h2>
+<p>
+Given
+</p>
+<pre><code>    reldocpath chapter-01/lesson-03.html css/site.css</code></pre>
+<p>
+would output
+</p>
+<pre><code>    .../css/site.css</code></pre>
 </section>
 
 <footer>
