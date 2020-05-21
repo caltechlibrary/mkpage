@@ -10,69 +10,95 @@
 </header>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="../">Up</a></li>
-<li><a href="./mkrss.html">mkrss</a></li>
-<li><a href="./mkpage.html">mkpage</a></li>
-<li><a href="./urlencode.html">urlencode</a></li>
-<li><a href="./go-template-recipes.html">Go text/template recipes</a></li>
-<li><a href="./titleline.html">titleline</a></li>
-<li><a href="./mkslides.html">mkslides</a></li>
-<li><a href="./slides/three-slides.html">Title Page</a></li>
-<li><a href="./slides/presentation.html">What is mkslides?</a></li>
-<li><a href="./byline.html">byline</a></li>
-<li><a href="./ws.html">ws</a></li>
-<li><a href="./frontmatter.html">frontmatter</a></li>
-<li><a href="./mkpongo.html">mkpongo</a></li>
-<li><a href="./urldecode.html">urldecode</a></li>
-<li><a href="./sitemapper.html">sitemapper</a></li>
-<li><a href="./reldocpath.html">reldocpath</a></li>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="./mkrss.html">mkrss</a>
+</li>
+<li>
+<a href="./mkpage.html">mkpage</a>
+</li>
+<li>
+<a href="./urlencode.html">urlencode</a>
+</li>
+<li>
+<a href="./go-template-recipes.html">Go text/template recipes</a>
+</li>
+<li>
+<a href="./titleline.html">titleline</a>
+</li>
+<li>
+<a href="./slides/three-slides.html">Title Page</a>
+</li>
+<li>
+<a href="./byline.html">byline</a>
+</li>
+<li>
+<a href="./ws.html">ws</a>
+</li>
+<li>
+<a href="./frontmatter.html">frontmatter</a>
+</li>
+<li>
+<a href="./mkpongo.html">mkpongo</a>
+</li>
+<li>
+<a href="./urldecode.html">urldecode</a>
+</li>
+<li>
+<a href="./sitemapper.html">sitemapper</a>
+</li>
+<li>
+<a href="./reldocpath.html">reldocpath</a>
+</li>
 </ul>
-
 </nav>
 
 <section>
-<h1>byline</h1>
-
-<h3>USAGE</h3>
-
-<pre><code>byline [OPTIONS]
-</code></pre>
-
-<h2>SYNOPSIS</h2>
-
-<p>byline extracts a byline from a Markdown file. By default it reads
-from standard in and writes to standard out but can read/write
-to specific files using an option.</p>
-
-<h2>OPTIONS</h2>
-
-<pre><code>	-b	set byline regexp
-	-byline	set byline regexp
-	-h	display help
-	-help	display help
-	-i	input filename
-	-input	input filename
-	-l	display license
-	-license	display license
-	-o	output filename
-	-output	output filename
-	-v	display version
-	-version	display version
-</code></pre>
-
-<h2>EXAMPLE</h2>
-
-<pre><code class="language-shell">    cat article.md | byline
-</code></pre>
-
-<p>This will display the byline of article.md.</p>
-
+<h1 id="byline">
+byline
+</h1>
+<h3 id="usage">
+USAGE
+</h3>
+<pre><code>byline [OPTIONS]</code></pre>
+<h2 id="synopsis">
+SYNOPSIS
+</h2>
+<p>
+byline extracts a byline from a Markdown file. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.
+</p>
+<h2 id="options">
+OPTIONS
+</h2>
+<pre><code>    -b  set byline regexp
+    -byline set byline regexp
+    -h  display help
+    -help   display help
+    -i  input filename
+    -input  input filename
+    -l  display license
+    -license    display license
+    -o  output filename
+    -output output filename
+    -v  display version
+    -version    display version</code></pre>
+<h2 id="example">
+EXAMPLE
+</h2>
+<pre class="shell"><code>    cat article.md | byline</code></pre>
+<p>
+This will display the byline of article.md.
+</p>
 </section>
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>

@@ -2,20 +2,23 @@
 # Installation
 
 *mkpage* is a set of command line programs run from a shell like Bash. 
+NOTE: *mkpage* depends on [Pandoc](https://pandoc.org/installing.html).
 
-For all the released version go to the project page on Github and click latest release
+For latest the released versions of `mkpage` go to the project page 
+on GitHub and click latest release
 
 >    https://github.com/caltechlibrary/mkpage/releases/latest
 
-You will seea list of filenames is in the form of `mkpage-VERSION_NO-PLATFORM_NAME.zip`.
+You will seea list of filenames is in the form of 
+`mkpage-VERSION_NO-PLATFORM_NAME.zip`.
 
 > VERSION_NUMBER is a [symantic version number](http://semver.org/) (e.g. v0.1.2)
 
 > PLATFROM_NAME is a description of a platform (e.g. windows-amd64, macosx-amd64).
 
-Compiled versions are available for Mac OS X (amd64 processor, macosx-amd64), 
-Linux (amd64 processor, linux-amd64), Windows (amd64 processor, windows-amd64) 
-and Rapsberry Pi (ARM7 processor, raspbian-arm7).
+Compiled versions are available for Mac OS X (amd64 processor, 
+macosx-amd64), Linux (amd64 processor, linux-amd64), Windows (amd64 
+processor, windows-amd64) and Rapsberry Pi (ARM7 processor, raspbian-arm7).
 
 | Platform    | Zip Filename                            |
 |-------------|-----------------------------------------|
@@ -41,8 +44,8 @@ and Rapsberry Pi (ARM7 processor, raspbian-arm7).
 3. Copy the executables to $HOME/bin (or a folder in your path)
 4. Test
 
-Here's an example of the commands run in the Terminal App after downloading the 
-zip file.
+Here's an example of the commands run in the Terminal App after 
+downloading the zip file.
 
 ```shell
     cd Downloads/
@@ -77,7 +80,7 @@ downloading the zip file.
 
 1. Download the zip file
 2. Unzip the zip file
-3. Copy the executables to $HOME/bin (or a folder in your path)
+3. Copy the executables to `$HOME/bin` (or a folder in your path)
 4. Test
 
 Here's an example of the commands run in from the Bash shell after
@@ -95,11 +98,12 @@ downloading the zip file.
 
 ### Raspberry Pi
 
-Released version is for a Raspberry Pi 2 or later use (i.e. requires ARM 7 support).
+Released version is for a Raspberry Pi 2 or later use (i.e. requires 
+ARM 7 support).
 
 1. Download the zip file
 2. Unzip the zip file
-3. Copy the executables to $HOME/bin (or a folder in your path)
+3. Copy the executables to `$HOME/bin` (or a folder in your path)
 4. Test
 
 Here's an example of the commands run in from the Bash shell after
@@ -117,15 +121,15 @@ downloading the zip file.
 
 ## Compiling from source
 
-_mkpage_ is "go gettable".  Use the "go get" command to download the dependant packages
-as well as _mkpage_'s source code.
+_mkpage_ is "go gettable".  Use the "go get" command to download the 
+dependant packages as well as _mkpage_'s source code.
 
 ```shell
     go get -u github.com/caltechlibrary/pkgassets/...
     go get -u github.com/caltechlibrary/mkpage/...
 ```
 
-Or clone the repstory and then compile
+Or clone the repository and then compile
 
 ```shell
     cd

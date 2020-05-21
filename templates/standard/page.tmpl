@@ -1,9 +1,8 @@
-{{- define "page.tmpl" -}}
 <!DOCTYPE html>
 <html>
 <head>
-  {{ with .title -}}<title>{{- . -}}</title>{{- end}}
-  {{ if .csspath -}}<link href="{{- .csspath -}}" rel="stylesheet" />{{- else -}}
+  ${with .title}<title>${.}</title>${end}}
+  ${if .csspath}<link href="${.csspath}" rel="stylesheet" />${else}
   <style>
 /**
  * site.css - stylesheet for the Library's Digital Library Development Group's sandbox.
@@ -274,13 +273,12 @@ p {
 }
 
   </style>
-  {{- end }}
+  ${end}
 </head>
 <body>
-  {{ with .header -}}<header>{{- . -}}</header>{{- end }}
-  {{ with .nav -}}<nav>{{- . -}}</nav>{{- end }}
-  {{ with .content -}}<section>{{- . -}}</section>{{- end }}
-  {{ with .footer -}}<footer>{{- . -}}</footer>{{- end }}
+  ${if(header)}<header>${header}</header>${endif}
+  ${if(nav)}<nav>${nav}</nav>${endif}
+  ${if(content)}<section>${content}</section>${endif}
+  ${if(footer)}<footer>${content}</footer>${endif}
 </body>
 </html>
-{{- end -}}

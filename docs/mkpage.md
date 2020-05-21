@@ -20,10 +20,11 @@ You can set a local default template path by using environment variables.
 
 + MKPAGE_TEMPLATES - is the colon delimited list of template paths
 
+Templates, by default, are [Pandoc templates](https://pandoc.org/MANUAL.html#templates)
+
 ## OPTIONS
 
 ```
-	-default-template	Use the default template
 	-h	show help
 	-help	show help
 	-l	show license
@@ -41,19 +42,21 @@ You can set a local default template path by using environment variables.
 Template (named "examples/weather.tmpl")
 
 ```
-    {{ define "weather.tmpl" }}
-    Date: {{- .now}}
-
-    Hello {{.name -}},
     
-    The current weather is
-
-    {{index .weatherForecast.data.weather 0}}
-
+    Date: $now$
+    
+    Hello $name$,
+        
+    The weather forcast is
+    
+    $if(weather.data.weather)$
+      $weather.data.weather[; ]$
+    $endif$
+    
     Thank you
-
-    {{.signature}}
-    {{ end }}
+    
+    $signature$
+    
 ```
 
 Render the template above (i.e. examples/weather.tmpl) would be accomplished from 
@@ -72,11 +75,5 @@ That would be expressed on the command line as follows
         "weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
         signature=examples/signature.txt \
         examples/weather.tmpl     
-```
-
-Golang's text/template docs can be found at 
-
-```
-      https://golang.org/pkg/text/template/
 ```
 

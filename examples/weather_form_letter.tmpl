@@ -1,14 +1,14 @@
-{{ define "myformletter.tmpl" }}
-Date: {{.now}}
 
-Hello {{.name -}},
+Date: ${now}
+
+Hello ${name},
      
 The weather forecast:
-{{ range .weather.data.text}}
-    + {{ . -}}
-{{end}}
+${for(weather.data.text)}
+    + ${it}
+${endfor}
  
 Thank you
 
-{{.signature}}
-{{ end }}
+${signature}
+

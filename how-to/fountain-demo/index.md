@@ -1,10 +1,16 @@
 
 # Fountain Demo
 
-**mkpage** now supports processing [Fountain](https://fountain.io) markup.
-This is helpful if you're transcribing and scriptting an interview or presentation. Of course Fountain is also used to write screenplays and plays.
+**mkpage** supports processing [Fountain](https://fountain.io) markup.
+This is helpful if you're transcribing and scriptting an interview or 
+presentation. Of course Fountain is also used to write screenplays and 
+plays.
 
-**mkpage** will recognize fountain documents by their extensions, e.g. .spmd and .fountain. It will then invoke the fountain markup engine rather than the Markdown engine to turn the Fountain text into HTML. You can set the options for the fountain processor in the front matter of the document.
+**mkpage** will recognize fountain documents by their extensions, 
+e.g. .spmd and .fountain. It will then invoke the fountain markup 
+engine rather than the Markdown engine to turn the Fountain text into 
+HTML. You can set the options for the fountain processor in the 
+front matter of the document.
 
 You can see the fountain source at [interview-with-a-dog.fountain](interview-with-a-dog.fountain) and an HTML rendering in [interview-with-a-dog.html](interview-with-a-dog.html).
 

@@ -1,6 +1,12 @@
 
 # Release Notes
 
+## v0.0.32i
+
++ mkslides has be removed
++ default templates are Pandoc templates
++ Pandoc is **required** as it provides the markup convertion to HTML and the default template engine
+
 ## v0.0.26
 
 + Compiled with Go's 1.12 templates supporting variable creation and substution

@@ -42,10 +42,10 @@ function assert_empty() {
 function test_byline() {
     EXPECTED="By J. Q. Public 2018-12-04"
     # Test reading from file
-    RESULT=$(bin/byline -i demo/byline/index.md)
+    RESULT=$(bin/byline -i examples/byline/index.md)
     assert_equal "test_byline" "$EXPECTED" "$RESULT"
     # Test with standard input
-    RESULT=$(cat demo/byline/index.md | bin/byline -i - )
+    RESULT=$(cat examples/byline/index.md | bin/byline -i - )
     assert_equal "test_byline" "$EXPECTED" "$RESULT"
     echo "test_byline OK"
 }
@@ -53,25 +53,11 @@ function test_byline() {
 function test_mkpage() {
     # test basic markdown processing
     if [[ -f "temp.html" ]]; then rm temp.html; fi
-    bin/mkpage content=demo/mkpage/helloworld.md page.tmpl > temp.html
+    bin/mkpage content=examples/helloworld.md page.tmpl > temp.html
     EXPECTED=""
     assert_exists "test_mkpage (simple)" "temp.html"
-    RESULT=$(cmp demo/mkpage/helloworld.html temp.html)
+    RESULT=$(cmp examples/helloworld.html temp.html)
     assert_equal "test_mkpage (simple)" "$EXPECTED" "$RESULT"
-
-    # test codesnip support
-    if [[ -f "temp.html" ]]; then rm temp.html; fi
-    bin/mkpage content=demo/codesnip/index.md page.tmpl > temp.html
-    EXPECTED=""
-    assert_exists "test_mkpage (codesnip html)" "temp.html"
-    RESULT=$(cmp demo/codesnip/index.html temp.html)
-    assert_empty "test_mkpage (codesnip html)" "$RESULT"
-    mkdir -p test/codesnip
-    bin/mkpage -codesnip -i=demo/codesnip/index.md -o=test/codesnip/hello.bash
-    assert_exists "test_mkpage (codesnip bash)" "test/codesnip/hello.bash"
-    RESULT=$(cmp demo/codesnip/hello.bash test/codesnip/hello.bash)
-    assert_empty "test_mkpage (codesnip bash)" "$RESULT"
-    rm -fR test/codesnip
     echo "test_mkpage() OK"
 }
 
@@ -80,7 +66,16 @@ function test_mkrss() {
 }
 
 function test_mkslides() {
+    CWD=$(pwd)
+    mkdir -p test
+    cd test
     echo "test_mkslides() not implemented."
+    ../bin/mkpage --mkslides -i ../examples/presentation.md
+    OK="true"
+    for FNAME in "00-presentation.html" "01-presentation.html" "02-presentation.html"; do
+      assert_exists "test_mkslides (${FNAME})" "${FNAME}"
+    done
+    cd $(CWD)
 }
 
 function test_reldocpath() {
@@ -107,7 +102,7 @@ echo "Testing command line tools"
 test_byline
 test_mkpage
 test_mkrss
-test_mkslides
+#test_mkslides
 test_reldocpath
 test_sitemapper
 test_titleline

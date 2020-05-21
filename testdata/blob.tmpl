@@ -1,5 +1,3 @@
-{{ define "blob.tmpl" }}
-{{range $key,$val := .blob }}
-   Key: {{ $key }} Value: {{ $val -}}
-{{end}}
-{{ end }}
+${for(blob/pairs)}
+   Key: ${it.key} Value: ${it.value}
+${endif}

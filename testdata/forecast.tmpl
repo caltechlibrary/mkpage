@@ -1,24 +1,24 @@
-{{ define "forecast.tmpl" }}
-{{ with $co := .forecast.currentobservation }}
+
+${for(forecast.currentobservation)}
 Current Observation:
 
-+ {{ $co.name }}
-+ Elevation: {{ $co.elev }}
-+ Latitude: {{ $co.latitude }}
-+ Longitude: {{ $co.longitude }}
-+ Date: {{ $co.Date }}
-+ Temp: {{ $co.Temp }}
-+ Dew Point: {{ $co.Dewp }}
-+ Relative Humidity: {{ $co.Relh }}
-+ Winds: {{ $co.Winds }}
-+ Wind direction: {{ $co.Windd }}
-+ Gust: {{ $co.Gust }}
-+ Visibility: {{ $co.Visibility }}
++ ${it.name}
++ Elevation: ${it.elev}
++ Latitude: ${it.latitude}
++ Longitude: ${it.longitude}
++ Date: ${it.Date}
++ Temp: ${it.Temp}
++ Dew Point: ${it.Dewp}
++ Relative Humidity: ${it.Relh}
++ Winds: ${it.Winds}
++ Wind direction: ${it.Windd}
++ Gust: ${it.Gust}
++ Visibility: ${it.Visibility}
 
-{{end}}
+${endfor}
 
 Forecast:
-{{ range .forecast.data.text }}
-      + {{ . -}}
-{{ end }}
-{{ end }}
+${for(forecast.data.text)}
+      + ${it}
+${endfor}
+

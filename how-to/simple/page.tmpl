@@ -1,13 +1,12 @@
-{{ define "page.tmpl" }}
 <!DOCTYPE html>
 <html>
 <head>
-    {{with .Title -}}<title>{{- . -}}</title>{{- end }}
-    {{with .CSSPath -}}<link rel="stylesheet" href="{{- . -}}">{{- end}}
+    ${if(title)}<title>${title}</title>${endif}
+    ${if(csspath)}<link rel="stylesheet" href="${csspath}">${endif}
 </head>
 <body>
     <header>
-        {{with .Title -}}<h1>{{- . -}}</h1>{{- end}}
+        ${if(title)}<h1>${title}</h1>${endif}
     </header>
     <nav>
         <ul>
@@ -15,8 +14,7 @@
             <li><a href="../">Up</a></li>
         </ul>
     </nav>
-    {{with .Content}}<section>{{- . -}}</section>{{- end}}
+    ${if(content)}<section>${content}</section>${endif}
     <footer>Simple is a theme that works with  three elements Title, CSSPath, and Content</footer>
 </body>
 </html>
-{{ end }}

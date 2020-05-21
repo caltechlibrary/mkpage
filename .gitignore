@@ -29,6 +29,7 @@ bin/*
 dist/*
 demo/*
 examples/*
+test/*
 testdata/*.html
 *~
 *.swp

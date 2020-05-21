@@ -10,39 +10,43 @@
 </header>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="../">Up</a></li>
-<li><a href="./index.html">Simple With Navigation</a></li>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="./index.html">Simple With Navigation</a>
+</li>
 </ul>
-
 </nav>
 
 <section>
-<h1>Simple With Navigation</h1>
-
-<p>This theme demonstates adding a Markdown file for controlling site
-navigation and document specific titles. Like the simple theme you have
-a &ldquo;content&rdquo; element and a sitewide common &ldquo;csspath&rdquo; element.</p>
-
-<p>The title element in the Markdown document is extracted with the <em>mkpage</em>
-utility called <em>titleline</em>.</p>
-
-<p>This theme relies on three <em>mkpage</em> project commands - <em>mkpage</em>,
-<em>reldocpath</em>, <em>titleline</em> and <em>ws</em> (for testing the website and viewing
-from your web browser over <a href="http://localhost:8000)">http://localhost:8000)</a></p>
-
-<p>To test this theme do the following run the following commands in this
-directory.</p>
-
-<pre><code class="language-shell">    ./mk-website.bash
-    ws
-</code></pre>
-
-<p>Point your webbrowser at <a href="http://localhost:8000">http://localhost:8000</a> and view this page.</p>
-
-<h3>Template Example</h3>
-
-<pre><code class="language-template">    &lt;!DOCTYPE html&gt;
+<h1 id="simple-with-navigation">
+Simple With Navigation
+</h1>
+<p>
+This theme demonstates adding a Markdown file for controlling site navigation and document specific titles. Like the simple theme you have a “content” element and a sitewide common “csspath” element.
+</p>
+<p>
+The title element in the Markdown document is extracted with the <em>mkpage</em> utility called <em>titleline</em>.
+</p>
+<p>
+This theme relies on three <em>mkpage</em> project commands - <em>mkpage</em>, <em>reldocpath</em>, <em>titleline</em> and <em>ws</em> (for testing the website and viewing from your web browser over http://localhost:8000)
+</p>
+<p>
+To test this theme do the following run the following commands in this directory.
+</p>
+<pre class="shell"><code>    ./mk-website.bash
+    ws</code></pre>
+<p>
+Point your webbrowser at http://localhost:8000 and view this page.
+</p>
+<h3 id="template-example">
+Template Example
+</h3>
+<pre class="template"><code>    &lt;!DOCTYPE html&gt;
     &lt;html&gt;
     &lt;head&gt;
         {{with .title -}}&lt;title&gt;{{- . -}}&lt;/title&gt;{{- end }}
@@ -57,37 +61,36 @@ directory.</p>
         {{with .content}}&lt;section&gt;{{- . -}}&lt;/section&gt;{{- end}}
         {{with .footer -}}&lt;footer&gt;{{- . -}}&lt;/footer&gt;{{- end -}}
     &lt;/body&gt;
-    &lt;/html&gt;
-</code></pre>
-
-<h3>Bash Script</h3>
-
-<pre><code class="language-shell">    #!/bin/bash
+    &lt;/html&gt;</code></pre>
+<h3 id="bash-script">
+Bash Script
+</h3>
+<pre class="shell"><code>    #!/bin/bash
 
     START=$(pwd)
     cd &quot;$(dirname &quot;$0&quot;)&quot;
 
     function SoftwareCheck() {
-    	for NAME in &quot;$@&quot;; do
-    		APP_NAME=&quot;$(which &quot;$NAME&quot;)&quot;
-    		if [ &quot;$APP_NAME&quot; = &quot;&quot; ] &amp;&amp; [ ! -f &quot;./bin/$NAME&quot; ]; then
-    			echo &quot;Missing $NAME&quot;
-    			exit 1
-    		fi
-    	done
+        for NAME in &quot;$@&quot;; do
+            APP_NAME=&quot;$(which &quot;$NAME&quot;)&quot;
+            if [ &quot;$APP_NAME&quot; = &quot;&quot; ] &amp;&amp; [ ! -f &quot;./bin/$NAME&quot; ]; then
+                echo &quot;Missing $NAME&quot;
+                exit 1
+            fi
+        done
     }
 
     function GenerateNav() {
-    	echo &quot;+ [Home](/)&quot; &gt;nav.md
-    	echo &quot;+ [Up](../)&quot; &gt;&gt;nav.md
-    	for FNAME in $(find . -type f | grep -E &quot;\.md$&quot;); do
-    		title=&quot;$(titleline -i &quot;$FNAME&quot;)&quot;
-    		docpath=&quot;$(dirname &quot;$FNAME&quot;)&quot;
-    		html_filename=&quot;$(basename &quot;$FNAME&quot; .md).html&quot;
-    		if [ &quot;$html_filename&quot; != &quot;nav.html&quot; ]; then
-    			echo &quot;+ [$title]($docpath/$html_filename)&quot; &gt;&gt;nav.md
-    		fi
-    	done
+        echo &quot;+ [Home](/)&quot; &gt;nav.md
+        echo &quot;+ [Up](../)&quot; &gt;&gt;nav.md
+        for FNAME in $(find . -type f | grep -E &quot;\.md$&quot;); do
+            title=&quot;$(titleline -i &quot;$FNAME&quot;)&quot;
+            docpath=&quot;$(dirname &quot;$FNAME&quot;)&quot;
+            html_filename=&quot;$(basename &quot;$FNAME&quot; .md).html&quot;
+            if [ &quot;$html_filename&quot; != &quot;nav.html&quot; ]; then
+                echo &quot;+ [$title]($docpath/$html_filename)&quot; &gt;&gt;nav.md
+            fi
+        done
     }
 
     echo &quot;Checking necessary software is installed&quot;
@@ -98,50 +101,62 @@ directory.</p>
 
     echo &quot;Converting Markdown files to HTML supporting a relative document path to the CSS file&quot;
     for MARKDOWN_FILE in $(find . -type f | grep -E &quot;\.md$&quot;); do
-    	# Get filename
-    	FNAME=&quot;$(basename &quot;$MARKDOWN_FILE&quot;)&quot;
-    	if [ &quot;$FNAME&quot; != &quot;nav.md&quot; ]; then
-    		# Caltechlate DOCPath
-    		DOCPath=&quot;$(dirname &quot;$MARKDOWN_FILE&quot;)&quot;
-    		# Calculate the HTML filename
-    		HTML_FILE=&quot;$(basename &quot;$MARKDOWN_FILE&quot; .md).html&quot;
-    		CSSPath=&quot;$(reldocpath &quot;$DOCPath&quot; css)&quot;
-    		WEBSITE_TITLE=&quot;$(titleline -i &quot;$MARKDOWN_FILE&quot;)&quot;
-    		echo &quot;Generating $WEBSITE_TITLE from $MARKDOWN_FILE&quot;
-    		mkpage \
-    			&quot;title=text:$WEBSITE_TITLE&quot; \
-    			&quot;csspath=text:$CSSPath/site.css&quot; \
-    			&quot;nav=nav.md&quot; \
-    			&quot;content=$MARKDOWN_FILE&quot; \
-    			page.tmpl &gt;&quot;$DOCPath/$HTML_FILE&quot;
-    	fi
+        # Get filename
+        FNAME=&quot;$(basename &quot;$MARKDOWN_FILE&quot;)&quot;
+        if [ &quot;$FNAME&quot; != &quot;nav.md&quot; ]; then
+            # Caltechlate DOCPath
+            DOCPath=&quot;$(dirname &quot;$MARKDOWN_FILE&quot;)&quot;
+            # Calculate the HTML filename
+            HTML_FILE=&quot;$(basename &quot;$MARKDOWN_FILE&quot; .md).html&quot;
+            CSSPath=&quot;$(reldocpath &quot;$DOCPath&quot; css)&quot;
+            WEBSITE_TITLE=&quot;$(titleline -i &quot;$MARKDOWN_FILE&quot;)&quot;
+            echo &quot;Generating $WEBSITE_TITLE from $MARKDOWN_FILE&quot;
+            mkpage \
+                &quot;title=text:$WEBSITE_TITLE&quot; \
+                &quot;csspath=text:$CSSPath/site.css&quot; \
+                &quot;nav=nav.md&quot; \
+                &quot;content=$MARKDOWN_FILE&quot; \
+                page.tmpl &gt;&quot;$DOCPath/$HTML_FILE&quot;
+        fi
     done
 
-    cd &quot;$START&quot;
-</code></pre>
-
-<h2>Improvements over one-element</h2>
-
+    cd &quot;$START&quot;</code></pre>
+<h2 id="improvements-over-one-element">
+Improvements over one-element
+</h2>
 <ul>
-<li>The Title is generated from extracting it from the Markdown document being processed.</li>
-<li>Navigation is defined in <em>nav.md</em> for the site. This is generated by collection document URLs and relative paths using standard Unix shell commands</li>
-<li>CSSPath is calculated, as before, with <em>reldocpath</em></li>
-<li><a href="mk-website.bash">mk-website.bash</a> will find all Markdown files and subdirectories and render <em>nav.md</em> automatically</li>
+<li>
+The Title is generated from extracting it from the Markdown document being processed.
+</li>
+<li>
+Navigation is defined in <em>nav.md</em> for the site. This is generated by collection document URLs and relative paths using standard Unix shell commands
+</li>
+<li>
+CSSPath is calculated, as before, with <em>reldocpath</em>
+</li>
+<li>
+<a href="mk-website.bash">mk-website.bash</a> will find all Markdown files and subdirectories and render <em>nav.md</em> automatically
+</li>
 </ul>
-
-<h2>Limitations</h2>
-
-<ol>
-<li>This theme assumes this directory is the root HTML directory</li>
-<li><em>nav.md</em> is treated as a special filename and not rendered as its own page</li>
-<li>Navigation is defined as a UL list and always expanded but this could be improved with updating the CSS pointed to by CSSPath</li>
+<h2 id="limitations">
+Limitations
+</h2>
+<ol type="1">
+<li>
+This theme assumes this directory is the root HTML directory
+</li>
+<li>
+<em>nav.md</em> is treated as a special filename and not rendered as its own page
+</li>
+<li>
+Navigation is defined as a UL list and always expanded but this could be improved with updating the CSS pointed to by CSSPath
+</li>
 </ol>
-
 </section>
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>

@@ -21,7 +21,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -44,26 +43,26 @@ Using the key/value pairs populate the template(s) and render to stdout.
 EXAMPLE
 
 Template (named "examples/weather.tmpl")
-
-    {{ define "weather.tmpl" }}
-    Date: {{- .now}}
-
-    Hello {{.name -}},
     
-    The current weather is
-
-    {{index .weatherForecast.data.weather 0}}
-
+    Date: $now$
+    
+    Hello $name$,
+        
+    The weather forcast is
+    
+    $if(weather.data.weather)$
+      $weather.data.weather[; ]$
+    $endif$
+    
     Thank you
+    
+    $signature$
 
-    {{.signature}}
-	{{ end }}
-
-Render the template above (i.e. examples/weather.tmpl) would be accomplished from 
-the following data sources--
+Render the template above (i.e. examples/weather.tmpl) would be 
+accomplished from the following data sources--
 
  + "now" and "name" are strings
- + "weatherForecast" is JSON data retrieved from a URL
+ + "weather" is JSON data retrieved from a URL
  	+ ".data.weather" is a data path inside the JSON document
 	+ "index" let's us pull our the "0"-th element (i.e. the initial element of the array)
  + "signature" comes from a file in our local disc (i.e. examples/signature.txt)
@@ -74,10 +73,6 @@ That would be expressed on the command line as follows
         "weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
         signature=examples/signature.txt \
         examples/weather.tmpl     
-
-Golang's text/template docs can be found at 
-
-      https://golang.org/pkg/text/template/
 
 `
 
@@ -97,6 +92,8 @@ Golang's text/template docs can be found at
 	showTemplate   bool
 	codesnip       bool
 	codeType       string
+	usePandoc      bool
+	usePongo       bool
 )
 
 func main() {
@@ -132,6 +129,8 @@ func main() {
 	app.StringVar(&templateFNames, "templates", "", "colon delimited list of templates to use")
 	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks")
 	app.StringVar(&codeType, "code", "", "outout just code blocks for language, e.g. shell or json")
+	app.BoolVar(&usePandoc, "pandoc", true, "use Pandoc's template engine")
+	app.BoolVar(&usePongo, "pongo", false, "use pongo2 template engine")
 
 	app.Parse()
 	args := app.Args()
@@ -154,7 +153,7 @@ func main() {
 	}
 
 	if showTemplate {
-		fmt.Fprintln(app.Out, mkpage.DefaultTemplateSource)
+		fmt.Fprintln(app.Out, mkpage.Defaults["/template/page.tmpl"])
 		os.Exit(0)
 	}
 
@@ -213,30 +212,38 @@ func main() {
 		}
 	}
 
-	// Create our Tmpl struct with our function map
-	tmpl := tmplfn.New(tmplfn.AllFuncs())
+	// Make the page with pandoc, pongo or go templates and Go Markdown
+	switch {
+	case usePandoc:
+		templateName := ""
+		if len(templateSources) > 0 {
+			templateName = templateSources[0]
+		}
+		err = mkpage.MakePandoc(app.Out, templateName, data)
+	case usePongo:
+		templateName := ""
+		if len(templateSources) > 0 {
+			templateName = templateSources[0]
+		}
+		err = mkpage.MakePongo(app.Out, templateName, data)
+	default:
+		// Create our Tmpl struct with our function map
+		tmpl := tmplfn.New(tmplfn.AllFuncs())
 
-	// Load any user supplied templates
-	if len(templateSources) > 0 {
-		err = tmpl.ReadFiles(templateSources...)
+		// Load any user supplied templates
+		if len(templateSources) > 0 {
+			err = tmpl.ReadFiles(templateSources...)
+			cli.ExitOnError(app.Eout, err, quiet)
+			templateName = path.Base(templateSources[0])
+		} else {
+			// Load our default template maps
+			err = tmpl.Add(templateName, mkpage.Defaults["/templates/page.tmpl"])
+			cli.ExitOnError(app.Eout, err, quiet)
+		}
+		// Build a template and send to MakePage
+		t, err := tmpl.Assemble()
 		cli.ExitOnError(app.Eout, err, quiet)
-		templateName = path.Base(templateSources[0])
-	} else if inputFName != "" {
-		// Read any templates from stdin that might be present
-		buf, err := ioutil.ReadAll(app.In)
-		cli.ExitOnError(app.Eout, err, quiet)
-		tmpl.Add(templateName, buf)
-	} else {
-		// Load our default template maps
-		err = tmpl.Add(templateName, mkpage.Defaults["/templates/page.tmpl"])
-		cli.ExitOnError(app.Eout, err, quiet)
+		err = mkpage.MakePage(app.Out, templateName, t, data)
 	}
-
-	// Build a template and send to MakePage
-	t, err := tmpl.Assemble()
-	cli.ExitOnError(app.Eout, err, quiet)
-
-	// Make the page
-	err = mkpage.MakePage(app.Out, templateName, t, data)
 	cli.ExitOnError(app.Eout, err, quiet)
 }

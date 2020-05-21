@@ -10,70 +10,94 @@
 </header>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="../">Up</a></li>
-<li><a href="./mkrss.html">mkrss</a></li>
-<li><a href="./mkpage.html">mkpage</a></li>
-<li><a href="./urlencode.html">urlencode</a></li>
-<li><a href="./go-template-recipes.html">Go text/template recipes</a></li>
-<li><a href="./titleline.html">titleline</a></li>
-<li><a href="./mkslides.html">mkslides</a></li>
-<li><a href="./slides/three-slides.html">Title Page</a></li>
-<li><a href="./slides/presentation.html">What is mkslides?</a></li>
-<li><a href="./byline.html">byline</a></li>
-<li><a href="./ws.html">ws</a></li>
-<li><a href="./frontmatter.html">frontmatter</a></li>
-<li><a href="./mkpongo.html">mkpongo</a></li>
-<li><a href="./urldecode.html">urldecode</a></li>
-<li><a href="./sitemapper.html">sitemapper</a></li>
-<li><a href="./reldocpath.html">reldocpath</a></li>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="./mkrss.html">mkrss</a>
+</li>
+<li>
+<a href="./mkpage.html">mkpage</a>
+</li>
+<li>
+<a href="./urlencode.html">urlencode</a>
+</li>
+<li>
+<a href="./go-template-recipes.html">Go text/template recipes</a>
+</li>
+<li>
+<a href="./titleline.html">titleline</a>
+</li>
+<li>
+<a href="./slides/three-slides.html">Title Page</a>
+</li>
+<li>
+<a href="./byline.html">byline</a>
+</li>
+<li>
+<a href="./ws.html">ws</a>
+</li>
+<li>
+<a href="./frontmatter.html">frontmatter</a>
+</li>
+<li>
+<a href="./mkpongo.html">mkpongo</a>
+</li>
+<li>
+<a href="./urldecode.html">urldecode</a>
+</li>
+<li>
+<a href="./sitemapper.html">sitemapper</a>
+</li>
+<li>
+<a href="./reldocpath.html">reldocpath</a>
+</li>
 </ul>
-
 </nav>
 
 <section>
-<h1>urlencode</h1>
-
-<h2>USAGE</h2>
-
-<pre><code>urlencode [OPTIONS] [STRING_TO_ENCODE]
-</code></pre>
-
-<h2>SYNOPSIS</h2>
-
-<p>urlencode is a simple command line utility to URL encode content. By default
-it reads from standard input and writes to standard out.  You can
-also specifty the string to encode as a command line parameter.</p>
-
-<h2>OPTIONS</h2>
-
-<pre><code>	-h	display help
-	-help	display help
-	-i	set input filename
-	-input	set input filename
-	-l	display license
-	-license	display license
-	-o	set output filename
-	-output	set output filename
-	-v	display version
-	-version	display version
-</code></pre>
-
-<h2>EXAMPLES</h2>
-
-<pre><code class="language-shell">    echo &quot;This is the string to encode &amp; nothing else!&quot; | urlencode
-</code></pre>
-
-<p>would yield</p>
-
-<pre><code>    This%20is%20the%20string%20to%20encode%20&amp;%20nothing%20else%0A
-</code></pre>
-
+<h1 id="urlencode">
+urlencode
+</h1>
+<h2 id="usage">
+USAGE
+</h2>
+<pre><code>urlencode [OPTIONS] [STRING_TO_ENCODE]</code></pre>
+<h2 id="synopsis">
+SYNOPSIS
+</h2>
+<p>
+urlencode is a simple command line utility to URL encode content. By default it reads from standard input and writes to standard out. You can also specifty the string to encode as a command line parameter.
+</p>
+<h2 id="options">
+OPTIONS
+</h2>
+<pre><code>    -h  display help
+    -help   display help
+    -i  set input filename
+    -input  set input filename
+    -l  display license
+    -license    display license
+    -o  set output filename
+    -output set output filename
+    -v  display version
+    -version    display version</code></pre>
+<h2 id="examples">
+EXAMPLES
+</h2>
+<pre class="shell"><code>    echo &quot;This is the string to encode &amp; nothing else!&quot; | urlencode</code></pre>
+<p>
+would yield
+</p>
+<pre><code>    This%20is%20the%20string%20to%20encode%20&amp;%20nothing%20else%0A</code></pre>
 </section>
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>

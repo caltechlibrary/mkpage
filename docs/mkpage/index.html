@@ -8,32 +8,38 @@
 <header>
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
+<nav>
+
+</nav>
 
 <section>
-<h1>USAGE</h1>
-
-<pre><code>mkpage [OPTIONS] [KEY/VALUE DATA PAIRS] [TEMPLATE_FILENAMES]
-</code></pre>
-
-<h2>DESCRIPTION</h2>
-
-<p>SYNOPSIS</p>
-
-<p>Using the key/value pairs populate the template(s) and render to stdout.</p>
-
-<h2>ENVIRONMENT</h2>
-
-<p>Environment variables can be overridden by corresponding options</p>
-
-<pre><code>    MKPAGE_TEMPLATES   # set the default template path
-</code></pre>
-
-<h2>OPTIONS</h2>
-
-<p>Below are a set of options available. Options will override any corresponding environment settings.</p>
-
+<h1 id="usage">
+USAGE
+</h1>
+<pre><code>mkpage [OPTIONS] [KEY/VALUE DATA PAIRS] [TEMPLATE_FILENAMES]</code></pre>
+<h2 id="description">
+DESCRIPTION
+</h2>
+<p>
+SYNOPSIS
+</p>
+<p>
+Using the key/value pairs populate the template(s) and render to stdout.
+</p>
+<h2 id="environment">
+ENVIRONMENT
+</h2>
+<p>
+Environment variables can be overridden by corresponding options
+</p>
+<pre><code>    MKPAGE_TEMPLATES   # set the default template path</code></pre>
+<h2 id="options">
+OPTIONS
+</h2>
+<p>
+Below are a set of options available. Options will override any corresponding environment settings.
+</p>
 <pre><code>    -code                outout just code blocks for language, e.g. shell or json
-    -codesnip            output just the code bocks
     -examples            display example(s)
     -generate-manpage    generate man page
     -generate-markdown   generate markdown documentation
@@ -46,64 +52,64 @@
     -show-template       display the default template
     -t                   colon delimited list of templates to use
     -templates           colon delimited list of templates to use
-    -v, -version         display version
-</code></pre>
+    -v, -version         display version</code></pre>
+<h2 id="examples">
+EXAMPLES
+</h2>
+<p>
+EXAMPLE
+</p>
+<p>
+Template (named “examples/weather.tmpl”)
+</p>
+<pre><code>Date: ${now}
 
-<h2>EXAMPLES</h2>
-
-<p>EXAMPLE</p>
-
-<p>Template (named &ldquo;examples/weather.tmpl&rdquo;)</p>
-
-<pre><code>{{ define &quot;weather.tmpl&quot; }}
-Date: {{- .now}}
-
-Hello {{.name -}},
+Hello ${name},
 
 The current weather is
 
-{{index .weatherForecast.data.weather 0}}
+${for(weather.data.weather)}${it}$sep$, ${endfor}
 
 Thank you
 
-{{.signature}}
-{{ end }}
-</code></pre>
-
-<p>Render the template above (i.e. examples/weather.tmpl) would be accomplished from
-the following data sources&ndash;</p>
-
+${signature}</code></pre>
+<p>
+Render the template above (i.e. examples/weather.tmpl) would be accomplished from the following data sources–
+</p>
 <ul>
-<li>&ldquo;now&rdquo; and &ldquo;name&rdquo; are strings</li>
-<li>&ldquo;weatherForecast&rdquo; is JSON data retrieved from a URL
-	+ &ldquo;.data.weather&rdquo; is a data path inside the JSON document
-
+<li>
+“now” and “name” are strings
+</li>
+<li>
+“weatherForecast” is JSON data retrieved from a URL
 <ul>
-<li>&ldquo;index&rdquo; let&rsquo;s us pull our the &ldquo;0&rdquo;-th element (i.e. the initial element of the array)</li>
-</ul></li>
-<li>&ldquo;signature&rdquo; comes from a file in our local disc (i.e. examples/signature.txt)</li>
+<li>
+“.data.weather” is a data path inside the JSON document
+</li>
+<li>
+“index” let’s us pull our the “0”-th element (i.e. the initial element of the array)
+</li>
 </ul>
-
-<p>That would be expressed on the command line as follows</p>
-
+</li>
+<li>
+“signature” comes from a file in our local disc (i.e. examples/signature.txt)
+</li>
+</ul>
+<p>
+That would be expressed on the command line as follows
+</p>
 <pre><code>mkpage &quot;now=text:$(date)&quot; &quot;name=text:Little Frieda&quot; \
-    &quot;weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
+    &quot;weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
     signature=examples/signature.txt \
-    examples/weather.tmpl     
-</code></pre>
-
-<p>Golang&rsquo;s text/template docs can be found at</p>
-
-<pre><code>  https://golang.org/pkg/text/template/
-</code></pre>
-
-<p>mkpage v0.0.26</p>
-
+    examples/weather.tmpl     </code></pre>
+<p>
+mkpage v0.0.26
+</p>
 </section>
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>

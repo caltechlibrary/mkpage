@@ -1,12 +1,12 @@
-Date: {{ now }}
+Date: $now$
 
-Hello {{ name }},
+Hello $name$,
     
 The current weather is
 
-{{ weatherForecast.data.weather.0 }}
+$if(weather.data.weather)$$weather.data.weather[; ]$$endif
 
 Thank you
 
-{{ signature }}
+$signature$
 

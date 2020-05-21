@@ -25,7 +25,6 @@ Below are a set of options available. Options will override any corresponding en
 
 ```
     -code                outout just code blocks for language, e.g. shell or json
-    -codesnip            output just the code bocks
     -examples            display example(s)
     -generate-manpage    generate man page
     -generate-markdown   generate markdown documentation
@@ -50,19 +49,17 @@ EXAMPLE
 
 Template (named "examples/weather.tmpl")
 
-    {{ define "weather.tmpl" }}
-    Date: {{- .now}}
+    Date: ${now}
 
-    Hello {{.name -}},
+    Hello ${name},
     
     The current weather is
 
-    {{index .weatherForecast.data.weather 0}}
+    ${for(weather.data.weather)}${it}$sep$, ${endfor}
 
     Thank you
 
-    {{.signature}}
-	{{ end }}
+    ${signature}
 
 Render the template above (i.e. examples/weather.tmpl) would be accomplished from 
 the following data sources--
@@ -76,14 +73,8 @@ the following data sources--
 That would be expressed on the command line as follows
 
     mkpage "now=text:$(date)" "name=text:Little Frieda" \
-        "weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
+        "weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
         signature=examples/signature.txt \
         examples/weather.tmpl     
-
-Golang's text/template docs can be found at 
-
-      https://golang.org/pkg/text/template/
-
-
 
 mkpage v0.0.26
