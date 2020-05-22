@@ -93,7 +93,6 @@ That would be expressed on the command line as follows
 	codesnip       bool
 	codeType       string
 	usePandoc      bool
-	usePongo       bool
 )
 
 func main() {
@@ -130,7 +129,6 @@ func main() {
 	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks")
 	app.StringVar(&codeType, "code", "", "outout just code blocks for language, e.g. shell or json")
 	app.BoolVar(&usePandoc, "pandoc", true, "use Pandoc's template engine")
-	app.BoolVar(&usePongo, "pongo", false, "use pongo2 template engine")
 
 	app.Parse()
 	args := app.Args()
@@ -212,7 +210,7 @@ func main() {
 		}
 	}
 
-	// Make the page with pandoc, pongo or go templates and Go Markdown
+	// Make the page with pandoc, go templates and Go Markdown
 	switch {
 	case usePandoc:
 		templateName := ""
@@ -220,13 +218,11 @@ func main() {
 			templateName = templateSources[0]
 		}
 		err = mkpage.MakePandoc(app.Out, templateName, data)
-	case usePongo:
-		templateName := ""
-		if len(templateSources) > 0 {
-			templateName = templateSources[0]
-		}
-		err = mkpage.MakePongo(app.Out, templateName, data)
 	default:
+		// DEPRECIATED: This is maintained for backard compatibility
+		// for now. It should be removed when the transition is
+		// completed.
+
 		// Create our Tmpl struct with our function map
 		tmpl := tmplfn.New(tmplfn.AllFuncs())
 

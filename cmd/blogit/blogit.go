@@ -22,11 +22,11 @@ package main
 import (
 	"fmt"
 	"os"
-	"path"
-	"strings"
+	"time"
 
 	// Caltech Library packages
 	"github.com/caltechlibrary/cli"
+	"github.com/caltechlibrary/mkpage"
 )
 
 var (
@@ -78,7 +78,7 @@ structures for things like podcasts or videocasts.
 	// Standard Options
 	showHelp         bool
 	showVersion      bool
-	showVerbose bool
+	showVerbose      bool
 	showLicense      bool
 	showExamples     bool
 	quiet            bool
@@ -87,7 +87,8 @@ structures for things like podcasts or videocasts.
 
 	// Application Options
 	prefixPath string
-
+	docName    string
+	dateString string
 )
 
 func main() {
@@ -95,21 +96,20 @@ func main() {
 	appName := app.AppName()
 
 	// Document expected parameters
-	app.SetParams(`DOCUMENT`, `[DATE]`)
+	app.SetParams(`DOCUMENT_NAME`, `[DATE]`)
 
 	// Add Help docs
 	app.AddHelp("license", []byte(fmt.Sprintf(mkpage.LicenseText, appName, mkpage.Version)))
 	app.AddHelp("description", []byte(fmt.Sprintf(description)))
-	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName, appName, appName, appName)))
+	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName, appName, appName, appName, appName, appName)))
 
 	// Setup Environment variables
-	app.EnvStringVar(&templateFNames, "MKPAGE_TEMPLATES", "", "set the default template path")
 
 	// Standard Options
 	app.BoolVar(&showHelp, "h,help", false, "display help")
 	app.BoolVar(&showVersion, "v,version", false, "display version")
 	app.BoolVar(&showVerbose, "V,verbose", false, "verbose output")
-	app.BoolVar(&showExamples, "e,examples", false, "verbose output")
+	app.BoolVar(&showExamples, "e,examples", false, "display examples")
 	app.BoolVar(&showLicense, "l,license", false, "display license")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate markdown documentation")
 	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
@@ -119,6 +119,15 @@ func main() {
 
 	app.Parse()
 	args := app.Args()
+	switch len(args) {
+	case 1:
+		docName, dateString = args[0], time.Now().Format("2015-03-07")
+	case 2:
+		docName, dateString = args[0], args[1]
+	default:
+		app.Usage(app.Out)
+		os.Exit(1)
+	}
 
 	if showHelp || showExamples {
 		if len(args) > 0 {
@@ -145,7 +154,6 @@ func main() {
 	var err error
 
 	app.Eout = os.Stderr
-
 
 	// Process flags and update the environment as needed.
 	if generateMarkdown {

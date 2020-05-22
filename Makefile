@@ -20,7 +20,7 @@ endif
 build: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/sitemapper$(EXT) bin/byline$(EXT) bin/titleline$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
-	bin/ws$(EXT) bin/frontmatter$(EXT)
+	bin/ws$(EXT) bin/frontmatter$(EXT) bin/blogit$(EXT)
 
 mkpage.go: assets.go codesnip.go
 
@@ -28,7 +28,7 @@ assets.go: defaults/templates/page.tmpl defaults/templates/slides.tmpl .FORCE
 	pkgassets -verbose -o assets.go -p mkpage Defaults defaults
 	git add assets.go
 
-bin/mkpage$(EXT): mkpage.go assets.go codesnip.go cmd/mkpage/mkpage.go mkpandoc.go mkpongo.go
+bin/mkpage$(EXT): mkpage.go assets.go codesnip.go cmd/mkpage/mkpage.go blogit.go mkpandoc.go
 	go build -o bin/mkpage$(EXT) cmd/mkpage/mkpage.go
 
 bin/mkrss$(EXT): mkpage.go cmd/mkrss/mkrss.go
@@ -58,13 +58,16 @@ bin/ws$(EXT): mkpage.go cmd/ws/ws.go
 bin/frontmatter$(EXT): mkpage.go cmd/frontmatter/frontmatter.go
 	go build -o bin/frontmatter$(EXT) cmd/frontmatter/frontmatter.go
 
-
-bin/mkpandoc$(EXT): mkpage.go mkpandoc.go cmd/mkpandoc/mkpandoc.go
-	go build -o bin/mkpandoc$(EXT) cmd/mkpandoc/mkpandoc.go
+bin/blogit$(EXT): mkpage.go mkpandoc.go blogit.go cmd/blogit/blogit.go
+	go build -o bin/blogit$(EXT) cmd/blogit/blogit.go
 
 lint:
 	golint mkpage.go
 	golint mkpage_test.go
+	golint mkpandoc.go
+	golint mkpandoc_test.go
+	golint blogit.go
+	golint blogit_test.go
 	golint cmd/mkpage/mkpage.go
 	golint cmd/mkrss/mkrss.go
 	golint cmd/sitemapper/sitemapper.go
@@ -75,10 +78,15 @@ lint:
 	golint cmd/urldecode/urldecode.go
 	golint cmd/ws/ws.go
 	golint cmd/frontmatter/frontmatter.go
+	golint cmd/blogit/blotit.go
 
 format:
 	gofmt -w mkpage.go
 	gofmt -w mkpage_test.go
+	gofmt -w mkpandoc.go
+	gofmt -w mkpandoc_test.go
+	gofmt -w blogit.go
+	gofmt -w blogit_test.go
 	gofmt -w cmd/mkpage/mkpage.go
 	gofmt -w cmd/mkrss/mkrss.go
 	gofmt -w cmd/sitemapper/sitemapper.go
@@ -93,7 +101,7 @@ format:
 test: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/sitemapper$(EXT) bin/byline$(EXT) bin/titleline$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
-	bin/ws$(EXT) bin/frontmatter$(EXT)
+	bin/ws$(EXT) bin/frontmatter$(EXT) bin/blogit$(ext)
 	go test
 	bash test_cmd.bash
 
@@ -122,6 +130,7 @@ man: build
 	bin/urlencode -generate-manpage | nroff -Tutf8 -man > man/man1/urlencode.1
 	bin/ws -generate-manpage | nroff -Tutf8 -man > man/man1/ws.1
 	bin/frontmatter -generate-manpage | nroff -Tutf8 -man > man/man1/frontmatter.1
+	bin/blogit -generate-manpage | nroff -Tutf8 -man > man/man1/blogit.1
 
 install: assets.go
 	env GOBIN=$(GOPATH)/bin go install cmd/mkpage/mkpage.go
@@ -134,6 +143,7 @@ install: assets.go
 	env GOBIN=$(GOPATH)/bin go install cmd/urldecode/urldecode.go
 	env GOBIN=$(GOPATH)/bin go install cmd/ws/ws.go
 	env GOBIN=$(GOPATH)/bin go install cmd/frontmatter/frontmatter.go
+	env GOBIN=$(GOPATH)/bin go install cmd/blogit/blogit.go
 
 
 dist/linux-amd64:
@@ -148,6 +158,7 @@ dist/linux-amd64:
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
+	env  GOOS=linux GOARCH=amd64 go build -o dist/bin/blogit cmd/blogit/blogit.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -165,6 +176,7 @@ dist/windows-amd64:
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/urldecode.exe cmd/urldecode/urldecode.go
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/ws.exe cmd/ws/ws.go
 	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/frontmatter.exe cmd/frontmatter/frontmatter.go
+	env  GOOS=windows GOARCH=amd64 go build -o dist/bin/blogit.exe cmd/blogit/blogit.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -180,6 +192,7 @@ dist/macosx-amd64:
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
+	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/blogit cmd/blogit/blogit.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-macosx-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -195,6 +208,7 @@ dist/raspbian-arm7:
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
+	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/blogit cmd/blogit/blogit.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm7.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
@@ -214,7 +228,7 @@ distribute_docs:
 	cp -v docs/urlencode.md dist/docs/
 	cp -v docs/ws.md dist/docs/
 	cp -v docs/frontmatter.md dist/docs/
-	cp -v how-to/go-template-recipes.md dist/how-to/
+	cp -v docs/blogit.md dist/docs/
 	cp -v how-to/the-basics.md dist/how-to/
 	cp -vR templates dist/
 	#FIXME: need to pull package versions from go.mod file.

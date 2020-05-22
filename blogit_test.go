@@ -1,4 +1,5 @@
-// Package mkpage is an experimental static site generator
+//
+// Package mkpage is an experiment in a light weight template and markdown processor.
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
@@ -18,39 +19,10 @@
 package mkpage
 
 import (
-	"fmt"
-	"io"
-
-	// 3rd Party, Pongo2 library
-	"github.com/flosch/pongo2"
+	"testing"
 )
 
-// MakePongo applies the key/value map to the named template in tmpl and renders to writer and returns an error if something goes wrong
-func MakePongo(wr io.Writer, templateName string, keyValues map[string]string) error {
-	data, err := ResolveData(keyValues)
-	if err != nil {
-		return fmt.Errorf("Can't resolve data source %s", err)
-	}
-
-	if templateName == "" {
-		if fName, ok := data["template"]; ok == true {
-			templateName = fName.(string)
-		} else {
-			return fmt.Errorf("Missing Pongo2 template name")
-		}
-	}
-	tpl, err := pongo2.FromFile(templateName)
-	if err != nil {
-		return fmt.Errorf("Reading Template %q, %s", templateName, err)
-	}
-	/* NOTE: We're processing Markdown from our local disc so
-	   we're trusting it to be sensible! */
-	pongo2.SetAutoescape(false)
-	ctx := pongo2.Context{}
-	src, err := tpl.Execute(pongo2.Context.Update(ctx, data))
-	if err != nil {
-		return fmt.Errorf("Executing template %q, %s", templateName, err)
-	}
-	wr.Write([]byte(src))
-	return nil
+func TestBlogIt(t *testing.T) {
+	t.Errorf("TestBlogIt() not implemented.")
+	t.FailNow()
 }
