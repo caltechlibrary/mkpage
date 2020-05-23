@@ -39,6 +39,7 @@ that best fits your needs.
 The following command line tools come with _mkpage_ 
 
 + [mkpage](docs/mkpage.html) -- a single page renderer and processor for Markdown, [Fountain](https://fountain.io), ReStructureText, Textile, Jira markup, JSON using [Pandoc](https://pandoc.org) as convertion and template engine
++ [blogit](docs/blogit.html) -- a tool for adding files into a site's blog path structure
 + [mkrss](docs/mkrss.html) -- an RSS feed generator for content authored in Markdown and rendered to HTML
 + [sitemapper](docs/sitemapper.html) -- an XML Sitemap generator
 + [frontmatter](docs/frontmatter.html) -- a front matter extractor
