@@ -16,23 +16,21 @@ have a port of Bash). It uses the widely adopted
 Markdown, ReStructureText or Jira text.
 
 _mkpage_ can run on machines as small as a Raspberry Pi.  Its small 
-foot print and minimal dependencies (only Pandoc) meaning installation 
+foot print and minimal dependencies (only Pandoc) means installation 
 usually boils down to copying the precompiled binaries to a bin directory 
-in your path. Precompiled binaries are available for Linux, Windows and 
-Mac OS X running on Intel as well as for the ARM7 versions of 
-Raspbian running on Raspberry Pi.  _mkpage_ supports three template
-languages as this time, [Pandoc](https://pandoc.org/MANUAL.html#templates) 
-and [Go's text templates](https://golang.org/pkg/text/template/).
-Pandoc's template language is easy to learn and use than
-complex template languages used in some of the more established 
-static site generators like 
-[Jekyll](https://jekyllrb.com/), [Hugo](https://gohugo.io) and 
-[Assemble](http://assemble.io/).
+in your path after a installing Pandoc. Precompiled binaries are 
+available for Linux, Windows and Mac OS X running on Intel as well as 
+for the ARM7 versions of Raspbian running on Raspberry Pi.  _mkpage_
+supports [Pandoc](https://pandoc.org/MANUAL.html#templates)'s template 
+language.  This language is easy to learn and well documented. It is 
+generally easier to use than more ambitious template engines like 
+[Jekyll](https://jekyllrb.com/), [Hugo](https://gohugo.io)'s Go 
+templates and [Assemble](http://assemble.io/).
 
 _mkpage_'s minimalism is an advantage when you combine _mkpage_ 
 with the standard suite of text processing tools available under your 
 typical Unix/POSIX like operating systems. This makes scripting a _mkpage_ 
-project using languages like Python, Make and Bash straight forward.  
+project using languages like Python, Make or Bash straight forward.  
 Each _mkpage_ utility is independent. You can use as few or as many 
 or as few as you like. You determine the workflow and build process 
 that best fits your needs.
@@ -40,12 +38,12 @@ that best fits your needs.
 
 The following command line tools come with _mkpage_ 
 
-+ [mkpage](docs/mkpage.html) -- a single page renderer and processor for Markdown, [Fountain](https://fountain.io), ReStructureText, Textile, Jira markup, JSON and Go text templates, using [Pandoc](https://pandoc.org) as its engine
++ [mkpage](docs/mkpage.html) -- a single page renderer and processor for Markdown, [Fountain](https://fountain.io), ReStructureText, Textile, Jira markup, JSON using [Pandoc](https://pandoc.org) as convertion and template engine
 + [mkrss](docs/mkrss.html) -- an RSS feed generator for content authored in Markdown and rendered to HTML
 + [sitemapper](docs/sitemapper.html) -- an XML Sitemap generator
 + [frontmatter](docs/frontmatter.html) -- a front matter extractor
-+ [byline](docs/byline.html) -- a tool for extracting bylines from Markdown files
-+ [titleline](docs/titleline.html) -- a tool for extracting the first title (H1) in a Markdown document
++ [byline](docs/byline.html) -- a tool for extracting bylines from Markdown files and front matter
++ [titleline](docs/titleline.html) -- a tool for extracting the first title (H1) in a Markdown document or from front matter
 + [reldocpath](docs/reldocpath.html) -- a relative path calculator, useful for pathing hrefs and src attributes in a website
 + [ws](docs/ws.html) -- a fast, small, web server for site development or deployment
 
@@ -60,9 +58,9 @@ is implemented as a Pandoc's template language.
 The "key" in our key/value pairs is used to map into the 
 [Pandoc](https://pandoc.org/MANUAL.html) templates you want rendered. 
 If a key was called "content" the template element would be like 
-`$content$`.  The value of "content" would replace `$content$`.  
-Pandoc templates are combine logic and iteration to make more 
-complex pages.
+`${content}`.  The value of "content" would replace `${content}` in
+the Pandoc template.  Pandoc templates are combine logic and iteration 
+to make more complex pages.
 
 On the "value" side of the key/value pair you have strings of one of 
 several formats - plain text, markdown, [fountain](https://fountain.io),
@@ -73,29 +71,29 @@ content retrieved via a URL based on the mime-type sent from the web
 service.  Here's a basic demonstration of sampling of capabilities
 and integrating data from the [NOAA weather website](http://weather.gov).
 
-### a basic template
+
+### A basic template
 
 ```template
 
-    Date: $now$
+    Date: ${now}
     
-    Hello $name$,
+    Hello ${name},
         
     The weather forecast is
     
-    $if(weather.data.weather)$
-      $weather.data.weather[; ]$
-    $endif$
+    ${if(weather.data.weather)}
+      ${weather.data.weather[; ]}
+    ${endif}
     
     Thank you
     
-    $signature$
+    ${signature}
 
 ```
 
 To render the template above (i.e. [weather.tmpl](examples/weather.tmpl)) 
-is expecting values from various data sources.
-This break down is as follows.
+is expecting values from various data sources broken down as follows.
 
 + "now" and "name" will be explicit strings
     + "now" integrates getting data from the Unix _date_ command
@@ -103,7 +101,7 @@ This break down is as follows.
     + ".data.weather" is the path into the JSON document
 + "signature" will come from a plain text file in your local disc
 
-### writing the _mkpage_ command
+### typing the _mkpage_ command
 
 Here is how we would express the key/value pairs on the command line.
 
@@ -117,23 +115,26 @@ Here is how we would express the key/value pairs on the command line.
 
 Notice the two explicit strings are prefixed with "text:" (other formats 
 include "markdown:" and "json:").  Values without a prefix are assumed 
-to be file paths. We see that in testdata/signature.txt.  Likewise the 
-weather data is coming from a URL. *mkpage* uses the "protocol" 
+to be local file paths. We see that in testdata/signature.txt is one.  
+Likewise the weather data is coming from a URL idendifitied by the 
+"http:" protocol reference . *mkpage* uses the "protocol" 
 prefix to distinguish between literals, file paths and URL based 
-based content. With "http:" and "https:" return with an HTTP header 
+based content. "http:" and "https:" returns an HTTP header 
 the header is used to identify the content type for processing by
-_mkpage_ or Pandoc. E.g. "Content-Type: text/markdown" tells us
-to use Pandoc to translate from Markdown to HTML. For data contained in
-files we rely on the file extension to identify content type, e.g. ".md"
-is markdown, ".rst" is ReStructureText, ".json" is a JSON document.
-If no content type is decernable then we assume the content is plain text.
+_mkpage_ before handing off to Pandoc. E.g. "Content-Type: text/markdown" 
+tells us to use Pandoc to translate from Markdown to HTML. For data 
+contained in files we rely on the file extension to identify content 
+type, e.g. ".md" is markdown, ".rst" is ReStructureText, ".json" is a 
+JSON document.  If no content type is decernable then we assume the 
+content is plain text.
 
 ### the utilities
 
 #### mkpage
 
-*mkpage* comes with some helper utilities that make scripting a 
-deconstructed content management system from Python/Bash easier.
+*mkpage* is a page renderer.  It comes with some helper utilities 
+that make scripting a deconstructed content management system from 
+Python/Bash easier.
 
 #### mkrss
 
@@ -166,6 +167,15 @@ if it finds none.
 *reldocpath* is intended to simplify the calculation of relative
 asset paths (e.g. common CSS files, images, feeds) when working from
 a common project directory.
+
+#### blogit
+
+*blogit* performs two tasks, first is given a filename and date 
+(in YYYY-MM-DD format) it will copy the file into an appropriate
+blog path based on the date provided. The second task is it
+maintains a `blog.json` file describing the content of the blog.
+This is placed in the same folder as the where the year folder for
+the blog is create.
 
 ##### Example
 

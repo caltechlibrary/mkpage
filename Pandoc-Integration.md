@@ -1,5 +1,4 @@
 {
-    "markup": "markdown",
     "title": "mkpage, a possible future",
     "byline": "By R. S. Doiel, 2020-05-19",
     "creator": [ "R. S. Doiel" ],
@@ -7,7 +6,9 @@
 }
 
 
-# mkpage, a possible future
+# Pandoc intergation with MkPage
+
+## A future for MkPage
 
 This is a distillation of my thinking about Markdown processors and **mkpage** as static website generator.  I am excited about the current state of [Pandoc](https://pandoc.org/) because of Mike Hucka's [Pangolin](https://github.com/mhucka/pangolin-notebook).
 
@@ -25,15 +26,17 @@ Pandoc as a template engine is intriguing. I was able to read and understand Mik
 
 ### mkpage's failure
 
-A huge glaring failure in my `mkpage` project has been my reliance on Go's native template language. It was good bootstrap but not so fun now. 
-While Go's template language is "enterprise" ready[^ready] Go's template language remains poorly documented. Go's template language has little outside adoption aside from Hugo[^Hugo]. This situation has not improved in the last decade and I think is unlikely to improve.  Go's various Markdown to HTML libraries have caused concerns. Like what I observed in the NodeJS community many Go packages fail to be updated with version changes and have become orphaned projects. My concern is that overtime 3rd Party Go packages I've relied on will loose development inertia or get abandoned. I am on my third Markdown library in Go at this stage of `mkpage`. Maybe it's time to step off the tread mill?
+A huge glaring failure in my `mkpage` project has been my reliance on Go's native template language. It was a good bootstrap but not so fun now[^now]. 
+While Go's template language is "enterprise" ready[^ready] Go's template language remains poorly documented. Go's template language has little outside adoption aside from Hugo[^Hugo]. This situation has not improved in the last decade and I think is unlikely to improve.  Go's various Markdown to HTML libraries have caused concerns. Like what I observed in the NodeJS community many Go packages fail to be updated with version changes and have become orphaned projects. My concern is that overtime 3rd Party Go packages I've relied on will loose development inertia and be abandoned. I am on my third Markdown library in Go at this stage of `mkpage`. Maybe it's time to step off the tread mill?
+
+[^now]: May, 19, 2020
 
 [^ready]:  In the sense of Java's various "enterprise" ready template languages
 
 [^Hugo]:  Hugo starts with Go's template language but extends it into it's own dialect. In other words a niche in a niche. See https://gohugo.io/.
 
 
-Integrating Pandoc into `mkpage` can be achieved initially using `os.exec` along with pipes. Pandoc has the advantage of being a standard Markdown to HTML converter. It has a simpler and much better documented template engine. Pandoc solves two issues in near term evolution of `mkpage`. I don't believe Pandoc's template language is well know but it is easy to pickup and is much better documented than the Go's template language. If Pandoc had its current feature set existed when I originally started `mkpage` I probably would not have created `mkpage`. I would have only focused on making things scriptable and metadata friendly which is where I think `mkpage` shines.
+Integrating Pandoc into `mkpage` has been easily achieved using `os.exec` along with pipes. Pandoc has the advantage of being a standard Markdown to HTML converter. It has a simpler and much better documented template engine. Pandoc solves two issues in near term evolution of `mkpage`. I don't believe Pandoc's template language is well know but it is easy to pickup and is much better documented than the Go's template language. If Pandoc had its current feature set existed when I originally started `mkpage` I probably would not have created `mkpage`. I would have only focused on making things scriptable and metadata friendly which is where I think `mkpage` shines.
 
 
 Where does this leave `mkpage` project? At a really interesting crossroads (at least to me).  I think `mkpage` collection of tools solves a number of things that are not addressed by Pandoc.
@@ -48,7 +51,7 @@ Where does this leave `mkpage` project? At a really interesting crossroads (at l
 
 ## Where does **mkpage** go from here?
 
-**mkpage** is adopting Pandoc has its Markdown to HTML engine. **mkpage** is adding Pandoc as a template engine as an option with an eye to it becoming the default template engine.  This will allow mkpage to be useful for other markup syntaxes like Textile and RestructText which Pandoc supports. Pandoc integration should be complete for the v0.1.0 release of **mkpage**.
+**mkpage** is adopting Pandoc has its Markdown to HTML engine. **mkpage** is adding Pandoc as the default template engine.  Pandoc's integration also means **mkpage** inherits support for other markup systems like Textile, RestructText, and Jira Text. Pandoc integration should be complete for the v0.0.33 release of **mkpage**.
 
 
 

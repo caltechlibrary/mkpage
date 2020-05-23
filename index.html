@@ -45,17 +45,17 @@ mkpage
 <em>mkpage</em> is a collection of tools that form a static website renderer. It was inspired by deconstructing more complex content management systems and distilling the rendering functions down to a core set of command line tools. It is well suited to building sites hosted on services like GitHub Pages or Amazon’s S3. It is comprised of a set of command line utilities that augment the standard suite of Unix/POSIX commands available on most POSIX based operating systems (e.g. Linux, Mac OS X, Raspberry Pi and Windows systems that have a port of Bash). It uses the widely adopted <a href="https://pandoc.org">Pandoc</a> as its markup conversion tool (e.g. Markdown to HTML). As such you can create your website from Markdown, ReStructureText or Jira text.
 </p>
 <p>
-<em>mkpage</em> can run on machines as small as a Raspberry Pi. Its small foot print and minimal dependencies (only Pandoc) meaning installation usually boils down to copying the precompiled binaries to a bin directory in your path. Precompiled binaries are available for Linux, Windows and Mac OS X running on Intel as well as for the ARM7 versions of Raspbian running on Raspberry Pi. <em>mkpage</em> supports three template languages as this time, <a href="https://pandoc.org/MANUAL.html#templates">Pandoc</a> and <a href="https://golang.org/pkg/text/template/">Go’s text templates</a>. Pandoc’s template language is easy to learn and use than complex template languages used in some of the more established static site generators like <a href="https://jekyllrb.com/">Jekyll</a>, <a href="https://gohugo.io">Hugo</a> and <a href="http://assemble.io/">Assemble</a>.
+<em>mkpage</em> can run on machines as small as a Raspberry Pi. Its small foot print and minimal dependencies (only Pandoc) means installation usually boils down to copying the precompiled binaries to a bin directory in your path after a installing Pandoc. Precompiled binaries are available for Linux, Windows and Mac OS X running on Intel as well as for the ARM7 versions of Raspbian running on Raspberry Pi. <em>mkpage</em> supports <a href="https://pandoc.org/MANUAL.html#templates">Pandoc</a>’s template language. This language is easy to learn and well documented. It is generally easier to use than more ambitious template engines like <a href="https://jekyllrb.com/">Jekyll</a>, <a href="https://gohugo.io">Hugo</a>’s Go templates and <a href="http://assemble.io/">Assemble</a>.
 </p>
 <p>
-<em>mkpage</em>’s minimalism is an advantage when you combine <em>mkpage</em> with the standard suite of text processing tools available under your typical Unix/POSIX like operating systems. This makes scripting a <em>mkpage</em> project using languages like Python, Make and Bash straight forward.<br /> Each <em>mkpage</em> utility is independent. You can use as few or as many or as few as you like. You determine the workflow and build process that best fits your needs.
+<em>mkpage</em>’s minimalism is an advantage when you combine <em>mkpage</em> with the standard suite of text processing tools available under your typical Unix/POSIX like operating systems. This makes scripting a <em>mkpage</em> project using languages like Python, Make or Bash straight forward.<br /> Each <em>mkpage</em> utility is independent. You can use as few or as many or as few as you like. You determine the workflow and build process that best fits your needs.
 </p>
 <p>
 The following command line tools come with <em>mkpage</em>
 </p>
 <ul>
 <li>
-<a href="docs/mkpage.html">mkpage</a> – a single page renderer and processor for Markdown, <a href="https://fountain.io">Fountain</a>, ReStructureText, Textile, Jira markup, JSON and Go text templates, using <a href="https://pandoc.org">Pandoc</a> as its engine
+<a href="docs/mkpage.html">mkpage</a> – a single page renderer and processor for Markdown, <a href="https://fountain.io">Fountain</a>, ReStructureText, Textile, Jira markup, JSON using <a href="https://pandoc.org">Pandoc</a> as convertion and template engine
 </li>
 <li>
 <a href="docs/mkrss.html">mkrss</a> – an RSS feed generator for content authored in Markdown and rendered to HTML
@@ -67,10 +67,10 @@ The following command line tools come with <em>mkpage</em>
 <a href="docs/frontmatter.html">frontmatter</a> – a front matter extractor
 </li>
 <li>
-<a href="docs/byline.html">byline</a> – a tool for extracting bylines from Markdown files
+<a href="docs/byline.html">byline</a> – a tool for extracting bylines from Markdown files and front matter
 </li>
 <li>
-<a href="docs/titleline.html">titleline</a> – a tool for extracting the first title (H1) in a Markdown document
+<a href="docs/titleline.html">titleline</a> – a tool for extracting the first title (H1) in a Markdown document or from front matter
 </li>
 <li>
 <a href="docs/reldocpath.html">reldocpath</a> – a relative path calculator, useful for pathing hrefs and src attributes in a website

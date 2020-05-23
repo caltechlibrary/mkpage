@@ -39,6 +39,31 @@ function assert_empty() {
 # Tests
 #
 
+function test_blogit() {
+    mkdir -p test/blog
+    if ! bin/blogit --prefix=test/blog README.md '2015-01-03'; then
+        echo "Failed: bin/blogit --prefix=test/blog README.md 2015-01-03"
+        exit 1
+    fi 
+    if ! bin/blogit --prefix=test/blog INSTALL.md '2015-01-03'; then
+        echo "bin/blogit --prefix=test/blog INSTALL.md 2015-01-03"
+        exit 1
+    fi
+    if ! bin/blogit --prefix=test/blog LICENSE '2015-01-03'; then
+        echo "bin/blogit --prefix=test/blog LICENSE '2015-01-03'"
+        exit 1
+    fi
+    if ! bin/blogit --prefix=test/blog a-possible-future.md '2020-05-19'; then
+        echo "bin/blogit --prefix=test/blog a-possible-future.md '2020-05-19'"
+        exit 1
+    fi
+    if ! bin/blogit --prefix=test/blog DEVELOPERS.md '2018-07-01'; then
+        echo "bin/blogit --prefix=test/blog DEVELOPERS.md '2018-07-01'"
+        exit 1
+    fi
+    echo "test_blogit OK"
+}
+
 function test_byline() {
     EXPECTED="By J. Q. Public 2018-12-04"
     # Test reading from file
@@ -103,6 +128,7 @@ test_byline
 test_mkpage
 test_mkrss
 #test_mkslides
+test_blogit
 test_reldocpath
 test_sitemapper
 test_titleline

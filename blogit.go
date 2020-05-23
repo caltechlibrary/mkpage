@@ -30,81 +30,65 @@ import (
 	"time"
 )
 
+const (
+	DateFmt = "2006-01-02"
+)
+
 type CreatorObj struct {
-	ORCID    string `json:"orcid,omitempty"`
-	Name     string `json:"name,omitempty"`
-	SortName string `json:"sort_name,omitempty"`
+	ORCID string `json:"orcid,omitempty"`
+	Name  string `json:"name,omitempty"`
 }
 
 type PostObj struct {
-	Slug        string       `json:"slug,omitempty"`
+	Slug        string       `json:"slug"`
+	Document    string       `json:"document"`
 	Title       string       `json:"title,omitempty"`
 	SubTitle    string       `json:"subtitle,omitempty"`
 	Byline      string       `json:"byline,omitempty"`
 	Series      string       `json:"series,omitempty"`
-	No          string       `json:"number,omitempty"`
+	Number      string       `json:"number,omitempty"`
 	Subject     string       `json:"subject,omitempty"`
 	Keywords    []string     `json:"keywords,omitempty"`
 	Abstract    string       `json:"abstract,omitempty"`
 	Description string       `json:"description,omitempty"`
 	Category    string       `json:"category,omitempty"`
 	Lang        string       `json:"lang,omitempty"`
-	Dir         string       `json:"dir,omitempty"`
+	Direction   string       `json:"direction,omitempty"`
 	Draft       bool         `json:"draft,omitempty"`
 	Creators    []CreatorObj `json:"creators,omitempty"`
-	Created     *time.Time   `json:"date,omitempty"`
-	Updated     *time.Time   `json:"updated,omitempty"`
+	Created     string       `json:"date,omitempty"`
+	Updated     string       `json:"updated,omitempty"`
 }
 
 type DayObj struct {
-	Day   string    `json:"Day,omitempty"`
-	Posts []PostObj `json:"posts,omitempty"`
-	Count int       `json:"count,omitempty"`
+	Day   string     `json:"day"`
+	Posts []*PostObj `json:"posts"`
 }
 
 type MonthObj struct {
-	Month  string     `json:"Month,omitempty"`
-	Days   []DayObj   `json:"days,omitempty"`
-	Months []MonthObj `json:"months,omitempty"`
-	Count  int        `json:"count,omitempty"`
+	Month string    `json:"month"`
+	Days  []*DayObj `json:"days"`
 }
 
 type YearObj struct {
-	Year   string     `json:"Year,omitempty"`
-	Months []MonthObj `json:"months,omitempty"`
-	Count  int        `json:"count,omitempty"`
+	Year   string      `json:"year"`
+	Months []*MonthObj `json:"months"`
 }
 
 type BlogMeta struct {
-	Name    string    `json:"name,omitempty"`
-	Quote   string    `json:"quote,omitemtpy"`
-	BaseUrl string    `json:"url,omitempty"`
-	Status  string    `json:"status,omitempty"`
-	Updated string    `json:"updated,omitempty"`
-	Years   []YearObj `json:"years,omitempty"`
+	Name    string     `json:"name,omitempty"`
+	Quip    string     `json:"quip,omitempty"`
+	BaseUrl string     `json:"url,omitempty"`
+	Updated string     `json:"updated,omitempty"`
+	Years   []*YearObj `json:"years"`
 }
 
-func (meta *BlogMeta) Update(isNew bool, ymd []string, targetName string) {
-	// Create PostObj
-	post := new(PostObj)
-	bName := path.Base(targetName)
-	post.Slug = strings.TrimSuffix(bName, filepath.Ext(bName))
-
-	// Get metadata from targetName and map into post
-	// Check to see if posts already exists, if so replace it otherwise, insert it
-
-	meta.Status = "active"
-	meta.Updated = fmt.Sprintf("%s-%s-%s", ymd[0], ymd[1], ymd[2])
-}
+//
+// Support funcs
+//
 
 func calcYMD(dateString string) ([]string, error) {
-	dt := new(time.Time)
-	if err := dt.UnmarshalText([]byte(dateString)); err != nil {
-		return nil, err
-	}
-	ymd := []string{}
-	ymd = append(ymd, dt.Format("2015"), dt.Format("05"), dt.Format("07"))
-	fmt.Printf("DEBUG ymd -> %+v\n", ymd)
+	ymd := strings.SplitN(dateString, "-", 3)
 	return ymd, nil
 }
 
@@ -113,8 +97,280 @@ func calcPath(prefix string, ymd []string) (string, error) {
 		return "", fmt.Errorf("Invalid Year, Month and Date")
 	}
 	dPath := path.Join(prefix, ymd[0], ymd[1], ymd[2])
-	fmt.Printf("DEBUG dPath -> %q", dPath)
 	return dPath, nil
+}
+
+func unpackCreators(objects []interface{}) []CreatorObj {
+	creators := []CreatorObj{}
+	for _, obj := range objects {
+		switch obj.(type) {
+		case string:
+			creator := CreatorObj{}
+			creator.Name = obj.(string)
+			creators = append(creators, creator)
+		case map[string]string:
+			m := obj.(map[string]string)
+			creator := CreatorObj{}
+			if name, ok := m["name"]; ok {
+				creator.Name = name
+			}
+			if orcid, ok := m["orcid"]; ok {
+				creator.ORCID = orcid
+			}
+			creators = append(creators, creator)
+		}
+	}
+	return creators
+}
+
+//
+// Exported funcs
+//
+
+// postIndex looks through the day's posts and find
+// the position that matches the slug or returns -1
+func (d DayObj) postIndex(slug string) int {
+	postIndex := -1
+	for i, obj := range d.Posts {
+		if obj.Slug == slug {
+			postIndex = i
+			break
+		}
+	}
+	return postIndex
+}
+
+// dayIndex looks through the months days and returns
+// index position found or -1 if not found.
+func (m MonthObj) dayIndex(day string) int {
+	dayIndex := -1
+	for i, obj := range m.Days {
+		if obj.Day == day {
+			dayIndex = i
+			break
+		}
+	}
+	return dayIndex
+}
+
+// monthIndex looks through a years' months and returns
+// the index position found or -1 if not found.
+func (y YearObj) monthIndex(month string) int {
+	monthIndex := -1
+	for i, obj := range y.Months {
+		if obj.Month == month {
+			monthIndex = i
+			break
+		}
+	}
+	return monthIndex
+}
+
+// yearIndex
+func (meta BlogMeta) yearIndex(year string) int {
+	yearIndex := -1
+	for i, obj := range meta.Years {
+		if obj.Year == year {
+			yearIndex = i
+			break
+		}
+	}
+	return yearIndex
+}
+
+// updatePosts will create a new post if necessary and insert in to the
+// post list.
+func (dy *DayObj) updatePosts(ymd []string, targetName string) error {
+
+	// Read in front matter from targetName
+	src, err := ioutil.ReadFile(targetName)
+	if err != nil {
+		return fmt.Errorf("Failed to read %q, %s", targetName, err)
+	}
+	obj := map[string]interface{}{}
+	fmType, src, _ := SplitFrontMatter(src)
+	if len(src) > 0 {
+		if err := UnmarshalFrontMatter(fmType, src, &obj); err != nil {
+			return fmt.Errorf("Failed to unmarshal front matter %q, %s", targetName, err)
+		}
+	}
+	// Create a new PostObj
+	today := time.Now().Format(DateFmt)
+	created := strings.Join(ymd, "-")
+	post := new(PostObj)
+	post.Document = targetName
+	post.Updated = today
+	post.Created = created
+	post.Slug = strings.TrimSuffix(path.Base(targetName), filepath.Ext(targetName))
+	if title, ok := obj["title"]; ok {
+		post.Title = title.(string)
+	}
+	if subtitle, ok := obj["subtitle"]; ok {
+		post.SubTitle = subtitle.(string)
+	}
+	if byline, ok := obj["byline"]; ok {
+		post.Byline = byline.(string)
+	}
+	if series, ok := obj["series"]; ok {
+		post.Series = series.(string)
+	}
+	if number, ok := obj["number"]; ok {
+		post.Number = number.(string)
+	}
+	if subject, ok := obj["subject"]; ok {
+		post.Subject = subject.(string)
+	}
+	if objects, ok := obj["keywords"]; ok {
+		switch objects.(type) {
+		case []string:
+			keywords := objects.([]string)
+			for _, kw := range keywords {
+				post.Keywords = append(post.Keywords, kw)
+			}
+		}
+	}
+	if abstract, ok := obj["abstract"]; ok {
+		post.Abstract = abstract.(string)
+	}
+	if description, ok := obj["description"]; ok {
+		post.Description = description.(string)
+	}
+	if category, ok := obj["category"]; ok {
+		post.Category = category.(string)
+	}
+	if lang, ok := obj["lang"]; ok {
+		post.Lang = lang.(string)
+	}
+	if direction, ok := obj["direction"]; ok {
+		post.Direction = direction.(string)
+	}
+	if draft, ok := obj["draft"]; ok {
+		post.Draft = draft.(bool)
+	} else {
+		post.Draft = false
+	}
+	if creators, ok := obj["creators"]; ok {
+		post.Creators = unpackCreators(creators.([]interface{}))
+	}
+	if dt, ok := obj["date"]; ok {
+		post.Created = dt.(string)
+	}
+	if updated, ok := obj["updated"]; ok {
+		post.Updated = updated.(string)
+	}
+
+	i := dy.postIndex(post.Slug)
+	if i < 0 {
+		// Add a post
+		post.Created = today
+		posts := dy.Posts[0:]
+		dy.Posts = append([]*PostObj{post}, posts...)
+	} else {
+		// Update a post
+		dy.Posts[i] = post
+	}
+	return nil
+}
+
+// updateDays will create a new day and insert in order
+// before passing the post data to UpdatePost()
+func (mn *MonthObj) updateDays(ymd []string, targetName string) error {
+	dy := new(DayObj)
+	dy.Day = ymd[2]
+	i := mn.dayIndex(dy.Day)
+	if i < 0 {
+		if len(mn.Days) == 0 {
+			mn.Days = append(mn.Days, dy)
+			i = 0
+		} else {
+			for j, obj := range mn.Days {
+				if dy.Day > obj.Day {
+					i = j
+					if i == 0 {
+						mn.Days = append([]*DayObj{dy}, mn.Days...)
+					} else {
+						days := mn.Days[0 : j-1]
+						days = append(days, dy)
+						mn.Days = append(days, mn.Days[j:]...)
+					}
+					break
+				}
+			}
+			if i < 0 {
+				mn.Days = append(mn.Days, dy)
+				i = len(mn.Days) - 1
+			}
+		}
+	}
+	return mn.Days[i].updatePosts(ymd, targetName)
+}
+
+// updateMonths will create/update month
+// before passing the post data to UpdateDays()
+func (yr *YearObj) updateMonths(ymd []string, targetName string) error {
+	mn := new(MonthObj)
+	mn.Month = ymd[1]
+	i := yr.monthIndex(mn.Month)
+	if i < 0 {
+		if len(yr.Months) == 0 {
+			yr.Months = append(yr.Months, mn)
+			i = 0
+		} else {
+			for j, obj := range yr.Months {
+				if mn.Month > obj.Month {
+					i = j
+					if i == 0 {
+						yr.Months = append([]*MonthObj{mn}, yr.Months...)
+					} else {
+						months := yr.Months[0 : j-1]
+						months = append(months, mn)
+						yr.Months = append(months, yr.Months[j:]...)
+					}
+					break
+				}
+			}
+			if i < 0 {
+				yr.Months = append(yr.Months, mn)
+				i = len(yr.Months) - 1
+			}
+		}
+	}
+	return yr.Months[i].updateDays(ymd, targetName)
+}
+
+// updateYears will create/update year in `meta.Years`
+// before passing the post data to UpdateMonths()
+func (meta *BlogMeta) updateYears(ymd []string, targetName string) error {
+	yr := new(YearObj)
+	yr.Year = ymd[0]
+	i := meta.yearIndex(yr.Year)
+	if i < 0 {
+		if len(meta.Years) == 0 {
+			meta.Years = append(meta.Years, yr)
+			i = 0
+		} else {
+			for j, obj := range meta.Years {
+				if yr.Year > obj.Year {
+					i = j
+					if i == 0 {
+						meta.Years = append([]*YearObj{yr}, meta.Years...)
+					} else {
+						years := meta.Years[0 : j-1]
+						years = append(years, yr)
+						meta.Years = append(years, meta.Years[j:]...)
+					}
+					break
+				}
+			}
+			if i < 0 {
+				// We need to append the year, it's earlier than
+				// known years.
+				meta.Years = append(meta.Years, yr)
+				i = len(meta.Years) - 1
+			}
+		}
+	}
+	return meta.Years[i].updateMonths(ymd, targetName)
 }
 
 // BlogIt is a tool for posting and updating a blog directory
@@ -126,7 +382,7 @@ func calcPath(prefix string, ymd []string) (string, error) {
 // @param dateString - A date string used to calculate the blog path, e.g.
 //                  YYYY-MM-DD maps to YYYY/MM/DD.
 // @returns an error type
-func BlogIt(prefix string, fName string, dateString string) error {
+func (meta *BlogMeta) BlogIt(prefix string, fName string, dateString string) error {
 	var (
 		targetName string
 	)
@@ -141,62 +397,58 @@ func BlogIt(prefix string, fName string, dateString string) error {
 	if err != nil {
 		return err
 	}
-	dPath, err := calcPath(prefix, ymd...)
+	dPath, err := calcPath(prefix, ymd)
 	if err != nil {
 		return err
 	}
-	blogitJSON := path.Join(prefix, "blogit.json")
-	if _, err := os.Stat(dPath); os.IsNotExist(err) {
-		fmt.Printf("Creating %s\n", dPath)
-		if err := os.MkdirAll(dPath, 0666); err != nil {
-			return err
-		}
-	}
-	blogitMeta := new(BlogMeta)
-	if _, err := os.Stat(blogitJSON); err != nil {
-		if src, err := ioutil.ReadFile(blogitJSON); err != nil {
-			fmt.Printf("Reading %s\n", blogitJSON)
-			if err := json.Unmarshal(src, &blogitMeta); err != nil {
-				return err
-			}
-		}
-	}
-
 	// copy fName to target path.
 	var (
 		in, out *os.File
-		isNew   bool
 	)
-	in, err := os.Open(fName)
+	in, err = os.Open(fName)
 	if err != nil {
 		return err
+	} else {
+		os.MkdirAll(dPath, 0777)
+		targetName = path.Join(dPath, path.Base(fName))
+		out, err = os.Create(targetName)
+		if err != nil {
+			return fmt.Errorf("Creating %q, %s", targetName, err)
+		}
+		if _, err := io.Copy(out, in); err != nil {
+			return err
+		}
+		in.Close()
+		out.Close()
 	}
-	defer in.Close()
-	isNew = false
-	targetName = path.Join(dPath, path.Base(fName))
-	if _, err := os.Stat(targetName); os.IsNotExist(err) {
-		isNew = true
-	}
-	out, err = os.Create(targetName)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-	if _, err := io.Copy(out, in); err != nil {
-		return err
-	}
+	// NOTE: Updated is always today.
+	meta.Updated = time.Now().Format(DateFmt)
+	return meta.updateYears(ymd, targetName)
+}
 
-	// Update targetName in blogit.json and write updated blogit.json
-	if err = blogitMeta.Update(isNew, ymd, targetName); err != nil {
-		return err
-	}
-	src, err := json.MarshalIndent(blogitMeta, "", "    ")
+// Save writes a JSON blog meta document
+func (meta *BlogMeta) Save(fName string) error {
+	src, err := json.MarshalIndent(meta, "", "    ")
 	if err != nil {
-		return err
+		return fmt.Errorf("Marshaling %q, %s", fName, err)
 	}
-	err = ioutil.WriteFile(blogitJSON, src, 0666)
+	err = ioutil.WriteFile(fName, src, 0666)
 	if err != nil {
-		return err
+		return fmt.Errorf("Writing %q, %s", fName, err)
+	}
+	return nil
+}
+
+// Reads a JSON blog meta document and popualtes a blog meta structure
+func LoadBlogMeta(fName string, meta *BlogMeta) error {
+	src, err := ioutil.ReadFile(fName)
+	if err != nil {
+		return fmt.Errorf("Reading %q, %s", fName, err)
+	}
+	if len(src) > 0 {
+		if err := json.Unmarshal(src, meta); err != nil {
+			return fmt.Errorf("Unmarshing %q, %s", fName, err)
+		}
 	}
 	return nil
 }

@@ -117,6 +117,7 @@ clean:
 	if [ -d bin ]; then rm -fR bin; fi
 	if [ -d dist ]; then rm -fR dist; fi
 	if [ -d man ]; then rm -fR man; fi
+	if [ -d test ]; then rm -fR test/*; fi
 
 man: build
 	mkdir -p man/man1

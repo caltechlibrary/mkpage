@@ -22,6 +22,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path"
 	"time"
 
 	// Caltech Library packages
@@ -31,8 +32,6 @@ import (
 
 var (
 	description = `
-SYNOPSIS
-
 Blogit provides a quick tool to add or replace blog content
 organized around a date oriented file path. In addition to
 placing documents it also will generate simple markdown documents
@@ -40,8 +39,6 @@ for inclusion in navigation.
 `
 
 	examples = `
-
-EXAMPLE
 
 I have a Markdown file called, "my-vacation-day.md". I want to
 add it to my blog for the date July 1, 2020.  I've written
@@ -61,7 +58,7 @@ and generate/update a posts.json in the "$HOME/Sites/my.example.org"
 that can be used in your home page template for listing recent
 posts.
 
-*%s% includes an option to set the prefix path to
+*%s* includes an option to set the prefix path to
 the blog posting.  In this way you could have separate blogs 
 structures for things like podcasts or videocasts.
 
@@ -101,7 +98,7 @@ func main() {
 	// Add Help docs
 	app.AddHelp("license", []byte(fmt.Sprintf(mkpage.LicenseText, appName, mkpage.Version)))
 	app.AddHelp("description", []byte(fmt.Sprintf(description)))
-	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName, appName, appName, appName, appName, appName)))
+	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName, appName, appName, appName, appName)))
 
 	// Setup Environment variables
 
@@ -121,9 +118,13 @@ func main() {
 	args := app.Args()
 	switch len(args) {
 	case 1:
-		docName, dateString = args[0], time.Now().Format("2015-03-07")
+		docName, dateString = args[0], time.Now().Format(mkpage.DateFmt)
 	case 2:
 		docName, dateString = args[0], args[1]
+		if _, err := time.Parse(mkpage.DateFmt, dateString); err != nil {
+			fmt.Fprintf(app.Eout, "Date error %q, %s", dateString, err)
+			os.Exit(1)
+		}
 	default:
 		app.Usage(app.Out)
 		os.Exit(1)
@@ -164,6 +165,23 @@ func main() {
 		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
-	err = mkpage.BlogIt(prefixPath, docName, dateString)
+	meta := new(mkpage.BlogMeta)
+	blogJSON := path.Join(prefixPath, "blog.json")
+	// See if we have data to read in.
+	if _, err := os.Stat(blogJSON); os.IsNotExist(err) {
+	} else {
+		if err := mkpage.LoadBlogMeta(blogJSON, meta); err != nil {
+			fmt.Fprintf(app.Eout, "Error reading %q, %s\n", blogJSON, err)
+			os.Exit(1)
+		}
+	}
+	if err := meta.BlogIt(prefixPath, docName, dateString); err != nil {
+		fmt.Fprintf(app.Eout, "%s\n", err)
+		os.Exit(1)
+	}
+	if err := meta.Save(blogJSON); err != nil {
+		fmt.Fprintf(app.Eout, "%s\n", err)
+		os.Exit(1)
+	}
 	cli.ExitOnError(app.Eout, err, quiet)
 }

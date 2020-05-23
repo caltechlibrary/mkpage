@@ -8,26 +8,31 @@
 <header>
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
-<nav>
-$nav$
-</nav>
+${if(nav)}<nav>
+${nav}
+</nav>${endif}
 
-<section>>
+<section>
 <h1>MkPage News</h1>
 </section>
 <section class="posts">
-${for(posts)}
-  ${for(posts.year)}
-  <h2>${posts.year.Year}</h2>
-    ${for(posts.month)}
-  <h3>$posts.year.month.Month$</h3>
+${if(blog.title)}<h2>${blog.title}</h2>${endif}
+${if(blog.quip)}<blockquote>${blog.quip}</blockquote>${endif}
+${if(blog.updated)}<p>Updated: ${blog.updated}</p>${endif}
+${for(blog.years)}
+<h3>Year: ${it.year}</h3>
+  ${for(it.months)}
+  <h4>Month: ${it.month}</h4>
   <ul>
-      ${for(posts.year.month.day.Posts)}
-<li>$it.Year$-$it.Month$-$it.Day$  <a href="$it.slug$.html">$it.title$</a></li>
+      ${for(it.days)}
+        <h5>Day: ${it.day}</h5>
+        ${for(it.posts)}
+<li><a href="${it.document}.html">${if(it.title)}${it.title}${else}${it.slug}${endif}</a> - ${it.date}</li>
+        ${endfor}
       ${endfor}
   </ul>
-    ${endfor}
   ${endfor}
+${endfor}
 </section>
 
 <footer>

@@ -1,6 +1,13 @@
 
 # Release Notes
 
+## v0.0.33
+
++ Finish Pandoc integration
++ Added `blogit` tool for creating blog styles paths and maintaining a `blog.json` file describing blog
++ Removed Pongo2 integration
++ Go templates are now depreciated, they can still be used using `-pandoc=false`
+
 ## v0.0.32i
 
 + mkslides has be removed
