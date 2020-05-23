@@ -13,16 +13,16 @@
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
+<h1 id="reldocpath">
+reldocpath
 </h1>
+<h2 id="usage">
+USAGE
+</h2>
 <pre><code>reldocpath [OPTIONS] SOURCE_DOC_PATH TARGET_DOC_PATH</code></pre>
 <h2 id="description">
 DESCRIPTION
 </h2>
-<p>
-SYNOPSIS
-</p>
 <p>
 Given a source document path, a target document path calculate and the implied common base path calculate the relative path for target.
 </p>
@@ -39,22 +39,19 @@ Below are a set of options available.
     -l, -license         display license
     -quiet               suppress error messages
     -v, -version         display version</code></pre>
-<h2 id="examples">
-EXAMPLES
-</h2>
-<p>
+<h2 id="example">
 EXAMPLE
-</p>
+</h2>
 <p>
 Given
 </p>
-<pre><code>reldocpath chapter-01/lesson-03.html css/site.css</code></pre>
+<pre><code>    reldocpath chapter-01/lesson-03.html css/site.css</code></pre>
 <p>
 would output
 </p>
-<pre><code>.../css/site.css</code></pre>
+<pre><code>    .../css/site.css</code></pre>
 <p>
-reldocpath v0.0.26
+reldocpath v0.0.33
 </p>
 </section>
 

@@ -86,31 +86,31 @@ A quick tour
 <em>mkpage</em> command accepts key/value pairs. The pairs can be explicit data types, [front matter] in files or resources from the web. <em>mkpage</em> assembles the metadata and content and sends them along to Pandoc for processing. In this example and the template is implemented as a Pandoc’s template language.
 </p>
 <p>
-The “key” in our key/value pairs is used to map into the <a href="https://pandoc.org/MANUAL.html">Pandoc</a> templates you want rendered. If a key was called “content” the template element would be like <code><span class="math inline"><em>c</em><em>o</em><em>n</em><em>t</em><em>e</em><em>n</em><em>t</em></span></code>. The value of “content” would replace <code><span class="math inline"><em>c</em><em>o</em><em>n</em><em>t</em><em>e</em><em>n</em><em>t</em></span></code>.<br /> Pandoc templates are combine logic and iteration to make more complex pages.
+The “key” in our key/value pairs is used to map into the <a href="https://pandoc.org/MANUAL.html">Pandoc</a> templates you want rendered. If a key was called “content” the template element would be like <code><span class="math inline"><em>c</em><em>o</em><em>n</em><em>t</em><em>e</em><em>n</em><em>t</em> &lt; /<em>c</em><em>o</em><em>d</em><em>e</em> &gt; .<em>T</em><em>h</em><em>e</em><em>v</em><em>a</em><em>l</em><em>u</em><em>e</em><em>o</em><em>f</em>“ <em>c</em><em>o</em><em>n</em><em>t</em><em>e</em><em>n</em><em>t</em>” <em>w</em><em>o</em><em>u</em><em>l</em><em>d</em><em>r</em><em>e</em><em>p</em><em>l</em><em>a</em><em>c</em><em>e</em> &lt; <em>c</em><em>o</em><em>d</em><em>e</em>&gt;</span>{content}</code> in the Pandoc template. Pandoc templates are combine logic and iteration to make more complex pages.
 </p>
 <p>
 On the “value” side of the key/value pair you have strings of one of several formats - plain text, markdown, <a href="https://fountain.io">fountain</a>, ReStructureText, Jira text and JSON. The values can be from explicit strings associated with a data type, data from a file where the file extension identifies the content type, or content retrieved via a URL based on the mime-type sent from the web service. Here’s a basic demonstration of sampling of capabilities and integrating data from the <a href="http://weather.gov">NOAA weather website</a>.
 </p>
 <h3 id="a-basic-template">
-a basic template
+A basic template
 </h3>
 <pre class="template"><code>
-    Date: $now$
+    Date: ${now}
     
-    Hello $name$,
+    Hello ${name},
         
     The weather forecast is
     
-    $if(weather.data.weather)$
-      $weather.data.weather[; ]$
-    $endif$
+    ${if(weather.data.weather)}
+      ${weather.data.weather[; ]}
+    ${endif}
     
     Thank you
     
-    $signature$
+    ${signature}
 </code></pre>
 <p>
-To render the template above (i.e. <a href="examples/weather.tmpl">weather.tmpl</a>) is expecting values from various data sources. This break down is as follows.
+To render the template above (i.e. <a href="examples/weather.tmpl">weather.tmpl</a>) is expecting values from various data sources broken down as follows.
 </p>
 <ul>
 <li>
@@ -133,8 +133,8 @@ To render the template above (i.e. <a href="examples/weather.tmpl">weather.tmpl
 “signature” will come from a plain text file in your local disc
 </li>
 </ul>
-<h3 id="writing-the-mkpage-command">
-writing the <em>mkpage</em> command
+<h3 id="typing-the-mkpage-command">
+typing the <em>mkpage</em> command
 </h3>
 <p>
 Here is how we would express the key/value pairs on the command line.
@@ -145,7 +145,7 @@ Here is how we would express the key/value pairs on the command line.
         &#39;signature=examples/signature.txt&#39; \
         &#39;examples/weather.tmpl&#39;</code></pre>
 <p>
-Notice the two explicit strings are prefixed with “text:” (other formats include “markdown:” and “json:”). Values without a prefix are assumed to be file paths. We see that in testdata/signature.txt. Likewise the weather data is coming from a URL. <em>mkpage</em> uses the “protocol” prefix to distinguish between literals, file paths and URL based based content. With “http:” and “https:” return with an HTTP header the header is used to identify the content type for processing by <em>mkpage</em> or Pandoc. E.g. “Content-Type: text/markdown” tells us to use Pandoc to translate from Markdown to HTML. For data contained in files we rely on the file extension to identify content type, e.g. “.md” is markdown, “.rst” is ReStructureText, “.json” is a JSON document. If no content type is decernable then we assume the content is plain text.
+Notice the two explicit strings are prefixed with “text:” (other formats include “markdown:” and “json:”). Values without a prefix are assumed to be local file paths. We see that in testdata/signature.txt is one.<br /> Likewise the weather data is coming from a URL idendifitied by the “http:” protocol reference . <em>mkpage</em> uses the “protocol” prefix to distinguish between literals, file paths and URL based based content. “http:” and “https:” returns an HTTP header the header is used to identify the content type for processing by <em>mkpage</em> before handing off to Pandoc. E.g. “Content-Type: text/markdown” tells us to use Pandoc to translate from Markdown to HTML. For data contained in files we rely on the file extension to identify content type, e.g. “.md” is markdown, “.rst” is ReStructureText, “.json” is a JSON document. If no content type is decernable then we assume the content is plain text.
 </p>
 <h3 id="the-utilities">
 the utilities
@@ -154,7 +154,7 @@ the utilities
 mkpage
 </h4>
 <p>
-<em>mkpage</em> comes with some helper utilities that make scripting a deconstructed content management system from Python/Bash easier.
+<em>mkpage</em> is a page renderer. It comes with some helper utilities that make scripting a deconstructed content management system from Python/Bash easier.
 </p>
 <h4 id="mkrss">
 mkrss
@@ -185,6 +185,12 @@ reldocpath
 </h4>
 <p>
 <em>reldocpath</em> is intended to simplify the calculation of relative asset paths (e.g. common CSS files, images, feeds) when working from a common project directory.
+</p>
+<h4 id="blogit">
+blogit
+</h4>
+<p>
+<em>blogit</em> performs two tasks, first is given a filename and date (in YYYY-MM-DD format) it will copy the file into an appropriate blog path based on the date provided. The second task is it maintains a <code>blog.json</code> file describing the content of the blog. This is placed in the same folder as the where the year folder for the blog is create.
 </p>
 <h5 id="example">
 Example

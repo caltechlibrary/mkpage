@@ -13,18 +13,18 @@
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
+<h1 id="titleline">
+titleline
 </h1>
+<h2 id="usage">
+USAGE
+</h2>
 <pre><code>titleline [OPTIONS]</code></pre>
 <h2 id="description">
 DESCRIPTION
 </h2>
 <p>
-SYNOPSIS
-</p>
-<p>
-titleline extracts the first title line from a Markdown file. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.
+titleline extracts the first title line from a Markdown file or from the front metter if present. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.
 </p>
 <h2 id="options">
 OPTIONS
@@ -42,20 +42,15 @@ Below are a set of options available.
     -quiet               suppress error messages
     -t, -title           set title regexp
     -v, -version         display version</code></pre>
-<h2 id="examples">
-EXAMPLES
-</h2>
-<p>
+<h2 id="example">
 EXAMPLE
-</p>
-<p>
-cat article.md | titleline
-</p>
+</h2>
+<pre><code>    cat article.md | titleline</code></pre>
 <p>
 This will display the title of an article.md.
 </p>
 <p>
-titleline v0.0.26
+titleline v0.0.33
 </p>
 </section>
 

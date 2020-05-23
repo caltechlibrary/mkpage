@@ -100,19 +100,19 @@ EXAMPLE
 Template (named “examples/weather.tmpl”)
 </p>
 <pre><code>    
-    Date: $now$
+    Date: ${now}
     
-    Hello $name$,
+    Hello ${name},
         
     The weather forcast is
     
-    $if(weather.data.weather)$
-      $weather.data.weather[; ]$
-    $endif$
+    ${if(weather.data.weather)}
+      ${weather.data.weather[; ]}
+    ${endif}
     
     Thank you
     
-    $signature$
+    ${signature}
     </code></pre>
 <p>
 Render the template above (i.e. examples/weather.tmpl) would be accomplished from the following data sources–
@@ -122,7 +122,7 @@ Render the template above (i.e. examples/weather.tmpl) would be accomplished fr
 “now” and “name” are strings
 </li>
 <li>
-“weatherForecast” is JSON data retrieved from a URL
+“weather” is JSON data retrieved from a URL
 <ul>
 <li>
 “.data.weather” is a data path inside the JSON document
@@ -140,7 +140,7 @@ Render the template above (i.e. examples/weather.tmpl) would be accomplished fr
 That would be expressed on the command line as follows
 </p>
 <pre class="shell"><code>    mkpage &quot;now=text:$(date)&quot; &quot;name=text:Little Frieda&quot; \
-        &quot;weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
+        &quot;weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
         signature=examples/signature.txt \
         examples/weather.tmpl     </code></pre>
 </section>

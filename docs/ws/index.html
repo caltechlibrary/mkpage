@@ -13,23 +13,27 @@
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
+<h1 id="ws">
+ws
 </h1>
+<h2 id="usage">
+USAGE
+</h2>
 <pre><code>ws [OPTIONS] [DOCROOT]</code></pre>
 <h2 id="description">
 DESCRIPTION
 </h2>
+<blockquote>
 <p>
-SYNOPSIS
+a nimble web server
 </p>
-<pre><code>a nimble web server</code></pre>
+</blockquote>
 <p>
 ws is a command line utility for developing and testing static websites. It uses Go’s standard http libraries and can supports both http 1 and 2 out of the box. It is intended as a minimal wrapper for Go’s standard http libraries supporting http/https versions 1 and 2 out of the box.
 </p>
-<p>
+<h2 id="configuration">
 CONFIGURATION
-</p>
+</h2>
 <p>
 ws can be configurated through environment settings. The following are supported.
 </p>
@@ -53,18 +57,17 @@ ENVIRONMENT
 <p>
 Environment variables can be overridden by corresponding options
 </p>
-<pre><code>    MKPAGE_DOCROOT   # set the htdoc root
-    MKPAGE_SSL_CERT  # set the path to the SSL Certificate
-    MKPAGE_SSL_KEY   # set the path to the SSL KEY
-    MKPAGE_URL       # set the URL to listen on, defaults to http://localhost:8000</code></pre>
+<pre><code>    MKPAGE_DOCROOT    # set the htdoc root
+    MKPAGE_SSL_CERT   # set the path to the SSL Certificate
+    MKPAGE_SSL_KEY    # set the path to the SSL KEY
+    MKPAGE_URL        # set the URL to listen on, defaults to http://localhost:8000</code></pre>
 <h2 id="options">
 OPTIONS
 </h2>
 <p>
 Below are a set of options available. Options will override any corresponding environment settings.
 </p>
-<pre><code>    -acme                Enable Let&#39;s Encypt ACME TLS support
-    -c                   Set the path for the SSL Cert
+<pre><code>    -c                   Set the path for the SSL Cert
     -cert                Set the path for the SSL Cert
     -cors-origin         Set the CORS Origin Policy to a specific host or *
     -d                   Set the htdocs path
@@ -84,32 +87,19 @@ Below are a set of options available. Options will override any corresponding en
     -url                 The protocol and hostname listen for as a URL
     -v                   display version
     -version             display version</code></pre>
-<h2 id="examples">
-EXAMPLES
+<h2 id="example">
+EXAMPLE
 </h2>
-<p>
-EXAMPLES
-</p>
 <p>
 Run web server using the content in the current directory (assumes the environment variables MKPAGE_DOCROOT are not defined).
 </p>
-<p>
-ws
-</p>
+<pre><code>   ws</code></pre>
 <p>
 Run web server using a specified directory
 </p>
+<pre><code>   ws /www/htdocs</code></pre>
 <p>
-ws /www/htdocs
-</p>
-<p>
-Running web server using ACME TLS support (i.e. Let’s Encrypt). Note will only include the hostname as the ACME setup is for listenning on port 443. This may require privileged account and will require that the hostname listed matches the public DNS for the machine (this is need by the ACME protocol to issue the cert, see https://letsencrypt.org for details)
-</p>
-<p>
-ws -acme -url www.example.org /www/htdocs
-</p>
-<p>
-ws v0.0.26
+ws v0.0.33
 </p>
 </section>
 

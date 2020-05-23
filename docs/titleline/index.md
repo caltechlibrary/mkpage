@@ -1,16 +1,16 @@
 
-# USAGE
+# titleline
+
+## USAGE
 
 	titleline [OPTIONS]
 
 ## DESCRIPTION
 
-
-SYNOPSIS
-
-titleline extracts the first title line from a Markdown file. By default it reads
-from standard in and writes to standard out but can read/write
-to specific files using an option.
+titleline extracts the first title line from a Markdown file or
+from the front metter if present. By default it reads from standard in 
+and writes to standard out but can read/write to specific files using 
+an option.
 
 
 ## OPTIONS
@@ -31,14 +31,13 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+## EXAMPLE
 
-
-EXAMPLE
-
-cat article.md | titleline
+```
+    cat article.md | titleline
+```
 
 This will display the title of an article.md.
 
 
-titleline v0.0.26
+titleline v0.0.33

@@ -1,18 +1,15 @@
 
-# USAGE
+# urldecode
+
+## USAGE
 
 	urldecode [OPTIONS] [STRING_TO_ENCODE]
 
 ## DESCRIPTION
 
-
-
-SYNOPSIS
-
-urldecode is a simple command line utility to URL decode content. By default
-it reads from standard input and writes to standard out.  You can
+urldecode is a simple command line utility to URL decode content. By 
+default it reads from standard input and writes to standard out. You can
 also specifty the string to decode as a command line parameter.
-
 
 
 ## OPTIONS
@@ -33,19 +30,17 @@ Below are a set of options available.
     -v, -version         display version
 ```
 
+## EXAMPLE
 
-## EXAMPLES
-
-
-
-EXAMPLES
-
+```
     echo 'This%20is%20the%20string%20to%20encode%20&%20nothing%20else%0A' | urldecode
+```
 
 would yield
 
+```
     This is the string to encode & nothing else!
+```
 
+urldecode v0.0.33
 
-
-urldecode v0.0.26

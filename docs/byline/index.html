@@ -13,15 +13,18 @@
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
+<h1 id="byline">
+byline
 </h1>
+<h2 id="usage">
+USAGE
+</h2>
 <pre><code>byline [OPTIONS]</code></pre>
 <h2 id="description">
 DESCRIPTION
 </h2>
 <p>
-byline extracts a byline from a Markdown file. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.
+byline extracts a byline from a Markdown file or its front matter. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.
 </p>
 <h2 id="options">
 OPTIONS
@@ -45,12 +48,12 @@ EXAMPLES
 <p>
 Extract a byline from article.md.
 </p>
-<pre><code>cat article.md | byline</code></pre>
+<pre><code>    cat article.md | byline</code></pre>
 <p>
 This will display the byline if one is found in article.md.
 </p>
 <p>
-byline v0.0.26
+byline v0.0.33
 </p>
 </section>
 

@@ -1,16 +1,13 @@
 
-# USAGE
+# sitemapper
+
+## USAGE
 
 	sitemapper [OPTIONS] HTDOCS_PATH MAP_FILENAME PUBLIC_BASE_URL
 
 ## DESCRIPTION
 
-
-SYNOPSIS
-
 sitemapper generates a sitemap for the website.
-
-
 
 ## ENVIRONMENT
 
@@ -43,12 +40,11 @@ Below are a set of options available. Options will override any corresponding en
 ```
 
 
-## EXAMPLES
+## EXAMPLE
 
-
-EXAMPLE
-
+```
     sitemapper htdocs htdocs/sitemap.xml http://eprints.example.edu
+```
 
 
-sitemapper v0.0.26
+sitemapper v0.0.33
