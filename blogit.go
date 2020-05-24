@@ -215,7 +215,12 @@ func (dy *DayObj) updatePosts(ymd []string, targetName string) error {
 		post.Series = series.(string)
 	}
 	if number, ok := obj["number"]; ok {
-		post.Number = number.(string)
+		switch number.(type) {
+		case int:
+			post.Number = fmt.Sprintf("%d", number.(int))
+		case string:
+			post.Number = number.(string)
+		}
 	}
 	if subject, ok := obj["subject"]; ok {
 		post.Subject = subject.(string)
