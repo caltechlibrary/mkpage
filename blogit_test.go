@@ -83,6 +83,7 @@ func TestExportedFuncs(t *testing.T) {
 
 	// Start with an empty blog ...
 	os.RemoveAll(path.Join("test", "blog"))
+	os.MkdirAll("test", 0777)
 	blogMeta = new(BlogMeta)
 
 	// Generate and write test data for BlogIt()
@@ -117,4 +118,18 @@ Test Blog post.
 			t.FailNow()
 		}
 	}
+}
+
+func TestRefreshFromPath(t *testing.T) {
+	meta := new(BlogMeta)
+	year := "2020"
+	prefix := "test"
+	blogPrefix := path.Join(prefix, "blog")
+	blogJSON := path.Join(blogPrefix, "blog.json")
+	os.Remove(blogJSON)
+	if err := meta.RefreshFromPath(blogPrefix, year); err != nil {
+		t.Errorf("expected nil, got %s", err)
+		t.FailNow()
+	}
+	meta.Save(blogJSON)
 }

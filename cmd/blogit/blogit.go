@@ -70,6 +70,14 @@ structures for things like podcasts or videocasts.
    -p, -prefix    Set the prefix path before the YYYY/MM/DD path.
 
 
+If you have an existing blog paths in the form of
+PREFIX/YYYY/MM/DD you can use blogit to create/update/recreate
+the blog.json file.
+
+    %s -prefix=blog -year=2020
+
+The option "-year" is what indicates you want to crawl
+for blog posts for that year.
 `
 
 	// Standard Options
@@ -84,6 +92,7 @@ structures for things like podcasts or videocasts.
 
 	// Application Options
 	prefixPath string
+	checkYear  string
 	docName    string
 	dateString string
 )
@@ -113,6 +122,7 @@ func main() {
 
 	// Application specific options
 	app.StringVar(&prefixPath, "p,prefix", "", "Set the prefix path before YYYY/MM/DD.")
+	app.StringVar(&checkYear, "y,year", "", "Refresh blog.json for a given year")
 
 	app.Parse()
 	args := app.Args()
@@ -126,8 +136,10 @@ func main() {
 			os.Exit(1)
 		}
 	default:
-		app.Usage(app.Out)
-		os.Exit(1)
+		if checkYear == "" {
+			app.Usage(app.Out)
+			os.Exit(1)
+		}
 	}
 
 	if showHelp || showExamples {
@@ -175,9 +187,17 @@ func main() {
 			os.Exit(1)
 		}
 	}
-	if err := meta.BlogIt(prefixPath, docName, dateString); err != nil {
-		fmt.Fprintf(app.Eout, "%s\n", err)
-		os.Exit(1)
+	if checkYear != "" {
+		fmt.Printf("Checking posts for %q\n", path.Join(prefixPath, checkYear))
+		if err := meta.RefreshFromPath(prefixPath, checkYear); err != nil {
+			fmt.Fprintf(app.Eout, "%s\n", err)
+			os.Exit(1)
+		}
+	} else {
+		if err := meta.BlogIt(prefixPath, docName, dateString); err != nil {
+			fmt.Fprintf(app.Eout, "%s\n", err)
+			os.Exit(1)
+		}
 	}
 	if err := meta.Save(blogJSON); err != nil {
 		fmt.Fprintf(app.Eout, "%s\n", err)

@@ -452,3 +452,60 @@ func LoadBlogMeta(fName string, meta *BlogMeta) error {
 	}
 	return nil
 }
+
+// hasExt checks if ext is in list of target ext.
+func hasExt(ext string, targetExts []string) bool {
+	for _, e := range targetExts {
+		if strings.Compare(ext, e) == 0 {
+			return true
+		}
+	}
+	return false
+}
+
+// RefreshFromPath crawls the dircetory tree and rebuilds
+// the `blog.json` file based on what is found. It takes a
+// File extension to target (e.g. .md for Markdown) and
+// analyzes the path for YYYY/MM/DD and transforms the
+// information found into an entry in `blog.json`.
+func (meta *BlogMeta) RefreshFromPath(prefix string, year string) error {
+	var (
+		ymd []string
+	)
+	targetExts := []string{
+		".md",
+		".rst",
+		".textile",
+		".jira",
+		".txt",
+	}
+	months := map[string]int{
+		"01": 31, "02": 29, "03": 31, "04": 30,
+		"05": 31, "06": 30, "07": 31, "08": 31,
+		"09": 30, "10": 31, "11": 30, "12": 31,
+	}
+	ymd = append(ymd, year, "", "")
+	for month, cnt := range months {
+		ymd[1] = month
+		for day := 1; day <= cnt; day++ {
+			ymd[2] = fmt.Sprintf("%02d", day)
+			// CalcPath and find files.
+			folder := path.Join(prefix, ymd[0], ymd[1], ymd[2])
+			// Scan the fold for files ending in ext,
+			files, err := ioutil.ReadDir(folder)
+			if err == nil {
+				// for each file with matching extension run updateYear(ymd, targetName)
+				for _, file := range files {
+					targetName := path.Join(prefix, ymd[0], ymd[1], ymd[2], file.Name())
+					ext := filepath.Ext(targetName)
+					if hasExt(ext, targetExts) {
+						if err := meta.updateYears(ymd, targetName); err != nil {
+							return err
+						}
+					}
+				}
+			}
+		}
+	}
+	return nil
+}

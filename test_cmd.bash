@@ -53,8 +53,8 @@ function test_blogit() {
         echo "bin/blogit --prefix=test/blog LICENSE '2015-01-03'"
         exit 1
     fi
-    if ! bin/blogit --prefix=test/blog a-possible-future.md '2020-05-19'; then
-        echo "bin/blogit --prefix=test/blog a-possible-future.md '2020-05-19'"
+    if ! bin/blogit --prefix=test/blog Pandoc-Integration.md '2020-05-19'; then
+        echo "bin/blogit --prefix=test/blog Pandoc-Integration.md '2020-05-19'"
         exit 1
     fi
     if ! bin/blogit --prefix=test/blog DEVELOPERS.md '2018-07-01'; then
