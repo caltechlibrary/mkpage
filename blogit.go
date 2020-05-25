@@ -188,7 +188,7 @@ func (dy *DayObj) updatePosts(ymd []string, targetName string) error {
 	// Read in front matter from targetName
 	src, err := ioutil.ReadFile(targetName)
 	if err != nil {
-		return fmt.Errorf("Failed to read %q, %s", targetName, err)
+		return fmt.Errorf("Failed to read post %q, %s", targetName, err)
 	}
 	obj := map[string]interface{}{}
 	fmType, src, _ := SplitFrontMatter(src)
@@ -435,11 +435,6 @@ func (meta *BlogMeta) BlogAsset(prefix string, fName string, dateString string) 
 //                  YYYY-MM-DD maps to YYYY/MM/DD.
 // @returns an error type
 func (meta *BlogMeta) BlogIt(prefix string, fName string, dateString string) error {
-	// Copy the post document using BlogAsset.
-	if err := meta.BlogAsset(prefix, fName, dateString); err != nil {
-		return err
-	}
-	// Now sort out our metadata for managing blog post.
 	var (
 		targetName string
 	)
@@ -453,6 +448,31 @@ func (meta *BlogMeta) BlogIt(prefix string, fName string, dateString string) err
 	if err != nil {
 		return err
 	}
+	dPath, err := calcPath(prefix, ymd)
+	if err != nil {
+		return err
+	}
+	// copy fName to target path.
+	var (
+		in, out *os.File
+	)
+	in, err = os.Open(fName)
+	if err != nil {
+		return err
+	} else {
+		os.MkdirAll(dPath, 0777)
+		targetName = path.Join(dPath, path.Base(fName))
+		out, err = os.Create(targetName)
+		if err != nil {
+			return fmt.Errorf("Creating %q, %s", targetName, err)
+		}
+		if _, err := io.Copy(out, in); err != nil {
+			return err
+		}
+		in.Close()
+		out.Close()
+	}
+
 	// NOTE: Updated is always today.
 	meta.Updated = time.Now().Format(DateFmt)
 	return meta.updateYears(ymd, targetName)

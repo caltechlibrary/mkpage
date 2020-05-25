@@ -240,6 +240,7 @@ func main() {
 	}
 	// Handle Copy Asset terminating case
 	if blogAsset {
+		fmt.Fprintf(app.Out, "Adding asset %q to posts for %q\n", docName, dateString)
 		if err := meta.BlogAsset(prefixPath, docName, dateString); err != nil {
 			fmt.Fprintf(app.Eout, "%s\n", err)
 			os.Exit(1)
