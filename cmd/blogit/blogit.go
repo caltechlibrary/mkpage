@@ -91,10 +91,16 @@ for blog posts for that year.
 	generateManPage  bool
 
 	// Application Options
-	prefixPath string
-	checkYear  string
-	docName    string
-	dateString string
+	prefixPath     string
+	docName        string
+	dateString     string
+	refreshBlog    string
+	setName        string
+	setQuip        string
+	setDescription string
+	setBaseURL     string
+	setIndexTmpl   string
+	setPostTmpl    string
 )
 
 func main() {
@@ -121,8 +127,14 @@ func main() {
 	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Application specific options
-	app.StringVar(&prefixPath, "p,prefix", "", "Set the prefix path before YYYY/MM/DD.")
-	app.StringVar(&checkYear, "y,year", "", "Refresh blog.json for a given year")
+	app.StringVar(&prefixPath, "P,prefix", "", "Set the prefix path before YYYY/MM/DD.")
+	app.StringVar(&refreshBlog, "R,refresh", "", "Refresh blog.json for a given year")
+	app.StringVar(&setName, "N,name", "", "Set the blog name.")
+	app.StringVar(&setQuip, "Q,quip", "", "Set the blog quip.")
+	app.StringVar(&setDescription, "D,description", "", "Set the blog description")
+	app.StringVar(&setBaseURL, "U,url", "", "Set blog's URL")
+	app.StringVar(&setIndexTmpl, "IT,index-tmpl", "", "Set index blog template")
+	app.StringVar(&setPostTmpl, "PT,post-tmpl", "", "Set index blog template")
 
 	app.Parse()
 	args := app.Args()
@@ -148,25 +160,8 @@ func main() {
 		fmt.Fprintln(app.Out, app.Version())
 		os.Exit(0)
 	}
-
 	if showVerbose {
 		quiet = false
-	}
-
-	switch len(args) {
-	case 1:
-		docName, dateString = args[0], time.Now().Format(mkpage.DateFmt)
-	case 2:
-		docName, dateString = args[0], args[1]
-		if _, err := time.Parse(mkpage.DateFmt, dateString); err != nil {
-			fmt.Fprintf(app.Eout, "Date error %q, %s", dateString, err)
-			os.Exit(1)
-		}
-	default:
-		if checkYear == "" {
-			app.Usage(app.Out)
-			os.Exit(1)
-		}
 	}
 
 	// Process flags and update the environment as needed.
@@ -179,8 +174,69 @@ func main() {
 		os.Exit(0)
 	}
 
+	// Ready to run one of the BlogIt command forms
 	meta := new(mkpage.BlogMeta)
 	blogJSON := path.Join(prefixPath, "blog.json")
+
+	// handle option cases
+	if setName != "" {
+		meta.Name = setName
+	}
+	if setQuip != "" {
+		meta.Quip = setQuip
+	}
+	if setDescription != "" {
+		meta.Description = setDescription
+	}
+	if setBaseURL != "" {
+		meta.BaseURL = setBaseURL
+	}
+	if setIndexTmpl != "" {
+		meta.IndexTmpl = setIndexTmpl
+	}
+	if setPostTmpl != "" {
+		meta.PostTmpl = setPostTmpl
+	}
+
+	// handle option terminating case of refreshBlog
+	if refreshBlog != "" {
+		fmt.Printf("Refreshing %q from %q\n", blogJSON, path.Join(prefixPath, refreshBlog))
+		if err := meta.RefreshFromPath(prefixPath, refreshBlog); err != nil {
+			fmt.Fprintf(app.Eout, "%s\n", err)
+			os.Exit(1)
+		}
+		if err := meta.Save(blogJSON); err != nil {
+			fmt.Fprintf(app.Eout, "%s\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Refresh completed.\n")
+		os.Exit(0)
+	}
+
+	// We have a standard BlogIt command, process args.
+	switch len(args) {
+	case 1:
+		docName, dateString = args[0], time.Now().Format(mkpage.DateFmt)
+	case 2:
+		docName, dateString = args[0], args[1]
+		if _, err := time.Parse(mkpage.DateFmt, dateString); err != nil {
+			fmt.Fprintf(app.Eout, "Date error %q, %s", dateString, err)
+			os.Exit(1)
+		}
+	default:
+		if setName != "" || setQuip != "" || setDescription != "" ||
+			setBaseURL != "" || setIndexTmpl != "" || setPostTmpl != "" {
+			if err := meta.Save(blogJSON); err != nil {
+				fmt.Fprintf(app.Eout, "%s\n", err)
+				os.Exit(1)
+			}
+			fmt.Printf("Updated blog.json completed.\n")
+			os.Exit(0)
+		}
+		app.Usage(app.Out)
+		os.Exit(1)
+	}
+
 	// See if we have data to read in.
 	if _, err := os.Stat(blogJSON); os.IsNotExist(err) {
 	} else {
@@ -189,17 +245,9 @@ func main() {
 			os.Exit(1)
 		}
 	}
-	if checkYear != "" {
-		fmt.Printf("Checking posts for %q\n", path.Join(prefixPath, checkYear))
-		if err := meta.RefreshFromPath(prefixPath, checkYear); err != nil {
-			fmt.Fprintf(app.Eout, "%s\n", err)
-			os.Exit(1)
-		}
-	} else {
-		if err := meta.BlogIt(prefixPath, docName, dateString); err != nil {
-			fmt.Fprintf(app.Eout, "%s\n", err)
-			os.Exit(1)
-		}
+	if err := meta.BlogIt(prefixPath, docName, dateString); err != nil {
+		fmt.Fprintf(app.Eout, "%s\n", err)
+		os.Exit(1)
 	}
 	if err := meta.Save(blogJSON); err != nil {
 		fmt.Fprintf(app.Eout, "%s\n", err)

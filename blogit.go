@@ -76,11 +76,14 @@ type YearObj struct {
 }
 
 type BlogMeta struct {
-	Name    string     `json:"name,omitempty"`
-	Quip    string     `json:"quip,omitempty"`
-	BaseUrl string     `json:"url,omitempty"`
-	Updated string     `json:"updated,omitempty"`
-	Years   []*YearObj `json:"years"`
+	Name        string     `json:"name,omitempty"`
+	Quip        string     `json:"quip,omitempty"`
+	Description string     `json:"description,omitempty"`
+	BaseURL     string     `json:"url,omitempty"`
+	Updated     string     `json:"updated,omitempty"`
+	IndexTmpl   string     `json:"index_tmpl,omitempty"`
+	PostTmpl    string     `json:"post_tmpl,omitempty"`
+	Years       []*YearObj `json:"years"`
 }
 
 //
