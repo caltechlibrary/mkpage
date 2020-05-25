@@ -107,7 +107,7 @@ func main() {
 	// Add Help docs
 	app.AddHelp("license", []byte(fmt.Sprintf(mkpage.LicenseText, appName, mkpage.Version)))
 	app.AddHelp("description", []byte(fmt.Sprintf(description)))
-	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName, appName, appName, appName, appName)))
+	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName, appName, appName, appName, appName, appName)))
 
 	// Setup Environment variables
 
@@ -126,21 +126,11 @@ func main() {
 
 	app.Parse()
 	args := app.Args()
-	switch len(args) {
-	case 1:
-		docName, dateString = args[0], time.Now().Format(mkpage.DateFmt)
-	case 2:
-		docName, dateString = args[0], args[1]
-		if _, err := time.Parse(mkpage.DateFmt, dateString); err != nil {
-			fmt.Fprintf(app.Eout, "Date error %q, %s", dateString, err)
-			os.Exit(1)
-		}
-	default:
-		if checkYear == "" {
-			app.Usage(app.Out)
-			os.Exit(1)
-		}
-	}
+
+	// Setup IO
+	var err error
+
+	app.Eout = os.Stderr
 
 	if showHelp || showExamples {
 		if len(args) > 0 {
@@ -163,10 +153,21 @@ func main() {
 		quiet = false
 	}
 
-	// Setup IO
-	var err error
-
-	app.Eout = os.Stderr
+	switch len(args) {
+	case 1:
+		docName, dateString = args[0], time.Now().Format(mkpage.DateFmt)
+	case 2:
+		docName, dateString = args[0], args[1]
+		if _, err := time.Parse(mkpage.DateFmt, dateString); err != nil {
+			fmt.Fprintf(app.Eout, "Date error %q, %s", dateString, err)
+			os.Exit(1)
+		}
+	default:
+		if checkYear == "" {
+			app.Usage(app.Out)
+			os.Exit(1)
+		}
+	}
 
 	// Process flags and update the environment as needed.
 	if generateMarkdown {
@@ -177,6 +178,7 @@ func main() {
 		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
+
 	meta := new(mkpage.BlogMeta)
 	blogJSON := path.Join(prefixPath, "blog.json")
 	// See if we have data to read in.
