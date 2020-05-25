@@ -81,7 +81,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	TextilePrefix = "textile:"
 	// ReStructureText designates source as ReStructureText for processing by pandoc
 	ReStructureTextPrefix = "rst:"
-	// Jira markup designates source as Jire text for processing by pandoc
+	// JiraPrefix markup designates source as Jire text for processing by pandoc
 	JiraPrefix = "jira:"
 
 	// DateExp is the default format used by mkpage utilities for date exp

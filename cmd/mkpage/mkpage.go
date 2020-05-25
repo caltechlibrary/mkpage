@@ -122,13 +122,11 @@ func main() {
 	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Application specific options
-	app.BoolVar(&showTemplate, "s", false, "display the default template")
-	app.BoolVar(&showTemplate, "show-template", false, "display the default template")
-	app.StringVar(&templateFNames, "t", "", "colon delimited list of templates to use")
-	app.StringVar(&templateFNames, "templates", "", "colon delimited list of templates to use")
+	app.BoolVar(&showTemplate, "s,show-template", false, "display source for a default page template")
+	app.StringVar(&templateFNames, "t,templates", "", "colon delimited list of templates to use")
 	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks")
 	app.StringVar(&codeType, "code", "", "outout just code blocks for language, e.g. shell or json")
-	app.BoolVar(&usePandoc, "pandoc", true, "use Pandoc's template engine")
+	app.BoolVar(&usePandoc, "pandoc", true, "(default) use Pandoc's template engine")
 
 	app.Parse()
 	args := app.Args()
@@ -151,7 +149,7 @@ func main() {
 	}
 
 	if showTemplate {
-		fmt.Fprintln(app.Out, mkpage.Defaults["/template/page.tmpl"])
+		fmt.Fprintf(app.Out, "%s\n", mkpage.Defaults["/pandoc/page.tmpl"])
 		os.Exit(0)
 	}
 
@@ -213,7 +211,6 @@ func main() {
 	// Make the page with pandoc, go templates and Go Markdown
 	switch {
 	case usePandoc:
-		templateName := ""
 		if len(templateSources) > 0 {
 			templateName = templateSources[0]
 		}

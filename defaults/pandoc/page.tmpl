@@ -10,10 +10,6 @@
   $endfor$$endif$
   $if(keywords)$<meta name="keywords" content="$for(keywords)$$it$$sep$, $endfor$"/>$endif$
   $if(csspath)$<link href="$csspath$" rel="stylesheet" />
-  $elseif(css)$
-  <style>
-$css$
-  </style>
  $else$
   <style>
 /**
