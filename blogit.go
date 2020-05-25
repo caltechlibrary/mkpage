@@ -381,16 +381,10 @@ func (meta *BlogMeta) updateYears(ymd []string, targetName string) error {
 	return meta.Years[i].updateMonths(ymd, targetName)
 }
 
-// BlogIt is a tool for posting and updating a blog directory
-// structure on local disc.  It includes maintaining additional
-// metadata resources to make it easy to script blogsites and
-// podcast sites.
-// @param prefix - a prefix path for the blog (relative to working dir)
-// @param fName - the name of the file to publish to generated blog path
-// @param dateString - A date string used to calculate the blog path, e.g.
-//                  YYYY-MM-DD maps to YYYY/MM/DD.
-// @returns an error type
-func (meta *BlogMeta) BlogIt(prefix string, fName string, dateString string) error {
+// BlogAsset copies a asset file to the directory as a blog post
+// calculated from prefix and dataString. It is used by BlogIt to
+// copy the Markdown document to the right path.
+func (meta *BlogMeta) BlogAsset(prefix string, fName string, dateString string) error {
 	var (
 		targetName string
 	)
@@ -398,7 +392,6 @@ func (meta *BlogMeta) BlogIt(prefix string, fName string, dateString string) err
 	if dateString == "" {
 		dateString = time.Now().Format("2015-05-07")
 	}
-
 	// Check to see if path.join(prefix, datePath(dateStr)) exists
 	// and create it if needed.
 	ymd, err := calcYMD(dateString)
@@ -428,6 +421,37 @@ func (meta *BlogMeta) BlogIt(prefix string, fName string, dateString string) err
 		}
 		in.Close()
 		out.Close()
+	}
+	return nil
+}
+
+// BlogIt is a tool for posting and updating a blog directory
+// structure on local disc.  It includes maintaining additional
+// metadata resources to make it easy to script blogsites and
+// podcast sites.
+// @param prefix - a prefix path for the blog (relative to working dir)
+// @param fName - the name of the file to publish to generated blog path
+// @param dateString - A date string used to calculate the blog path, e.g.
+//                  YYYY-MM-DD maps to YYYY/MM/DD.
+// @returns an error type
+func (meta *BlogMeta) BlogIt(prefix string, fName string, dateString string) error {
+	// Copy the post document using BlogAsset.
+	if err := meta.BlogAsset(prefix, fName, dateString); err != nil {
+		return err
+	}
+	// Now sort out our metadata for managing blog post.
+	var (
+		targetName string
+	)
+	// Check to see if dateStr is empty, if so default to today.
+	if dateString == "" {
+		dateString = time.Now().Format("2015-05-07")
+	}
+	// Check to see if path.join(prefix, datePath(dateStr)) exists
+	// and create it if needed.
+	ymd, err := calcYMD(dateString)
+	if err != nil {
+		return err
 	}
 	// NOTE: Updated is always today.
 	meta.Updated = time.Now().Format(DateFmt)

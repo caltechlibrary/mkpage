@@ -94,6 +94,7 @@ for blog posts for that year.
 	prefixPath     string
 	docName        string
 	dateString     string
+	blogAsset      bool
 	refreshBlog    string
 	setName        string
 	setQuip        string
@@ -135,6 +136,7 @@ func main() {
 	app.StringVar(&setBaseURL, "U,url", "", "Set blog's URL")
 	app.StringVar(&setIndexTmpl, "IT,index-tmpl", "", "Set index blog template")
 	app.StringVar(&setPostTmpl, "PT,post-tmpl", "", "Set index blog template")
+	app.BoolVar(&blogAsset, "a,asset", false, "Copy asset file to the blog path for provided date (YYYY-MM-DD)")
 
 	app.Parse()
 	args := app.Args()
@@ -174,7 +176,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	// Ready to run one of the BlogIt command forms
+	// Make ready to run one of the BlogIt command forms
 	meta := new(mkpage.BlogMeta)
 	blogJSON := path.Join(prefixPath, "blog.json")
 
@@ -236,6 +238,14 @@ func main() {
 		app.Usage(app.Out)
 		os.Exit(1)
 	}
+	// Handle Copy Asset terminating case
+	if blogAsset {
+		if err := meta.BlogAsset(prefixPath, docName, dateString); err != nil {
+			fmt.Fprintf(app.Eout, "%s\n", err)
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
 
 	// See if we have data to read in.
 	if _, err := os.Stat(blogJSON); os.IsNotExist(err) {
@@ -245,6 +255,7 @@ func main() {
 			os.Exit(1)
 		}
 	}
+	// Now blog it.
 	if err := meta.BlogIt(prefixPath, docName, dateString); err != nil {
 		fmt.Fprintf(app.Eout, "%s\n", err)
 		os.Exit(1)
