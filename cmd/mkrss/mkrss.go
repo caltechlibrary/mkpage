@@ -303,6 +303,8 @@ func main() {
 			if len(description) < len(tSrc) {
 				description += " ..."
 			}
+			description = mkpage.PandocBlock(description, "markdown", "html")
+			description = mkpage.PandocBlock(description, "html", "xml")
 		}
 		if val, ok := fMatter["creator"]; ok {
 			author = val.(string)
@@ -333,9 +335,7 @@ func main() {
 		item.Author = author
 		item.PubDate = pubDate
 		item.Link = u.String()
-		cdata := new(rss2.CDataString)
-		cdata.Set(description)
-		item.Description = cdata
+		item.Description = description
 		feed.ItemList = append(feed.ItemList, *item)
 		return nil
 	})

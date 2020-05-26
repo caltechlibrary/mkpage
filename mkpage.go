@@ -35,8 +35,8 @@ import (
 	"time"
 
 	// 3rd Party Packages
-	"github.com/BurntSushi/toml"
-	"github.com/ghodss/yaml"
+	"github.com/pelletier/go-toml"
+	"gopkg.in/yaml.v3"
 
 	// Fountain support for scripts, interviews and narration
 	"github.com/rsdoiel/fountain"
@@ -44,7 +44,7 @@ import (
 
 const (
 	// Version holds the semver assocaited with this version of mkpage.
-	Version = `v0.0.33e`
+	Version = `v0.0.33g`
 
 	// LicenseText provides a string template for rendering cli license info
 	LicenseText = `
@@ -125,6 +125,28 @@ func normalizeEOL(input []byte) []byte {
 	return input
 }
 
+func yamlToJson(src []byte) ([]byte, error) {
+	m1 := make(map[interface{}]interface{})
+	err := yaml.Unmarshal(src, &m1)
+	if err != nil {
+		return nil, err
+	}
+	m2 := make(map[string]interface{})
+	for key, value := range m1 {
+		switch key.(type) {
+		case string:
+			m2[key.(string)] = value
+		case int:
+			m2[fmt.Sprintf("%d", key)] = value
+		case float64:
+			m2[fmt.Sprintf("%f", key)] = value
+		default:
+			return nil, fmt.Errorf("JSON conversion failed, can't convert %T, %+v to string", key, key)
+		}
+	}
+	return json.MarshalIndent(m2, "", "    ")
+}
+
 // SplitFrontMatter takes a []byte input splits it into front matter type,
 // front matter source and Markdown source. If either is missing an
 // empty []byte is returned for the missing element.
@@ -170,7 +192,7 @@ func UnmarshalFrontMatter(srcType int, src []byte, obj *map[string]interface{}) 
 		// With YAML we go through two step conversion
 		// YAML to JSON then Unmarshal JSON into our
 		// map.
-		if jsonSrc, err := yaml.YAMLToJSON(src); err != nil {
+		if jsonSrc, err := yamlToJson(src); err != nil {
 			return err
 		} else {
 			if err := json.Unmarshal(jsonSrc, &obj); err != nil {
@@ -199,7 +221,7 @@ func ProcessorConfig(configType int, frontMatterSrc []byte) (map[string]interfac
 	switch configType {
 	case ConfigIsYAML:
 		// YAML Front Matter
-		jsonSrc, err := yaml.YAMLToJSON(frontMatterSrc)
+		jsonSrc, err := yamlToJson(frontMatterSrc)
 		if err != nil {
 			return nil, fmt.Errorf("Can't parse YAML front matter, %s", err)
 		}
@@ -208,7 +230,7 @@ func ProcessorConfig(configType int, frontMatterSrc []byte) (map[string]interfac
 		}
 	case ConfigIsTOML:
 		// TOML Front Matter
-		if _, err := toml.Decode(fmt.Sprintf("%s", frontMatterSrc), &m); err != nil {
+		if err := toml.Unmarshal(frontMatterSrc, &m); err != nil {
 			return nil, err
 		}
 	case ConfigIsJSON:

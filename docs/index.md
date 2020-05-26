@@ -1,8 +1,4 @@
----
-{
-    "has_code": false
-}
----
+
 
 # mkpage utilities
 

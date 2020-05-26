@@ -107,3 +107,14 @@ func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) 
 	wr.Write(out.Bytes())
 	return nil
 }
+
+// PandocBlock will attempt to convert a src byte array from
+// one to another formats. If conversion is successful it returns
+// a converted string, if unsuccessful it returns the original
+// byte array as a string.
+func PandocBlock(src string, from string, to string) string {
+	if buf, err := pandocProcessor([]byte(src), from, to); err == nil {
+		return fmt.Sprintf("%s", buf)
+	}
+	return src
+}

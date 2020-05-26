@@ -1,5 +1,5 @@
 ---
-title: Taml Test
+title: Yaml Test
 metadata:
   title: Front Matter Test
 count:
@@ -7,6 +7,7 @@ count:
   - two
   - three
 ---
+
 
 # Yaml Front Matter Demo
 
