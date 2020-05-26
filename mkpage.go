@@ -44,7 +44,7 @@ import (
 
 const (
 	// Version holds the semver assocaited with this version of mkpage.
-	Version = `v0.0.33c`
+	Version = `v0.0.33d`
 
 	// LicenseText provides a string template for rendering cli license info
 	LicenseText = `

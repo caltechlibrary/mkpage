@@ -307,9 +307,16 @@ func main() {
 			}
 		}
 		// Reformat pubDate to conform to RSS2 date formats
-		dt, err := time.Parse(`2006-01-02`, pubDate)
-		if err != nil {
-			return err
+		var (
+			dt time.Time
+		)
+		if pubDate == "" {
+			dt = time.Now()
+		} else {
+			dt, err = time.Parse(`2006-01-02`, pubDate)
+			if err != nil {
+				return err
+			}
 		}
 		pubDate = dt.Format(time.RFC1123)
 		item := new(rss2.Item)
