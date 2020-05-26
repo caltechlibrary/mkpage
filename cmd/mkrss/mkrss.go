@@ -299,8 +299,9 @@ func main() {
 		if val, ok := fMatter["description"]; ok {
 			description = val.(string)
 		} else {
-			if description, err := mkpage.OpeningParagraph(tSrc); err != nil {
-				description = ""
+			description = mkpage.OpeningParagraphs(fmt.Sprintf("%s", tSrc), 5, "\n\n")
+			if len(description) < len(tSrc) {
+				description += " ..."
 			}
 		}
 		if val, ok := fMatter["creator"]; ok {
