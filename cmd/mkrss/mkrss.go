@@ -256,7 +256,7 @@ func main() {
 			return err
 		}
 		fMatter := map[string]interface{}{}
-		fType, fSrc, _ := mkpage.SplitFrontMatter(buf)
+		fType, fSrc, tSrc := mkpage.SplitFrontMatter(buf)
 		if len(fSrc) > 0 {
 			if err := mkpage.UnmarshalFrontMatter(fType, fSrc, &fMatter); err != nil {
 				fMatter = map[string]interface{}{}
@@ -278,7 +278,7 @@ func main() {
 		// Collect metadata
 		//NOTE: Use front matter if available otherwise
 		var (
-			title, byline, author, pubDate string
+			title, byline, author, description, pubDate string
 		)
 		src := fmt.Sprintf("%s", buf)
 		if val, ok := fMatter["title"]; ok {
@@ -295,6 +295,13 @@ func main() {
 			pubDate = val.(string)
 		} else {
 			pubDate = mkpage.Grep(dateExp, byline)
+		}
+		if val, ok := fMatter["description"]; ok {
+			description = val.(string)
+		} else {
+			if description, err := mkpage.OpeningParagraph(tSrc); err != nil {
+				description = ""
+			}
 		}
 		if val, ok := fMatter["creator"]; ok {
 			author = val.(string)
@@ -320,10 +327,12 @@ func main() {
 		}
 		pubDate = dt.Format(time.RFC1123)
 		item := new(rss2.Item)
+		item.GUID = articleURL
 		item.Title = title
 		item.Author = author
 		item.PubDate = pubDate
 		item.Link = u.String()
+		item.Description = description
 		feed.ItemList = append(feed.ItemList, *item)
 		return nil
 	})
