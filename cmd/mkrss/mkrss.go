@@ -333,7 +333,9 @@ func main() {
 		item.Author = author
 		item.PubDate = pubDate
 		item.Link = u.String()
-		item.Description = description
+		cdata := new(rss2.CDataString)
+		cdata.Set(description)
+		item.Description = cdata
 		feed.ItemList = append(feed.ItemList, *item)
 		return nil
 	})
