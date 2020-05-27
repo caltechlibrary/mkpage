@@ -232,6 +232,7 @@ website:
 
 publish:
 	./mk_website.py
+	cd how-to/fountain-demo && make
 	./publish.bash
 
 .FORCE:
