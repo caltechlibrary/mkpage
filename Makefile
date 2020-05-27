@@ -22,43 +22,42 @@ build: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
 	bin/ws$(EXT) bin/frontmatter$(EXT) bin/blogit$(EXT)
 
-mkpage.go: assets.go codesnip.go
 
 assets.go: defaults/templates/page.tmpl defaults/templates/slides.tmpl .FORCE
 	pkgassets -verbose -o assets.go -p mkpage Defaults defaults
 	git add assets.go
 
-bin/mkpage$(EXT): mkpage.go assets.go codesnip.go cmd/mkpage/mkpage.go blogit.go mkpandoc.go
+bin/mkpage$(EXT): version.go mkpage.go assets.go codesnip.go mkpandoc.go cmd/mkpage/mkpage.go blogit.go mkpandoc.go
 	go build -o bin/mkpage$(EXT) cmd/mkpage/mkpage.go
 
-bin/mkrss$(EXT): mkpage.go cmd/mkrss/mkrss.go
+bin/mkrss$(EXT): version.go mkpage.go mkrss.go mkpandoc.go cmd/mkrss/mkrss.go
 	go build -o bin/mkrss$(EXT) cmd/mkrss/mkrss.go
 
-bin/sitemapper$(EXT): mkpage.go cmd/sitemapper/sitemapper.go
+bin/sitemapper$(EXT): version.go mkpage.go cmd/sitemapper/sitemapper.go
 	go build -o bin/sitemapper$(EXT) cmd/sitemapper/sitemapper.go
 
-bin/byline$(EXT): mkpage.go cmd/byline/byline.go
+bin/byline$(EXT): version.go mkpage.go cmd/byline/byline.go
 	go build -o bin/byline$(EXT) cmd/byline/byline.go
 
-bin/titleline$(EXT): mkpage.go cmd/titleline/titleline.go
+bin/titleline$(EXT): version.go mkpage.go cmd/titleline/titleline.go
 	go build -o bin/titleline$(EXT) cmd/titleline/titleline.go
 
-bin/reldocpath$(EXT): cmd/reldocpath/reldocpath.go
+bin/reldocpath$(EXT): version.go cmd/reldocpath/reldocpath.go
 	go build -o bin/reldocpath$(EXT) cmd/reldocpath/reldocpath.go
 
-bin/urlencode$(EXT): cmd/urlencode/urlencode.go
+bin/urlencode$(EXT): version.go cmd/urlencode/urlencode.go
 	go build -o bin/urlencode$(EXT) cmd/urlencode/urlencode.go
 
-bin/urldecode$(EXT): cmd/urldecode/urldecode.go
+bin/urldecode$(EXT): version.go cmd/urldecode/urldecode.go
 	go build -o bin/urldecode$(EXT) cmd/urldecode/urldecode.go
 
-bin/ws$(EXT): mkpage.go cmd/ws/ws.go
+bin/ws$(EXT): version.go mkpage.go cmd/ws/ws.go
 	go build -o bin/ws$(EXT) cmd/ws/ws.go
 
-bin/frontmatter$(EXT): mkpage.go cmd/frontmatter/frontmatter.go
+bin/frontmatter$(EXT): version.go mkpage.go cmd/frontmatter/frontmatter.go
 	go build -o bin/frontmatter$(EXT) cmd/frontmatter/frontmatter.go
 
-bin/blogit$(EXT): mkpage.go mkpandoc.go blogit.go cmd/blogit/blogit.go
+bin/blogit$(EXT): version.go blogit.go mkpage.go cmd/blogit/blogit.go
 	go build -o bin/blogit$(EXT) cmd/blogit/blogit.go
 
 lint:

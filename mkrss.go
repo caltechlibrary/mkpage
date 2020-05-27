@@ -41,6 +41,9 @@ func BlogMetaToRSS(blog *BlogMeta, articleLimit int, feed *rss2.RSS2) error {
 	if len(blog.Copyright) > 0 {
 		feed.Copyright = blog.Copyright
 	}
+	if feed.ItemList == nil {
+		feed.ItemList = []rss2.Item{}
+	}
 	//FIXME: Need to iterate over years, months, days and build our
 	// blog items.
 	for _, years := range blog.Years {
@@ -65,6 +68,7 @@ func BlogMetaToRSS(blog *BlogMeta, articleLimit int, feed *rss2.RSS2) error {
 						item.Description = post.Description
 					}
 					feed.ItemList = append(feed.ItemList, *item)
+					fmt.Printf("DEBUG feed.ItemList (%d) -> %+v\n", len(feed.ItemList), feed.ItemList)
 				}
 			}
 		}
