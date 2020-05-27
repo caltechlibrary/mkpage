@@ -218,18 +218,8 @@ distribute_docs:
 	cp -v README.md dist/
 	cp -v LICENSE dist/
 	cp -v INSTALL.md dist/
-	cp -v docs/byline.md dist/docs/
-	cp -v docs/mkpage.md dist/docs/
-	cp -v docs/mkrss.md dist/docs
-	cp -v docs/reldocpath.md dist/docs/
-	cp -v docs/sitemapper.md dist/docs/
-	cp -v docs/titleline.md dist/docs/
-	cp -v docs/urldecode.md dist/docs/
-	cp -v docs/urlencode.md dist/docs/
-	cp -v docs/ws.md dist/docs/
-	cp -v docs/frontmatter.md dist/docs/
-	cp -v docs/blogit.md dist/docs/
-	cp -v how-to/the-basics.md dist/how-to/
+	cp -vR docs/* dist/docs/
+	cp -vR how-to/* dist/how-to/
 	cp -vR templates dist/
 	#FIXME: need to pull package versions from go.mod file.
 	#./package-versions.bash > dist/package-versions.txt
