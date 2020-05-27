@@ -222,6 +222,8 @@ func main() {
 		}
 		return nil
 	})
+	//FIXME: Writing our data structure need to create sub-sitemaps
+	// for large heirarchies of files.
 	fmt.Printf("Writing %s\n", sitemapFName)
 	fp, err := os.OpenFile(sitemapFName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0664)
 	if err != nil {

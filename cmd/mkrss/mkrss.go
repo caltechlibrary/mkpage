@@ -19,14 +19,12 @@
 package main
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
-	"net/url"
 	"os"
 	"path"
-	"regexp"
-	"strings"
 	"time"
 
 	// My packages
@@ -234,111 +232,22 @@ func main() {
 	if len(args) > 1 {
 		rssPath = args[1]
 	}
-
-	validBlogPath := regexp.MustCompile("/[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]/")
-	err = mkpage.Walk(htdocs, func(p string, info os.FileInfo) bool {
-		fname := path.Base(p)
-		if validBlogPath.MatchString(p) == true &&
-			strings.HasSuffix(fname, ".md") == true {
-			// NOTE: We have a possible published markdown article.
-			// Make sure we have a HTML version before adding it
-			// to the feed.
-			if _, err := os.Stat(path.Join(p, path.Base(fname)+".html")); os.IsNotExist(err) {
-				return false
-			}
-			return true
-		}
-		return false
-	}, func(p string, info os.FileInfo) error {
-		// Read the article
-		buf, err := ioutil.ReadFile(p)
-		if err != nil {
-			return err
-		}
-		fMatter := map[string]interface{}{}
-		fType, fSrc, tSrc := mkpage.SplitFrontMatter(buf)
-		if len(fSrc) > 0 {
-			if err := mkpage.UnmarshalFrontMatter(fType, fSrc, &fMatter); err != nil {
-				fMatter = map[string]interface{}{}
+	blogJSON := path.Join(htdocs, "blog.json")
+	if _, err := os.Stat(blogJSON); os.IsNotExist(err) {
+		err = mkpage.WalkRSS(feed, htdocs, excludeList, articleLimit, titleExp, bylineExp, dateExp)
+	} else {
+		blog := new(mkpage.BlogMeta)
+		if src, err := ioutil.ReadFile(blogJSON); err != nil {
+			fmt.Fprintf(app.Eout, "Reading %q, %s\n", blogJSON, err)
+			os.Exit(1)
+		} else {
+			if err := json.Unmarshal(src, &blog); err != nil {
+				fmt.Fprintf(app.Eout, "Unmashal, %s\n", err)
+				os.Exit(1)
 			}
 		}
-
-		// Calc URL path
-		pname := strings.TrimPrefix(p, htdocs)
-		if strings.HasPrefix(pname, "/") {
-			pname = strings.TrimPrefix(pname, "/")
-		}
-		dname := path.Dir(pname)
-		bname := strings.TrimSuffix(path.Base(pname), ".md") + ".html"
-		articleURL := fmt.Sprintf("%s/%s", channelLink, path.Join(dname, bname))
-		u, err := url.Parse(articleURL)
-		if err != nil {
-			return err
-		}
-		// Collect metadata
-		//NOTE: Use front matter if available otherwise
-		var (
-			title, byline, author, description, pubDate string
-		)
-		src := fmt.Sprintf("%s", buf)
-		if val, ok := fMatter["title"]; ok {
-			title = val.(string)
-		} else {
-			title = strings.TrimPrefix(mkpage.Grep(titleExp, src), "# ")
-		}
-		if val, ok := fMatter["byline"]; ok {
-			byline = val.(string)
-		} else {
-			byline = mkpage.Grep(bylineExp, src)
-		}
-		if val, ok := fMatter["pubDate"]; ok {
-			pubDate = val.(string)
-		} else {
-			pubDate = mkpage.Grep(dateExp, byline)
-		}
-		if val, ok := fMatter["description"]; ok {
-			description = val.(string)
-		} else {
-			description = mkpage.OpeningParagraphs(fmt.Sprintf("%s", tSrc), 5, "\n\n")
-			if len(description) < len(tSrc) {
-				description += " ..."
-			}
-			description = mkpage.PandocBlock(description, "markdown", "html")
-			description = mkpage.PandocBlock(description, "html", "xml")
-		}
-		if val, ok := fMatter["creator"]; ok {
-			author = val.(string)
-		} else if val, ok = fMatter["author"]; ok {
-			author = val.(string)
-		} else {
-			author = byline
-			if len(byline) > 2 {
-				author = strings.TrimSpace(strings.TrimSuffix(byline[2:], pubDate))
-			}
-		}
-		// Reformat pubDate to conform to RSS2 date formats
-		var (
-			dt time.Time
-		)
-		if pubDate == "" {
-			dt = time.Now()
-		} else {
-			dt, err = time.Parse(`2006-01-02`, pubDate)
-			if err != nil {
-				return err
-			}
-		}
-		pubDate = dt.Format(time.RFC1123)
-		item := new(rss2.Item)
-		item.GUID = articleURL
-		item.Title = title
-		item.Author = author
-		item.PubDate = pubDate
-		item.Link = u.String()
-		item.Description = description
-		feed.ItemList = append(feed.ItemList, *item)
-		return nil
-	})
+		err = mkpage.BlogMetaToRSS(blog, articleLimit, feed)
+	}
 	if err != nil {
 		fmt.Fprintf(app.Eout, "%s\n", err)
 		os.Exit(1)

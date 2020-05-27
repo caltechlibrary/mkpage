@@ -4,7 +4,7 @@
 
 PROJECT = mkpage
 
-VERSION = $(shell grep -m1 "Version = " $(PROJECT).go | cut -d\` -f 2)
+VERSION = $(shell grep -m1 "Version = " version.go | cut -d\` -f 2)
 
 BRANCH = $(shell git branch | grep "* " | cut -d\   -f 2)
 

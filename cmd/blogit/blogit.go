@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 	"time"
 
 	// Caltech Library packages
@@ -97,11 +98,16 @@ for blog posts for that year.
 	blogAsset      bool
 	refreshBlog    string
 	setName        string
+	setStarted     string
+	setEnded       string
 	setQuip        string
 	setDescription string
 	setBaseURL     string
 	setIndexTmpl   string
 	setPostTmpl    string
+	setCopyright   string
+	setLicense     string
+	setLanguage    string
 )
 
 func main() {
@@ -132,6 +138,11 @@ func main() {
 	app.StringVar(&refreshBlog, "R,refresh", "", "Refresh blog.json for a given year")
 	app.StringVar(&setName, "N,name", "", "Set the blog name.")
 	app.StringVar(&setQuip, "Q,quip", "", "Set the blog quip.")
+	app.StringVar(&setCopyright, "C,copyright", "", "Set the blog copyright notice.")
+	app.StringVar(&setLanguage, "L,language", "en-US", "Set the blog language.")
+	app.StringVar(&setLicense, "License", "", "Set the blog language license.")
+	app.StringVar(&setStarted, "S,started", "", "Set the blog started date.")
+	app.StringVar(&setStarted, "E,ended", "", "Set the blog ended date.")
 	app.StringVar(&setDescription, "D,description", "", "Set the blog description")
 	app.StringVar(&setBaseURL, "U,url", "", "Set blog's URL")
 	app.StringVar(&setIndexTmpl, "IT,index-tmpl", "", "Set index blog template")
@@ -178,7 +189,17 @@ func main() {
 
 	// Make ready to run one of the BlogIt command forms
 	meta := new(mkpage.BlogMeta)
+
 	blogJSON := path.Join(prefixPath, "blog.json")
+
+	// See if we have data to read in.
+	if _, err := os.Stat(blogJSON); os.IsNotExist(err) {
+	} else {
+		if err := mkpage.LoadBlogMeta(blogJSON, meta); err != nil {
+			fmt.Fprintf(app.Eout, "Error reading %q, %s\n", blogJSON, err)
+			os.Exit(1)
+		}
+	}
 
 	// handle option cases
 	if setName != "" {
@@ -189,6 +210,18 @@ func main() {
 	}
 	if setDescription != "" {
 		meta.Description = setDescription
+	}
+	if setCopyright != "" {
+		meta.Copyright = setCopyright
+	}
+	if setLicense != "" {
+		meta.License = setLicense
+	}
+	if setStarted != "" {
+		meta.Started = setStarted
+	}
+	if setEnded != "" {
+		meta.Ended = setEnded
 	}
 	if setBaseURL != "" {
 		meta.BaseURL = setBaseURL
@@ -202,10 +235,19 @@ func main() {
 
 	// handle option terminating case of refreshBlog
 	if refreshBlog != "" {
-		fmt.Printf("Refreshing %q from %q\n", blogJSON, path.Join(prefixPath, refreshBlog))
-		if err := meta.RefreshFromPath(prefixPath, refreshBlog); err != nil {
-			fmt.Fprintf(app.Eout, "%s\n", err)
-			os.Exit(1)
+		years := []string{}
+		if strings.Contains(refreshBlog, ",") {
+			years = strings.Split(refreshBlog, ",")
+		} else {
+			years = []string{refreshBlog}
+		}
+		for i, year := range years {
+			year = strings.TrimSpace(year)
+			fmt.Printf("Refreshing (%d/%d) %q from %q\n", i+1, len(years), blogJSON, path.Join(prefixPath, year))
+			if err := meta.RefreshFromPath(prefixPath, year); err != nil {
+				fmt.Fprintf(app.Eout, "%s\n", err)
+				os.Exit(1)
+			}
 		}
 		if err := meta.Save(blogJSON); err != nil {
 			fmt.Fprintf(app.Eout, "%s\n", err)
@@ -248,14 +290,6 @@ func main() {
 		os.Exit(0)
 	}
 
-	// See if we have data to read in.
-	if _, err := os.Stat(blogJSON); os.IsNotExist(err) {
-	} else {
-		if err := mkpage.LoadBlogMeta(blogJSON, meta); err != nil {
-			fmt.Fprintf(app.Eout, "Error reading %q, %s\n", blogJSON, err)
-			os.Exit(1)
-		}
-	}
 	// Now blog it.
 	if err := meta.BlogIt(prefixPath, docName, dateString); err != nil {
 		fmt.Fprintf(app.Eout, "%s\n", err)

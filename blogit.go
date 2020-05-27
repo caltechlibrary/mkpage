@@ -80,6 +80,11 @@ type BlogMeta struct {
 	Quip        string     `json:"quip,omitempty"`
 	Description string     `json:"description,omitempty"`
 	BaseURL     string     `json:"url,omitempty"`
+	Copyright   string     `json:"copyright,omitempty"`
+	License     string     `json:"license,omitempty"`
+	Language    string     `json:"language,omitempty"`
+	Started     string     `json:"started,omitempty"`
+	Ended       string     `json:"ended,omitempty"`
 	Updated     string     `json:"updated,omitempty"`
 	IndexTmpl   string     `json:"index_tmpl,omitempty"`
 	PostTmpl    string     `json:"post_tmpl,omitempty"`
@@ -480,6 +485,7 @@ func (meta *BlogMeta) BlogIt(prefix string, fName string, dateString string) err
 
 // Save writes a JSON blog meta document
 func (meta *BlogMeta) Save(fName string) error {
+	meta.Updated = time.Now().Format(DateFmt)
 	src, err := json.MarshalIndent(meta, "", "    ")
 	if err != nil {
 		return fmt.Errorf("Marshaling %q, %s", fName, err)
