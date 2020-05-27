@@ -238,6 +238,7 @@ release: clean website assets.go distribute_docs dist/linux-amd64 dist/windows-a
 
 website:
 	./mk_website.py
+	cd how-to/fountain-demo && make
 
 publish:
 	./mk_website.py

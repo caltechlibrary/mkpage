@@ -5,8 +5,8 @@
 
 # One Element
 
-One element features a theme with one template, [page.tmpl](page.tmpl), which has
-one replacable element named "Content". 
+One element features a theme with one template, [page.tmpl](page.tmpl), 
+which has one replacable element named "content". 
 
 ```template
     <!DOCTYPE html>
@@ -25,7 +25,7 @@ one replacable element named "Content".
                 <li><a href="../">Up</a></li>
             </ul>
         </nav>
-        {{with .Content}}<section>{{- . -}}</section>{{- end}}
+        ${if(content)}<section>${content}</section>${endif}
         <footer>This template features a single replacable element</footer>
     </body>
     </html>
@@ -58,7 +58,7 @@ script is called [mk-website.bash](mk-website.bash).
     	# Calculate the HTML filename
     	HTML_FILE="$(dirname "$MARKDOWN_FILE")/$(basename "$MARKDOWN_FILE" .md).html"
     	mkpage \
-    		"Content=$MARKDOWN_FILE" \
+    		"content=$MARKDOWN_FILE" \
     		page.tmpl >"$HTML_FILE"
 
     done

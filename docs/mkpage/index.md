@@ -7,6 +7,9 @@
 
 ## DESCRIPTION
 
+
+SYNOPSIS
+
 Using the key/value pairs populate the template(s) and render to stdout.
 
 
@@ -20,8 +23,7 @@ Environment variables can be overridden by corresponding options
 
 ## OPTIONS
 
-Below are a set of options available. Options will override any 
-corresponding environment settings.
+Below are a set of options available. Options will override any corresponding environment settings.
 
 ```
     -code               outout just code blocks for language, e.g. shell or json
@@ -29,21 +31,23 @@ corresponding environment settings.
     -examples           display example(s)
     -generate-manpage   generate man page
     -generate-markdown  generate markdown documentation
+    -gt, -go-templates  use Go's template engine instead of Pandoc's template engine
     -h, -help           display help
     -i, -input          input filename
     -l, -license        display license
     -o, -output         output filename
-    -pandoc             use Pandoc's template engine
     -quiet              suppress error messages
-    -s                  display the default template
-    -show-template      display the default template
-    -t                  colon delimited list of templates to use
-    -templates          colon delimited list of templates to use
+    -s, -show-template  display source for a default page template
+    -t, -templates      colon delimited list of templates to use
     -v, -version        display version
 ```
 
 
 ## EXAMPLES
+
+
+
+EXAMPLE
 
 Template (named "examples/weather.tmpl")
     
@@ -54,13 +58,14 @@ Template (named "examples/weather.tmpl")
         
     The weather forcast is
     
-    ${if(weather.data.weather)}
-      ${weather.data.weather[; ]}
-    ${endif}
+    $if(weather.data.weather)$
+      $weather.data.weather[; ]$
+    $endif$
     
     Thank you
     
     ${signature}
+
 ```
 
 Render the template above (i.e. examples/weather.tmpl) would be 
@@ -74,11 +79,12 @@ accomplished from the following data sources--
 
 That would be expressed on the command line as follows
 
-```
+```shell
     mkpage "now=text:$(date)" "name=text:Little Frieda" \
-        "weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
+        "weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
         signature=examples/signature.txt \
         examples/weather.tmpl     
 ```
 
-mkpage v0.0.33
+
+

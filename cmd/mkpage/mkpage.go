@@ -92,7 +92,7 @@ That would be expressed on the command line as follows
 	showTemplate   bool
 	codesnip       bool
 	codeType       string
-	usePandoc      bool
+	useGoTemplates bool
 )
 
 func main() {
@@ -126,7 +126,7 @@ func main() {
 	app.StringVar(&templateFNames, "t,templates", "", "colon delimited list of templates to use")
 	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks")
 	app.StringVar(&codeType, "code", "", "outout just code blocks for language, e.g. shell or json")
-	app.BoolVar(&usePandoc, "pandoc", true, "(default) use Pandoc's template engine")
+	app.BoolVar(&useGoTemplates, "gt,go-templates", false, "use Go's template engine instead of Pandoc's template engine")
 
 	app.Parse()
 	args := app.Args()
@@ -210,12 +210,7 @@ func main() {
 
 	// Make the page with pandoc, go templates and Go Markdown
 	switch {
-	case usePandoc:
-		if len(templateSources) > 0 {
-			templateName = templateSources[0]
-		}
-		err = mkpage.MakePandoc(app.Out, templateName, data)
-	default:
+	case useGoTemplates:
 		// DEPRECIATED: This is maintained for backard compatibility
 		// for now. It should be removed when the transition is
 		// completed.
@@ -237,6 +232,11 @@ func main() {
 		t, err := tmpl.Assemble()
 		cli.ExitOnError(app.Eout, err, quiet)
 		err = mkpage.MakePage(app.Out, templateName, t, data)
+	default:
+		if len(templateSources) > 0 {
+			templateName = templateSources[0]
+		}
+		err = mkpage.MakePandoc(app.Out, templateName, data)
 	}
 	cli.ExitOnError(app.Eout, err, quiet)
 }

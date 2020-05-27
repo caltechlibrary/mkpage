@@ -32,6 +32,7 @@ examples/*
 test/*
 testdata/*.html
 *~
+*.bak
 *.swp
 *.zip
 temp.html

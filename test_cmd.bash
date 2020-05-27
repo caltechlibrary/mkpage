@@ -86,22 +86,6 @@ function test_mkpage() {
     echo "test_mkpage() OK"
 }
 
-function test_mkrss() {
-    echo "test_mkrss() not implemented."
-}
-
-function test_mkslides() {
-    CWD=$(pwd)
-    mkdir -p test
-    cd test
-    echo "test_mkslides() not implemented."
-    ../bin/mkpage --mkslides -i ../examples/presentation.md
-    OK="true"
-    for FNAME in "00-presentation.html" "01-presentation.html" "02-presentation.html"; do
-      assert_exists "test_mkslides (${FNAME})" "${FNAME}"
-    done
-    cd $(CWD)
-}
 
 function test_reldocpath() {
     echo "test_reldocpath() not implemented."
@@ -126,12 +110,10 @@ function test_urlencode() {
 echo "Testing command line tools"
 test_byline
 test_mkpage
-test_mkrss
-#test_mkslides
 test_blogit
-test_reldocpath
-test_sitemapper
-test_titleline
-test_urldecode
-test_urlencode
+#test_reldocpath
+#test_sitemapper
+#test_titleline
+#test_urldecode
+#test_urlencode
 echo 'Success!'

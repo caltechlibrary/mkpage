@@ -10,11 +10,12 @@ import (
 	"strings"
 	"time"
 
+	// Caltech Library packages
 	"github.com/caltechlibrary/rss2"
 )
 
 // Generate a Feed from walking the BlogMeta structure
-func BlogMetaToRSS(blog *BlogMeta, articleLimit int, feed *rss2.RSS2) error {
+func BlogMetaToRSS(blog *BlogMeta, feed *rss2.RSS2) error {
 	if len(blog.Name) > 0 {
 		feed.Title = blog.Name
 	}
@@ -41,9 +42,6 @@ func BlogMetaToRSS(blog *BlogMeta, articleLimit int, feed *rss2.RSS2) error {
 	if len(blog.Copyright) > 0 {
 		feed.Copyright = blog.Copyright
 	}
-	if feed.ItemList == nil {
-		feed.ItemList = []rss2.Item{}
-	}
 	//FIXME: Need to iterate over years, months, days and build our
 	// blog items.
 	for _, years := range blog.Years {
@@ -62,13 +60,37 @@ func BlogMetaToRSS(blog *BlogMeta, articleLimit int, feed *rss2.RSS2) error {
 					item.Link = strings.Join([]string{blog.BaseURL, post.Document}, "/")
 					item.GUID = item.Link
 					item.PubDate = pubDate.Format(time.RFC1123)
-					if post.Abstract != "" {
+					if len(post.Description) == 0 && len(post.Document) > 0 {
+						// Read the article, extract a description
+						buf, err := ioutil.ReadFile(post.Document)
+						if err != nil {
+							return err
+						}
+						fMatter := map[string]interface{}{}
+						fType, fSrc, tSrc := SplitFrontMatter(buf)
+						if len(fSrc) > 0 {
+							if err := UnmarshalFrontMatter(fType, fSrc, &fMatter); err != nil {
+								fMatter = map[string]interface{}{}
+							}
+						}
+						if val, ok := fMatter["description"]; ok {
+							post.Description = val.(string)
+						} else {
+							post.Description = OpeningParagraphs(fmt.Sprintf("%s", tSrc), 5, "\n\n")
+							if len(post.Description) < len(tSrc) {
+								post.Description += " ..."
+							}
+							post.Description = PandocBlock(post.Description, "markdown", "html")
+							post.Description = PandocBlock(post.Description, "html", "xml")
+						}
+					}
+					if len(post.Abstract) > 0 {
 						item.Description = post.Abstract
-					} else if post.Description != "" {
+					}
+					if len(post.Description) > 0 {
 						item.Description = post.Description
 					}
 					feed.ItemList = append(feed.ItemList, *item)
-					fmt.Printf("DEBUG feed.ItemList (%d) -> %+v\n", len(feed.ItemList), feed.ItemList)
 				}
 			}
 		}
@@ -77,7 +99,7 @@ func BlogMetaToRSS(blog *BlogMeta, articleLimit int, feed *rss2.RSS2) error {
 }
 
 // Generate an Feed by walking the file system.
-func WalkRSS(feed *rss2.RSS2, htdocs string, excludeList string, articleLimit int, titleExp string, bylineExp string, dateExp string) error {
+func WalkRSS(feed *rss2.RSS2, htdocs string, excludeList string, titleExp string, bylineExp string, dateExp string) error {
 	// Required
 	channelLink := feed.Link
 

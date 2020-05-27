@@ -9,7 +9,50 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="../mkpage/">mkpage</a>
+</li>
+<li>
+<a href="../blogit/">blogit</a>
+</li>
+<li>
+<a href="../frontmatter/">frontmatter</a>
+</li>
+<li>
+<a href="../titleline/">titleline</a>
+</li>
+<li>
+<a href="../byline/">byline</a>
+</li>
+<li>
+<a href="../ws/">ws</a>
+</li>
+<li>
+<a href="../urlencode/">urlencode</a>
+</li>
+<li>
+<a href="../urldecode/">urldecode</a>
+</li>
+<li>
+<a href="../sitemapper/">sitemapper</a>
+</li>
+<li>
+<a href="../mkrss/">mkrss</a>
+</li>
+<li>
+<a href="../reldocpath/">reldocpath</a>
+</li>
+<li>
+<a href="../../how-to/">How To…</a>
+</li>
+</ul>
 </nav>
 
 <section>
@@ -24,7 +67,7 @@ USAGE
 DESCRIPTION
 </h2>
 <p>
-byline extracts a byline from a Markdown file or its front matter. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.
+byline extracts a byline from a Markdown file. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.
 </p>
 <h2 id="options">
 OPTIONS
@@ -32,28 +75,25 @@ OPTIONS
 <p>
 Below are a set of options available.
 </p>
-<pre><code>    -b, -byline          set byline regexp
-    -examples            display example(s)
-    -generate-manpage    generate man page
-    -generate-markdown   generate Markdown documentation
-    -h, -help            display help
-    -i, -input           input filename
-    -l, -license         display license
-    -o, -output          output filename
-    -quiet               suppress error messages
-    -v, -version         display version</code></pre>
+<pre><code>    -b, -byline         set byline regexp
+    -examples           display example(s)
+    -generate-manpage   generate man page
+    -generate-markdown  generate Markdown documentation
+    -h, -help           display help
+    -i, -input          input filename
+    -l, -license        display license
+    -o, -output         output filename
+    -quiet              suppress error messages
+    -v, -version        display version</code></pre>
 <h2 id="examples">
 EXAMPLES
 </h2>
 <p>
 Extract a byline from article.md.
 </p>
-<pre><code>    cat article.md | byline</code></pre>
+<pre class="shell"><code>    cat article.md | byline</code></pre>
 <p>
 This will display the byline if one is found in article.md.
-</p>
-<p>
-byline v0.0.33
 </p>
 </section>
 

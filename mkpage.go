@@ -164,7 +164,7 @@ func UnmarshalFrontMatter(srcType int, src []byte, obj *map[string]interface{}) 
 	switch srcType {
 	case ConfigIsTOML:
 		// Make sure we have valid Toml
-		if err := toml.Unmarshal(src, &obj); err != nil {
+		if err := toml.Unmarshal(src, obj); err != nil {
 			return err
 		}
 	case ConfigIsYAML:

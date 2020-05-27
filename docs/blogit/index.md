@@ -3,28 +3,44 @@
 
 ## USAGE
 
-    blogit [OPTIONS] DOCUMENT_NAME [DATE]
+	blogit [OPTIONS] DOCUMENT_NAME [DATE]
 
 ## DESCRIPTION
+
 
 Blogit provides a quick tool to add or replace blog content
 organized around a date oriented file path. In addition to
 placing documents it also will generate simple markdown documents
 for inclusion in navigation.
 
+
 ## OPTIONS
 
-```
-    -V, -verbose         verbose output
-    -e, -examples        display examples
-    -generate-manpage    generate man page
-    -generate-markdown   generate markdown documentation
-    -h, -help            display help
-    -l, -license         display license
-    -p, -prefix          Set the prefix path before YYYY/MM/DD.
-    -v, -version         display version
-```
+Below are a set of options available.
 
+```
+    -C, -copyright      Set the blog copyright notice.
+    -D, -description    Set the blog description
+    -E, -ended          Set the blog ended date.
+    -IT, -index-tmpl    Set index blog template
+    -L, -language       Set the blog language.
+    -License            Set the blog language license.
+    -N, -name           Set the blog name.
+    -P, -prefix         Set the prefix path before YYYY/MM/DD.
+    -PT, -post-tmpl     Set index blog template
+    -Q, -quip           Set the blog quip.
+    -R, -refresh        Refresh blog.json for a given year
+    -S, -started        Set the blog started date.
+    -U, -url            Set blog's URL
+    -V, -verbose        verbose output
+    -a, -asset          Copy asset file to the blog path for provided date (YYYY-MM-DD)
+    -e, -examples       display examples
+    -generate-manpage   generate man page
+    -generate-markdown  generate markdown documentation
+    -h, -help           display help
+    -l, -license        display license
+    -v, -version        display version
+```
 
 ## EXAMPLES
 
@@ -35,7 +51,7 @@ repository is in my "Sites" folder under "Sites/me.example.org".
 Adding "my-vacation-day.md" to the blog me.example.org would
 use the following command.
 
-```
+```shell
    cd $HOME/Sites/me.example.org
    blogit $HOME/my-vacation-day.md 2020-07-01
 ```
@@ -59,10 +75,20 @@ structures for things like podcasts or videocasts.
     blogit -prefix=podcast my-vacation.wav 2020-07-01
 ```
 
-Option descripton for `-prefix`
-
 ```
    -p, -prefix    Set the prefix path before the YYYY/MM/DD path.
 ```
 
-blogit v0.0.33
+
+If you have an existing blog paths in the form of
+PREFIX/YYYY/MM/DD you can use blogit to create/update/recreate
+the blog.json file.
+
+```
+    blogit -prefix=blog -year=2020
+```
+
+The option "-year" is what indicates you want to crawl
+for blog posts for that year.
+
+

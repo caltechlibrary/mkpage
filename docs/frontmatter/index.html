@@ -9,7 +9,50 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="../mkpage/">mkpage</a>
+</li>
+<li>
+<a href="../blogit/">blogit</a>
+</li>
+<li>
+<a href="../frontmatter/">frontmatter</a>
+</li>
+<li>
+<a href="../titleline/">titleline</a>
+</li>
+<li>
+<a href="../byline/">byline</a>
+</li>
+<li>
+<a href="../ws/">ws</a>
+</li>
+<li>
+<a href="../urlencode/">urlencode</a>
+</li>
+<li>
+<a href="../urldecode/">urldecode</a>
+</li>
+<li>
+<a href="../sitemapper/">sitemapper</a>
+</li>
+<li>
+<a href="../mkrss/">mkrss</a>
+</li>
+<li>
+<a href="../reldocpath/">reldocpath</a>
+</li>
+<li>
+<a href="../../how-to/">How To…</a>
+</li>
+</ul>
 </nav>
 
 <section>
@@ -32,32 +75,29 @@ OPTIONS
 <p>
 Below are a set of options available.
 </p>
-<pre><code>    -examples            display example(s)
-    -generate-manpage    generate man page
-    -generate-markdown   generate Markdown documentation
-    -h, -help            display help
-    -i, -input           input filename
-    -j, -json            output as JSON
-    -l, -license         display license
-    -o, -output          output filename
-    -quiet               suppress error messages
-    -v, -version         display version</code></pre>
+<pre><code>    -examples           display example(s)
+    -generate-manpage   generate man page
+    -generate-markdown  generate Markdown documentation
+    -h, -help           display help
+    -i, -input          input filename
+    -j, -json           output as JSON
+    -l, -license        display license
+    -o, -output         output filename
+    -quiet              suppress error messages
+    -v, -version        display version</code></pre>
 <h2 id="examples">
 EXAMPLES
 </h2>
 <p>
 Extract a front matter from article.md.
 </p>
-<pre><code>    cat article.md | frontmatter</code></pre>
+<pre class="shell"><code>    cat article.md | frontmatter</code></pre>
 <p>
 This will display the front matter if found in article.md.
 </p>
-<pre><code>    frontmatter -i article.md</code></pre>
+<pre class="shell"><code>    frontmatter -i article.md</code></pre>
 <p>
 Will also do the same.
-</p>
-<p>
-frontmatter v0.0.33
 </p>
 </section>
 

@@ -74,7 +74,6 @@ articles in htdocs/myblog/YYYY/MM/DD.
 
 	// App specific options
 	excludeList        string
-	articleLimit       int
 	channelLanguage    string
 	channelTitle       string
 	channelDescription string
@@ -115,7 +114,6 @@ func main() {
 
 	// App specific options
 	app.StringVar(&excludeList, "e", "", "A colon delimited list of path exclusions")
-	app.IntVar(&articleLimit, "c", 0, "If non-zero, limit the number of articles in the RSS file")
 	app.StringVar(&channelLanguage, "channel-language", "", "Language, e.g. en-ca")
 	app.StringVar(&channelTitle, "channel-title", "", "Title of channel")
 	app.StringVar(&channelDescription, "channel-description", "", "Description of channel")
@@ -234,7 +232,7 @@ func main() {
 	}
 	blogJSON := path.Join(htdocs, "blog.json")
 	if _, err := os.Stat(blogJSON); os.IsNotExist(err) {
-		err = mkpage.WalkRSS(feed, htdocs, excludeList, articleLimit, titleExp, bylineExp, dateExp)
+		err = mkpage.WalkRSS(feed, htdocs, excludeList, titleExp, bylineExp, dateExp)
 	} else {
 		blog := new(mkpage.BlogMeta)
 		if src, err := ioutil.ReadFile(blogJSON); err != nil {
@@ -246,7 +244,7 @@ func main() {
 				os.Exit(1)
 			}
 		}
-		err = mkpage.BlogMetaToRSS(blog, articleLimit, feed)
+		err = mkpage.BlogMetaToRSS(blog, feed)
 	}
 	if err != nil {
 		fmt.Fprintf(app.Eout, "%s\n", err)

@@ -36,7 +36,7 @@ Point your webbrowser at http://localhost:8000 and view this page.
     <html>
     <head>
         ${if(title}<title>${title}</title>${endif}
-        ${if(csspath)}<link rel="stylesheet" href="${casspath}">${endif}
+        ${if(csspath)}<link rel="stylesheet" href="${csspath}">${endif}
         ${if(css)}<style>${css}</style>${endif} 
     </head>
     <body>

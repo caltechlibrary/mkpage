@@ -1,3 +1,6 @@
 + [Home](/)
 + [Up](../)
-+ [Simple With Navigation](./index.html)
++ [The Basics](../the-basics.html)
++ [Simple](../simple/)
++ [Simple w/Nav](../simple-with-nav/)
++ [Fountain Demo](../fountain-demo/)

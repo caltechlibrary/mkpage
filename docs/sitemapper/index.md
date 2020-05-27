@@ -9,6 +9,7 @@
 
 sitemapper generates a sitemap for the website.
 
+
 ## ENVIRONMENT
 
 Environment variables can be overridden by corresponding options
@@ -42,9 +43,8 @@ Below are a set of options available. Options will override any corresponding en
 
 ## EXAMPLE
 
+
 ```
     sitemapper htdocs htdocs/sitemap.xml http://eprints.example.edu
 ```
 
-
-sitemapper v0.0.33

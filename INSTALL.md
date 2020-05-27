@@ -1,10 +1,11 @@
 
 # Installation
 
-*mkpage* is a set of command line programs run from a shell like Bash. 
-NOTE: *mkpage* depends on [Pandoc](https://pandoc.org/installing.html).
+**MkPage Project** is a set of command line programs run from a shell
+like Bash.  NOTE: *mkpage* depends on
+[Pandoc](https://pandoc.org/installing.html).
 
-For latest the released versions of `mkpage` go to the project page 
+For latest the released versions of `mkpage` go to the project page
 on GitHub and click latest release
 
 >    https://github.com/caltechlibrary/mkpage/releases/latest
@@ -16,14 +17,14 @@ You will seea list of filenames is in the form of
 
 > PLATFROM_NAME is a description of a platform (e.g. windows-amd64, macosx-amd64).
 
-Compiled versions are available for Mac OS X (amd64 processor, 
+Compiled versions are available for macOS (amd64 processor, 
 macosx-amd64), Linux (amd64 processor, linux-amd64), Windows (amd64 
 processor, windows-amd64) and Rapsberry Pi (ARM7 processor, raspbian-arm7).
 
 | Platform    | Zip Filename                            |
 |-------------|-----------------------------------------|
 | Windows     | mkpage-VERSION_NUMBER-windows-amd64.zip |
-| Mac OS X    | mkpage-VERSION_NUMBER-macosx-amd64.zip  |
+| macOS       | mkpage-VERSION_NUMBER-macosx-amd64.zip  |
 | Linux/Intel | mkpage-VERSION_NUMBER-linux-amd64.zip   |
 | Raspbery Pi | mkpage-VERSION_NUMBER-raspbian-arm7.zip |
 
@@ -37,7 +38,7 @@ processor, windows-amd64) and Rapsberry Pi (ARM7 processor, raspbian-arm7).
 + test to see if it worked
 
 
-### Mac OS X
+### macOS
 
 1. Download the zip file
 2. Unzip the zip file
@@ -56,7 +57,7 @@ downloading the zip file.
     mkpage -version
 ```
 
-### Windows
+### Windows 10
 
 1. Download the zip file
 2. Unzip the zip file

@@ -17,13 +17,16 @@
 <a href="../">Up</a>
 </li>
 <li>
-<a href="./">Explanation</a>
+<a href="../the-basics.html">The Basics</a>
 </li>
 <li>
-<a href="interview-with-a-dog.fountain">Fountain File</a>
+<a href="../simple/">Simple</a>
 </li>
 <li>
-<a href="interview-with-a-dog.html">Rendered HTML</a>
+<a href="../simple-with-nav/">Simple w/Nav</a>
+</li>
+<li>
+<a href="../fountain-demo/">Fountain Demo</a>
 </li>
 </ul>
 </nav>
@@ -56,6 +59,11 @@ The “+++” indicate the front matter is TOML. The fountain processor is looki
 <p>
 <strong>mkpage</strong> support three types of front matter. TOML, JSON and YAML. TOML and JSON are preferred and the best tested.
 </p>
+<p>
+Processing our document can be done with the following command.
+</p>
+<pre class="shell"><code>    mkpage content=interview-with-a-dog.fountain page.tmpl \
+      &gt;interview-with-a-dog.html</code></pre>
 </section>
 
 <footer>

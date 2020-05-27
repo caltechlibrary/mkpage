@@ -17,7 +17,16 @@
 <a href="../">Up</a>
 </li>
 <li>
-<a href="./index.html">Simple With Navigation</a>
+<a href="../the-basics.html">The Basics</a>
+</li>
+<li>
+<a href="../simple/">Simple</a>
+</li>
+<li>
+<a href="../simple-with-nav/">Simple w/Nav</a>
+</li>
+<li>
+<a href="../fountain-demo/">Fountain Demo</a>
 </li>
 </ul>
 </nav>
@@ -49,17 +58,17 @@ Template Example
 <pre class="template"><code>    &lt;!DOCTYPE html&gt;
     &lt;html&gt;
     &lt;head&gt;
-        {{with .title -}}&lt;title&gt;{{- . -}}&lt;/title&gt;{{- end }}
-        {{with .csspath -}}&lt;link rel=&quot;stylesheet&quot; href=&quot;{{- . -}}&quot;&gt;{{- end}}
-        {{with .css -}}&lt;style&gt;{{- . -}}&lt;/style&gt;{{- end }} 
+        ${if(title)}&lt;title&gt;${title}&lt;/title&gt;${endif}
+        ${if(csspath)}&lt;link rel=&quot;stylesheet&quot; href=&quot;${csspath}&quot;&gt;${endif}
+        ${if(css)}&lt;style&gt;${css}&lt;/style&gt;${endif}
     &lt;/head&gt;
     &lt;body&gt;
         &lt;header&gt;
-            {{with .title -}}&lt;h1&gt;{{- . -}}&lt;/h1&gt;{{- end}}
+            ${if(title)}&lt;h1&gt;${title}&lt;/h1&gt;${endif}
         &lt;/header&gt;
-        {{with .nav}}&lt;nav&gt;{{- . -}}&lt;/nav&gt;{{- end}}
-        {{with .content}}&lt;section&gt;{{- . -}}&lt;/section&gt;{{- end}}
-        {{with .footer -}}&lt;footer&gt;{{- . -}}&lt;/footer&gt;{{- end -}}
+        ${if(nav)}&lt;nav&gt;${nav}&lt;/nav&gt;${endif}
+        ${if(content)}&lt;section&gt;${content}&lt;/section&gt;${endif}
+        ${if(footer)}&lt;footer&gt;${footer}&lt;/footer&gt;${endif}
     &lt;/body&gt;
     &lt;/html&gt;</code></pre>
 <h3 id="bash-script">

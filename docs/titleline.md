@@ -11,9 +11,9 @@
 
 ## SYNOPSIS
 
-titleline extracts the first title line from a Markdown file. By default it reads
-from standard in and writes to standard out but can read/write
-to specific files using an option.
+titleline extracts the first title line from a Markdown file. By 
+default it reads from standard in and writes to standard out but can 
+read/write to specific files using an option.
 
 ## OPTIONS
 

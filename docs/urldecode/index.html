@@ -9,7 +9,50 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="../mkpage/">mkpage</a>
+</li>
+<li>
+<a href="../blogit/">blogit</a>
+</li>
+<li>
+<a href="../frontmatter/">frontmatter</a>
+</li>
+<li>
+<a href="../titleline/">titleline</a>
+</li>
+<li>
+<a href="../byline/">byline</a>
+</li>
+<li>
+<a href="../ws/">ws</a>
+</li>
+<li>
+<a href="../urlencode/">urlencode</a>
+</li>
+<li>
+<a href="../urldecode/">urldecode</a>
+</li>
+<li>
+<a href="../sitemapper/">sitemapper</a>
+</li>
+<li>
+<a href="../mkrss/">mkrss</a>
+</li>
+<li>
+<a href="../reldocpath/">reldocpath</a>
+</li>
+<li>
+<a href="../../how-to/">How To…</a>
+</li>
+</ul>
 </nav>
 
 <section>
@@ -32,28 +75,25 @@ OPTIONS
 <p>
 Below are a set of options available.
 </p>
-<pre><code>    -examples            display example(s)
-    -generate-manpage    generate man page
-    -generate-markdown   generate markdown documentation
-    -h, -help            display help
-    -i, -input           set input filename
-    -l, -license         display license
-    -nl, -newline        if true add a trailing newline to output
-    -o, -output          set output filename
-    -q, -query           use query escape (pluses for spaces)
-    -quiet               suppress error messages
-    -v, -version         display version</code></pre>
+<pre><code>    -examples           display example(s)
+    -generate-manpage   generate man page
+    -generate-markdown  generate markdown documentation
+    -h, -help           display help
+    -i, -input          set input filename
+    -l, -license        display license
+    -nl, -newline       if true add a trailing newline to output
+    -o, -output         set output filename
+    -q, -query          use query escape (pluses for spaces)
+    -quiet              suppress error messages
+    -v, -version        display version</code></pre>
 <h2 id="example">
 EXAMPLE
 </h2>
-<pre><code>    echo &#39;This%20is%20the%20string%20to%20encode%20&amp;%20nothing%20else%0A&#39; | urldecode</code></pre>
+<pre class="shell"><code>    echo &#39;This%20is%20the%20string%20to%20encode%20&amp;%20nothing%20else%0A&#39; | urldecode</code></pre>
 <p>
 would yield
 </p>
 <pre><code>    This is the string to encode &amp; nothing else!</code></pre>
-<p>
-urldecode v0.0.33
-</p>
 </section>
 
 <footer>

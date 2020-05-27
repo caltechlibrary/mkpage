@@ -9,7 +9,26 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="../the-basics.html">The Basics</a>
+</li>
+<li>
+<a href="../simple/">Simple</a>
+</li>
+<li>
+<a href="../simple-with-nav/">Simple w/Nav</a>
+</li>
+<li>
+<a href="../fountain-demo/">Fountain Demo</a>
+</li>
+</ul>
 </nav>
 
 <section>
@@ -17,7 +36,7 @@
 One Element
 </h1>
 <p>
-One element features a theme with one template, <a href="page.tmpl">page.tmpl</a>, which has one replacable element named “Content”.
+One element features a theme with one template, <a href="page.tmpl">page.tmpl</a>, which has one replacable element named “content”.
 </p>
 <pre class="template"><code>    &lt;!DOCTYPE html&gt;
     &lt;html&gt;
@@ -35,7 +54,7 @@ One element features a theme with one template, <a href="page.tmpl">page.tmpl</a
                 &lt;li&gt;&lt;a href=&quot;../&quot;&gt;Up&lt;/a&gt;&lt;/li&gt;
             &lt;/ul&gt;
         &lt;/nav&gt;
-        {{with .Content}}&lt;section&gt;{{- . -}}&lt;/section&gt;{{- end}}
+        ${if(content)}&lt;section&gt;${content}&lt;/section&gt;${endif}
         &lt;footer&gt;This template features a single replacable element&lt;/footer&gt;
     &lt;/body&gt;
     &lt;/html&gt;</code></pre>
@@ -64,7 +83,7 @@ To build this one template site we can use a Bash script. This example will asse
         # Calculate the HTML filename
         HTML_FILE=&quot;$(dirname &quot;$MARKDOWN_FILE&quot;)/$(basename &quot;$MARKDOWN_FILE&quot; .md).html&quot;
         mkpage \
-            &quot;Content=$MARKDOWN_FILE&quot; \
+            &quot;content=$MARKDOWN_FILE&quot; \
             page.tmpl &gt;&quot;$HTML_FILE&quot;
 
     done

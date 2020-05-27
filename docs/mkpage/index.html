@@ -9,7 +9,50 @@
 <a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
 </header>
 <nav>
-
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="../mkpage/">mkpage</a>
+</li>
+<li>
+<a href="../blogit/">blogit</a>
+</li>
+<li>
+<a href="../frontmatter/">frontmatter</a>
+</li>
+<li>
+<a href="../titleline/">titleline</a>
+</li>
+<li>
+<a href="../byline/">byline</a>
+</li>
+<li>
+<a href="../ws/">ws</a>
+</li>
+<li>
+<a href="../urlencode/">urlencode</a>
+</li>
+<li>
+<a href="../urldecode/">urldecode</a>
+</li>
+<li>
+<a href="../sitemapper/">sitemapper</a>
+</li>
+<li>
+<a href="../mkrss/">mkrss</a>
+</li>
+<li>
+<a href="../reldocpath/">reldocpath</a>
+</li>
+<li>
+<a href="../../how-to/">How To…</a>
+</li>
+</ul>
 </nav>
 
 <section>
@@ -23,6 +66,9 @@ USAGE
 <h2 id="description">
 DESCRIPTION
 </h2>
+<p>
+SYNOPSIS
+</p>
 <p>
 Using the key/value pairs populate the template(s) and render to stdout.
 </p>
@@ -44,20 +90,21 @@ Below are a set of options available. Options will override any corresponding en
     -examples           display example(s)
     -generate-manpage   generate man page
     -generate-markdown  generate markdown documentation
+    -gt, -go-templates  use Go&#39;s template engine instead of Pandoc&#39;s template engine
     -h, -help           display help
     -i, -input          input filename
     -l, -license        display license
     -o, -output         output filename
-    -pandoc             use Pandoc&#39;s template engine
     -quiet              suppress error messages
-    -s                  display the default template
-    -show-template      display the default template
-    -t                  colon delimited list of templates to use
-    -templates          colon delimited list of templates to use
+    -s, -show-template  display source for a default page template
+    -t, -templates      colon delimited list of templates to use
     -v, -version        display version</code></pre>
 <h2 id="examples">
 EXAMPLES
 </h2>
+<p>
+EXAMPLE
+</p>
 <p>
 Template (named “examples/weather.tmpl”)
 </p>
@@ -67,13 +114,14 @@ Template (named “examples/weather.tmpl”)
         
     The weather forcast is
     
-    ${if(weather.data.weather)}
-      ${weather.data.weather[; ]}
-    ${endif}
+    $if(weather.data.weather)$
+      $weather.data.weather[; ]$
+    $endif$
     
     Thank you
     
-    ${signature}</code></pre>
+    ${signature}
+</code></pre>
 <p>
 Render the template above (i.e. examples/weather.tmpl) would be accomplished from the following data sources–
 </p>
@@ -99,13 +147,10 @@ Render the template above (i.e. examples/weather.tmpl) would be accomplished fr
 <p>
 That would be expressed on the command line as follows
 </p>
-<pre><code>    mkpage &quot;now=text:$(date)&quot; &quot;name=text:Little Frieda&quot; \
-        &quot;weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
+<pre class="shell"><code>    mkpage &quot;now=text:$(date)&quot; &quot;name=text:Little Frieda&quot; \
+        &quot;weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
         signature=examples/signature.txt \
         examples/weather.tmpl     </code></pre>
-<p>
-mkpage v0.0.33
-</p>
 </section>
 
 <footer>

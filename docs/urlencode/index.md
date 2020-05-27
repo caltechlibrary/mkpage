@@ -33,7 +33,7 @@ Below are a set of options available.
 
 ## EXAMPLE
 
-```
+```shell
     echo "This is the string to encode & nothing else!" | urlencode
 ```
 
@@ -43,4 +43,4 @@ would yield
     This%20is%20the%20string%20to%20encode%20&%20nothing%20else%0A
 ```
 
-urlencode v0.0.33
+

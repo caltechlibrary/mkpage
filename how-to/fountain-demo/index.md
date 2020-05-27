@@ -1,3 +1,6 @@
+{
+    "has_code": true
+}
 
 # Fountain Demo
 
@@ -29,4 +32,11 @@ The TOML front matter configures how the fountain document is rendered.
 The "+++" indicate the front matter is TOML. The fountain processor is looking for a heading of "[fountain]" then for the various settings, e.g. page (rendering full HTML page), link_css (using a link element to bring the CSS into the page), inline_css (use an inline style element for style the content), css (the CSS file to reference, either for inline content or as a link).
 
 **mkpage** support three types of front matter. TOML, JSON and YAML. TOML and JSON are preferred and the best tested.
+
+Processing our document can be done with the following command.
+
+```shell
+    mkpage content=interview-with-a-dog.fountain page.tmpl \
+      >interview-with-a-dog.html
+```
 

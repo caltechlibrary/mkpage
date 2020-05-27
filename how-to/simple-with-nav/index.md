@@ -32,17 +32,17 @@ Point your webbrowser at http://localhost:8000 and view this page.
     <!DOCTYPE html>
     <html>
     <head>
-        {{with .title -}}<title>{{- . -}}</title>{{- end }}
-        {{with .csspath -}}<link rel="stylesheet" href="{{- . -}}">{{- end}}
-        {{with .css -}}<style>{{- . -}}</style>{{- end }} 
+        ${if(title)}<title>${title}</title>${endif}
+        ${if(csspath)}<link rel="stylesheet" href="${csspath}">${endif}
+        ${if(css)}<style>${css}</style>${endif}
     </head>
     <body>
         <header>
-            {{with .title -}}<h1>{{- . -}}</h1>{{- end}}
+            ${if(title)}<h1>${title}</h1>${endif}
         </header>
-        {{with .nav}}<nav>{{- . -}}</nav>{{- end}}
-        {{with .content}}<section>{{- . -}}</section>{{- end}}
-        {{with .footer -}}<footer>{{- . -}}</footer>{{- end -}}
+        ${if(nav)}<nav>${nav}</nav>${endif}
+        ${if(content)}<section>${content}</section>${endif}
+        ${if(footer)}<footer>${footer}</footer>${endif}
     </body>
     </html>
 ```
