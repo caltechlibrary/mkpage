@@ -27,6 +27,33 @@ import (
 	"os/exec"
 )
 
+// Return the Pandoc version that will be used when calling Pandoc.
+func GetPandocVersion() (string, error) {
+	var (
+		out, eOut bytes.Buffer
+	)
+	pandoc, err := exec.LookPath("pandoc")
+	if err != nil {
+		return "", err
+	}
+	cmd := exec.Command(pandoc, "--version")
+	cmd.Stdout = &out
+	cmd.Stderr = &eOut
+	err = cmd.Run()
+	if err != nil {
+		if eOut.Len() > 0 {
+			err = fmt.Errorf("%q says, %s\n%s", pandoc, eOut.String(), err)
+		} else {
+			err = fmt.Errorf("%q exit error, %s", pandoc, err)
+		}
+		return "", err
+	}
+	if eOut.Len() > 0 {
+		fmt.Fprintf(os.Stderr, "%q warns, %s", pandoc, eOut.String())
+	}
+	return out.String(), err
+}
+
 // pandocProcessor accepts an array of bytes as input and returns
 // a `pandoc -f markdown -t html` output of an array if
 // bytes and error.

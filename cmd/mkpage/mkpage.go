@@ -145,6 +145,11 @@ func main() {
 	}
 	if showVersion {
 		fmt.Fprintln(app.Out, app.Version())
+		if pandocVersion, err := mkpage.GetPandocVersion(); err != nil {
+			fmt.Fprintf(os.Stdout, "%s\n%s\n", pandocVersion, err)
+		} else {
+			fmt.Fprintf(app.Out, "%s\n", pandocVersion)
+		}
 		os.Exit(0)
 	}
 
