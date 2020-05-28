@@ -7,38 +7,33 @@
 
 ## DESCRIPTION
 
-
-SYNOPSIS
-
-Using the key/value pairs populate the template(s) and render to stdout.
-
-
-## ENVIRONMENT
-
-Environment variables can be overridden by corresponding options
-
-```
-    MKPAGE_TEMPLATES   # set the default template path
-```
+A Pandoc preprossor supporting front matter in YAML, TOML and JSON.
+The command parameter language use the key/value pairs populate 
+template(s) and render to stdout. Values can be explicitly typed,
+derived from files and their extensions or retrieved from the net.
 
 ## OPTIONS
 
 Below are a set of options available. Options will override any corresponding environment settings.
 
 ```
-    -code               outout just code blocks for language, e.g. shell or json
-    -codesnip           output just the code bocks
+    -code               outout just code blocks for language, 
+                        e.g. shell or json, reads from standard input
+    -codesnip           output just the code bocks, reads from
+                        standard input
     -examples           display example(s)
     -generate-manpage   generate man page
     -generate-markdown  generate markdown documentation
-    -gt, -go-templates  use Go's template engine instead of Pandoc's template engine
+    -gt, -go-templates  (DEPRECIATED) use Go's template engine instead of 
+                        Pandoc's template engine
     -h, -help           display help
     -i, -input          input filename
     -l, -license        display license
     -o, -output         output filename
     -quiet              suppress error messages
     -s, -show-template  display source for a default page template
-    -t, -templates      colon delimited list of templates to use
+    -t, -templates      (DEPRECIATED) colon delimited list of 
+                        templates to use
     -v, -version        display version
 ```
 
