@@ -3,7 +3,7 @@
 
 **MkPage Project** is a set of command line programs run from a shell
 like Bash.  NOTE: *mkpage* depends on
-[Pandoc](https://pandoc.org/installing.html).
+[Pandoc](https://pandoc.org/installing.html) (>= v2.9).
 
 For latest the released versions of `mkpage` go to the project page
 on GitHub and click latest release
