@@ -78,7 +78,8 @@ function test_byline() {
 function test_mkpage() {
     # test basic markdown processing
     if [[ -f "temp.html" ]]; then rm temp.html; fi
-    bin/mkpage content=examples/helloworld.md page.tmpl > temp.html
+    bin/mkpage "title=text:Hello World" \
+        content=examples/helloworld.md page.tmpl > temp.html
     EXPECTED=""
     assert_exists "test_mkpage (simple)" "temp.html"
     RESULT=$(cmp examples/helloworld.html temp.html)

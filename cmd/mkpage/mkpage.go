@@ -124,8 +124,8 @@ func main() {
 	// Application specific options
 	app.BoolVar(&showTemplate, "s,show-template", false, "display source for a default page template")
 	app.StringVar(&templateFNames, "t,templates", "", "colon delimited list of templates to use")
-	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks")
-	app.StringVar(&codeType, "code", "", "outout just code blocks for language, e.g. shell or json")
+	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks, reads from standard input")
+	app.StringVar(&codeType, "code", "", "outout just code blocks for specific language, e.g. shell or json, reads from standard input")
 	app.BoolVar(&useGoTemplates, "gt,go-templates", false, "use Go's template engine instead of Pandoc's template engine")
 
 	app.Parse()
@@ -154,7 +154,7 @@ func main() {
 	}
 
 	// Default template name is page.tmpl
-	templateName := "page.tmpl"
+	templateName := ""
 	templateSources := []string{}
 
 	// Make sure we have a configured command to run

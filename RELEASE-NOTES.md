@@ -1,6 +1,12 @@
 
 # Release Notes
 
+## v0.1.0a
+
++ Documentation cleanup, code cleanup, some bug fixes
++ If v0.1.0a proves stable consider v1.0.0-rc1
++ Go templates depreciated, a option is required to access go template processing require
+
 ## v0.0.33
 
 + Finish Pandoc integration

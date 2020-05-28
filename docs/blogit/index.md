@@ -57,10 +57,10 @@ use the following command.
 ```
 
 The *blogit* command will copy "my-vacation-day.md", creating any
-necessary file directories to "$HOME/Sites/me.example.org/2020/06/01".
+necessary file directories to "`$HOME/Sites/me.example.org/2020/06/01`".
 It will also update article lists (index.md) at the year level, 
 month, and day level and month level of the directory tree and
-and generate/update a posts.json in the "$HOME/Sites/my.example.org"
+and generate/update a posts.json in the "`$HOME/Sites/my.example.org`"
 that can be used in your home page template for listing recent
 posts.
 

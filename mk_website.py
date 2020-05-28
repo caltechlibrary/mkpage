@@ -114,11 +114,19 @@ def main(args):
                 out_name = os.path.join(path, basename + ".html")
             if in_name != "" and out_name != "":
                 print(f"Ingesting {in_name}")
-                metadata = json.dumps(frontmatter(in_name))
+                metadata = frontmatter(in_name)
                 #NOTE: Processing metadata should happen here.
                 page_data = []
+
+                if not 'title' in metadata:
+                    page_data.append(f'title=text:{os.path.basename(out_name)}')
+                else:
+                    title = metadata['title']
+                    page_data.append(f'title=text:{title}')
+
                 if len(metadata):
-                    page_data.append(f"front_matter=json:{metadata}")
+                    src = json.dumps(metadata)
+                    page_data.append(f'font_matter=json:{src}')
                 if os.path.exists(nav_name):
                     page_data.append(f"nav={nav_name}")
                 if os.path.exists(copyright_name):
