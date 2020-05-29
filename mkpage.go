@@ -151,7 +151,10 @@ func SplitFrontMatter(input []byte) (int, []byte, []byte) {
 	if bytes.HasPrefix(input, []byte("{\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("{\n")), []byte("\n}\n"), 2)
 		src := []byte(fmt.Sprintf("{\n%s\n}\n", parts[0]))
-		return ConfigIsJSON, src, parts[1]
+		if len(parts) > 1 {
+			return ConfigIsJSON, src, parts[1]
+		}
+		return ConfigIsJSON, src, []byte("")
 	}
 	// Handle case of no front matter
 	return ConfigIsUnknown, []byte(""), input
