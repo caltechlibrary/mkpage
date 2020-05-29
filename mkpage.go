@@ -133,19 +133,37 @@ func SplitFrontMatter(input []byte) (int, []byte, []byte) {
 	// YAML front matter uses ---, note this conflicts with Mmark practice, do I want to support YAML like this?
 	if bytes.HasPrefix(input, []byte("---\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("---\n")), []byte("\n---\n"), 2)
-		return ConfigIsYAML, parts[0], parts[1]
+		if len(parts) > 1 {
+			return ConfigIsYAML, parts[0], parts[1]
+		}
+		if len(parts) > 0 {
+			return ConfigIsYAML, parts[0], []byte("")
+		}
+		return ConfigIsYAML, []byte(""), []byte("")
 	}
 	// TOML front matter as used in Hugo
 	if bytes.HasPrefix(input, []byte("+++\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("+++\n")), []byte("\n+++\n"), 2)
-		return ConfigIsTOML, parts[0], parts[1]
+		if len(parts) > 1 {
+			return ConfigIsTOML, parts[0], parts[1]
+		}
+		if len(parts) > 0 {
+			return ConfigIsTOML, parts[0], []byte("")
+		}
+		return ConfigIsTOML, []byte(""), []byte("")
 	}
 	// TOML front matter identified in Mmark as three % or dashes,
 	// We can support the %, dashes are taken by Hugo style, but
 	// maybe I don't want to support that?
 	if bytes.HasPrefix(input, []byte("%%%\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("%%%\n")), []byte("\n%%%\n"), 2)
-		return ConfigIsTOML, parts[0], parts[1]
+		if len(parts) > 1 {
+			return ConfigIsTOML, parts[0], parts[1]
+		}
+		if len(parts) > 0 {
+			return ConfigIsTOML, parts[0], []byte("")
+		}
+		return ConfigIsTOML, []byte(""), []byte("")
 	}
 	// JSON front matter, most Markdown processors.
 	if bytes.HasPrefix(input, []byte("{\n")) {
