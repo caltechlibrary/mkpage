@@ -83,16 +83,13 @@ That would be expressed on the command line as follows
 	showExamples     bool
 	inputFName       string
 	outputFName      string
-	quiet            bool
 	generateMarkdown bool
 	generateManPage  bool
 
 	// Application Options
 	templateFNames string
-	showTemplate   bool
 	codesnip       bool
 	codeType       string
-	useGoTemplates bool
 )
 
 func main() {
@@ -117,16 +114,13 @@ func main() {
 	app.BoolVar(&showLicense, "l,license", false, "display license")
 	app.StringVar(&inputFName, "i,input", "", "input filename")
 	app.StringVar(&outputFName, "o,output", "", "output filename")
-	app.BoolVar(&quiet, "quiet", false, "suppress error messages")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate markdown documentation")
 	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Application specific options
-	app.BoolVar(&showTemplate, "s,show-template", false, "display source for a default page template")
-	app.StringVar(&templateFNames, "t,templates", "", "colon delimited list of templates to use")
+	app.StringVar(&templateFNames, "t,templates", "", "colon delimited list of Go text templates to use")
 	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks, reads from standard input")
 	app.StringVar(&codeType, "code", "", "outout just code blocks for specific language, e.g. shell or json, reads from standard input")
-	app.BoolVar(&useGoTemplates, "gt,go-templates", false, "use Go's template engine instead of Pandoc's template engine")
 
 	app.Parse()
 	args := app.Args()
@@ -153,17 +147,14 @@ func main() {
 		os.Exit(0)
 	}
 
-	if showTemplate {
-		fmt.Fprintf(app.Out, "%s\n", mkpage.Defaults["/pandoc/page.tmpl"])
-		os.Exit(0)
-	}
-
 	// Default template name is page.tmpl
 	templateName := ""
 	templateSources := []string{}
+	useGoTemplates := false
 
 	// Make sure we have a configured command to run
 	if len(templateFNames) > 0 {
+		useGoTemplates = true
 		for _, fname := range strings.Split(templateFNames, ":") {
 			templateSources = append(templateSources, fname)
 		}
@@ -174,11 +165,11 @@ func main() {
 
 	app.Eout = os.Stderr
 	app.In, err = cli.Open(inputFName, os.Stdin)
-	cli.ExitOnError(app.Eout, err, quiet)
+	cli.ExitOnError(app.Eout, err, true)
 	defer cli.CloseFile(inputFName, app.In)
 
 	app.Out, err = cli.Create(outputFName, os.Stdout)
-	cli.ExitOnError(app.Eout, err, quiet)
+	cli.ExitOnError(app.Eout, err, true)
 	defer cli.CloseFile(outputFName, app.Out)
 
 	// Process flags and update the environment as needed.
@@ -193,7 +184,7 @@ func main() {
 
 	if codesnip || codeType != "" {
 		err = mkpage.Codesnip(app.In, app.Out, codeType)
-		cli.ExitOnError(app.Eout, err, quiet)
+		cli.ExitOnError(app.Eout, err, true)
 		os.Exit(0)
 	}
 
@@ -209,6 +200,7 @@ func main() {
 			data[pair[0]] = pair[1]
 		} else {
 			// Must be the template source
+			useGoTemplates = false
 			templateSources = append(templateSources, arg)
 		}
 	}
@@ -226,22 +218,23 @@ func main() {
 		// Load any user supplied templates
 		if len(templateSources) > 0 {
 			err = tmpl.ReadFiles(templateSources...)
-			cli.ExitOnError(app.Eout, err, quiet)
+			cli.ExitOnError(app.Eout, err, true)
 			templateName = path.Base(templateSources[0])
 		} else {
 			// Load our default template maps
-			err = tmpl.Add(templateName, mkpage.Defaults["/templates/page.tmpl"])
-			cli.ExitOnError(app.Eout, err, quiet)
+			err = fmt.Errorf("mkpage %q does note support default templates.", mkpage.Version)
+			cli.ExitOnError(app.Eout, err, true)
 		}
 		// Build a template and send to MakePage
 		t, err := tmpl.Assemble()
-		cli.ExitOnError(app.Eout, err, quiet)
+		cli.ExitOnError(app.Eout, err, true)
 		err = mkpage.MakePage(app.Out, templateName, t, data)
+		cli.ExitOnError(app.Eout, err, true)
 	default:
 		if len(templateSources) > 0 {
 			templateName = templateSources[0]
 		}
 		err = mkpage.MakePandoc(app.Out, templateName, data)
+		cli.ExitOnError(app.Eout, err, true)
 	}
-	cli.ExitOnError(app.Eout, err, quiet)
 }

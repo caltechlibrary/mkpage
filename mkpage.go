@@ -415,23 +415,27 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 				}
 			}
 		default:
+			ext := path.Ext(val)
 			buf, err := ioutil.ReadFile(val)
 			if err != nil {
 				return out, fmt.Errorf("Can't read (%s) %q, %s", key, val, err)
 			}
-			fmType, fmSrc, docSrc := SplitFrontMatter(buf)
-			if len(fmSrc) > 0 {
-				buf = docSrc
-				fmData := map[string]interface{}{}
-				if err := UnmarshalFrontMatter(fmType, fmSrc, &fmData); err != nil {
-					return out, fmt.Errorf("Can't process front matter (%s), %q, %q", key, val, err)
-				}
-				// Update, Overwrite `out` with front matter values
-				for k, v := range fmData {
-					out[k] = v
+			//NOTE: We only split front matter for supported markup
+			// formats, e.g. Markdown, Textile, ReStructureText, JiraText
+			if strings.Compare(ext, ".json") != 0 {
+				fmType, fmSrc, docSrc := SplitFrontMatter(buf)
+				if len(fmSrc) > 0 {
+					buf = docSrc
+					fmData := map[string]interface{}{}
+					if err := UnmarshalFrontMatter(fmType, fmSrc, &fmData); err != nil {
+						return out, fmt.Errorf("Can't process front matter (%s), %q, %q", key, val, err)
+					}
+					// Update, Overwrite `out` with front matter values
+					for k, v := range fmData {
+						out[k] = v
+					}
 				}
 			}
-			ext := path.Ext(val)
 			switch {
 			case strings.Compare(ext, ".fountain") == 0 ||
 				strings.Compare(ext, ".spmd") == 0:

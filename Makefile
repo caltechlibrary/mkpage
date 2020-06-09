@@ -8,8 +8,6 @@ VERSION = $(shell grep -m1 "Version = " version.go | cut -d\` -f 2)
 
 BRANCH = $(shell git branch | grep "* " | cut -d\   -f 2)
 
-PKGASSETS = $(shell which pkgassets)
-
 OS = $(shell uname)
 
 EXT =
@@ -23,11 +21,7 @@ build: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/ws$(EXT) bin/frontmatter$(EXT) bin/blogit$(EXT)
 
 
-assets.go: defaults/templates/page.tmpl defaults/templates/slides.tmpl .FORCE
-	pkgassets -verbose -o assets.go -p mkpage Defaults defaults
-	git add assets.go
-
-bin/mkpage$(EXT): version.go mkpage.go assets.go codesnip.go mkpandoc.go cmd/mkpage/mkpage.go blogit.go mkpandoc.go
+bin/mkpage$(EXT): version.go mkpage.go codesnip.go mkpandoc.go cmd/mkpage/mkpage.go blogit.go mkpandoc.go
 	go build -o bin/mkpage$(EXT) cmd/mkpage/mkpage.go
 
 bin/mkrss$(EXT): version.go mkpage.go mkrss.go mkpandoc.go cmd/mkrss/mkrss.go
@@ -112,7 +106,7 @@ save:
 	git push origin $(BRANCH)
 
 clean:
-	if [ "$(PKGASSETS)" != "" ]; then rm assets.go; pkgassets -o assets.go -p mkpage Defaults defaults; git add assets.go; fi
+	if [ -f assets.go ]; then rm assets.go; fi
 	if [ -d bin ]; then rm -fR bin; fi
 	if [ -d dist ]; then rm -fR dist; fi
 	if [ -d man ]; then rm -fR man; fi
@@ -132,7 +126,7 @@ man: build
 	bin/frontmatter -generate-manpage | nroff -Tutf8 -man > man/man1/frontmatter.1
 	bin/blogit -generate-manpage | nroff -Tutf8 -man > man/man1/blogit.1
 
-install: assets.go
+install: 
 	env GOBIN=$(GOPATH)/bin go install cmd/mkpage/mkpage.go
 	env GOBIN=$(GOPATH)/bin go install cmd/mkrss/mkrss.go
 	env GOBIN=$(GOPATH)/bin go install cmd/sitemapper/sitemapper.go
@@ -224,7 +218,7 @@ distribute_docs:
 	#FIXME: need to pull package versions from go.mod file.
 	#./package-versions.bash > dist/package-versions.txt
 
-release: clean website assets.go distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7
+release: clean website distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7
 
 website:
 	./mk_website.py
