@@ -218,23 +218,39 @@ func main() {
 		// Load any user supplied templates
 		if len(templateSources) > 0 {
 			err = tmpl.ReadFiles(templateSources...)
-			cli.ExitOnError(app.Eout, err, true)
+			if err != nil {
+				fmt.Fprintf(app.Eout, "%s\n", err)
+				os.Exit(1)
+			}
 			templateName = path.Base(templateSources[0])
 		} else {
 			// Load our default template maps
-			err = fmt.Errorf("mkpage %q does note support default templates.", mkpage.Version)
-			cli.ExitOnError(app.Eout, err, true)
+			if err != nil {
+				fmt.Fprintf(app.Eout, "mkpage %q does note support default templates.", mkpage.Version)
+				os.Exit(1)
+			}
 		}
 		// Build a template and send to MakePage
 		t, err := tmpl.Assemble()
-		cli.ExitOnError(app.Eout, err, true)
+		if err != nil {
+			fmt.Fprintf(app.Eout, "template assemblere error, %s\n", err)
+			os.Exit(1)
+		}
 		err = mkpage.MakePage(app.Out, templateName, t, data)
-		cli.ExitOnError(app.Eout, err, true)
+		if err != nil {
+			fmt.Fprintf(app.Eout, "MakePage error, %s\n", err)
+			os.Exit(1)
+		}
+		os.Exit(0)
 	default:
 		if len(templateSources) > 0 {
 			templateName = templateSources[0]
 		}
 		err = mkpage.MakePandoc(app.Out, templateName, data)
-		cli.ExitOnError(app.Eout, err, true)
+		if err != nil {
+			fmt.Fprintf(app.Eout, "Pandoc error, %s\n", err)
+			os.Exit(1)
+		}
+		os.Exit(0)
 	}
 }
