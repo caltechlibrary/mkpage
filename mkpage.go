@@ -133,25 +133,46 @@ func SplitFrontMatter(input []byte) (int, []byte, []byte) {
 	// YAML front matter uses ---, note this conflicts with Mmark practice, do I want to support YAML like this?
 	if bytes.HasPrefix(input, []byte("---\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("---\n")), []byte("\n---\n"), 2)
-		return ConfigIsYAML, parts[0], parts[1]
+		if len(parts) > 1 {
+			return ConfigIsYAML, parts[0], parts[1]
+		}
+		if len(parts) > 0 {
+			return ConfigIsYAML, parts[0], []byte("")
+		}
+		return ConfigIsYAML, []byte(""), []byte("")
 	}
 	// TOML front matter as used in Hugo
 	if bytes.HasPrefix(input, []byte("+++\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("+++\n")), []byte("\n+++\n"), 2)
-		return ConfigIsTOML, parts[0], parts[1]
+		if len(parts) > 1 {
+			return ConfigIsTOML, parts[0], parts[1]
+		}
+		if len(parts) > 0 {
+			return ConfigIsTOML, parts[0], []byte("")
+		}
+		return ConfigIsTOML, []byte(""), []byte("")
 	}
 	// TOML front matter identified in Mmark as three % or dashes,
 	// We can support the %, dashes are taken by Hugo style, but
 	// maybe I don't want to support that?
 	if bytes.HasPrefix(input, []byte("%%%\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("%%%\n")), []byte("\n%%%\n"), 2)
-		return ConfigIsTOML, parts[0], parts[1]
+		if len(parts) > 1 {
+			return ConfigIsTOML, parts[0], parts[1]
+		}
+		if len(parts) > 0 {
+			return ConfigIsTOML, parts[0], []byte("")
+		}
+		return ConfigIsTOML, []byte(""), []byte("")
 	}
 	// JSON front matter, most Markdown processors.
 	if bytes.HasPrefix(input, []byte("{\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("{\n")), []byte("\n}\n"), 2)
 		src := []byte(fmt.Sprintf("{\n%s\n}\n", parts[0]))
-		return ConfigIsJSON, src, parts[1]
+		if len(parts) > 1 {
+			return ConfigIsJSON, src, parts[1]
+		}
+		return ConfigIsJSON, src, []byte("")
 	}
 	// Handle case of no front matter
 	return ConfigIsUnknown, []byte(""), input
@@ -394,23 +415,27 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 				}
 			}
 		default:
+			ext := path.Ext(val)
 			buf, err := ioutil.ReadFile(val)
 			if err != nil {
 				return out, fmt.Errorf("Can't read (%s) %q, %s", key, val, err)
 			}
-			fmType, fmSrc, docSrc := SplitFrontMatter(buf)
-			if len(fmSrc) > 0 {
-				buf = docSrc
-				fmData := map[string]interface{}{}
-				if err := UnmarshalFrontMatter(fmType, fmSrc, &fmData); err != nil {
-					return out, fmt.Errorf("Can't process front matter (%s), %q, %q", key, val, err)
-				}
-				// Update, Overwrite `out` with front matter values
-				for k, v := range fmData {
-					out[k] = v
+			//NOTE: We only split front matter for supported markup
+			// formats, e.g. Markdown, Textile, ReStructureText, JiraText
+			if strings.Compare(ext, ".json") != 0 {
+				fmType, fmSrc, docSrc := SplitFrontMatter(buf)
+				if len(fmSrc) > 0 {
+					buf = docSrc
+					fmData := map[string]interface{}{}
+					if err := UnmarshalFrontMatter(fmType, fmSrc, &fmData); err != nil {
+						return out, fmt.Errorf("Can't process front matter (%s), %q, %q", key, val, err)
+					}
+					// Update, Overwrite `out` with front matter values
+					for k, v := range fmData {
+						out[k] = v
+					}
 				}
 			}
-			ext := path.Ext(val)
 			switch {
 			case strings.Compare(ext, ".fountain") == 0 ||
 				strings.Compare(ext, ".spmd") == 0:

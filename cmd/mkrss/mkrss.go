@@ -37,8 +37,6 @@ var (
 	// Usage and docs
 
 	description = `
-SYNOPSIS
-
 %s walks the file system to generate a RSS2 file. It assumes 
 that the directory for HTDOCS is is the base directory containing 
 subdirectories in the form of /YYYY/MM/DD/ARTICLE_HTML where 
@@ -47,8 +45,6 @@ of ARTICLE_HTML.
 `
 
 	examples = `
-EXAMPLE
-
 If our htdocs folder is our document root and out blog is
 htdocs/myblog.
 
@@ -70,7 +66,6 @@ articles in htdocs/myblog/YYYY/MM/DD.
 	outputFName      string
 	quiet            bool
 	generateMarkdown bool
-	generateManPage  bool
 
 	// App specific options
 	excludeList        string
@@ -110,7 +105,6 @@ func main() {
 	app.StringVar(&outputFName, "o,output", "", "set output filename")
 	app.BoolVar(&quiet, "quiet", false, "suppress error messages")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// App specific options
 	app.StringVar(&excludeList, "e", "", "A colon delimited list of path exclusions")
@@ -144,10 +138,6 @@ func main() {
 	// Process options
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
 	if showHelp || showExamples {

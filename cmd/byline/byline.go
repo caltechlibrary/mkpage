@@ -60,7 +60,6 @@ This will display the %s if one is found in article.md.
 	outputFName      string
 	quiet            bool
 	generateMarkdown bool
-	generateManPage  bool
 
 	// App Options
 	bylineExp string
@@ -79,7 +78,6 @@ func main() {
 	app.StringVar(&outputFName, "o,output", "", "output filename")
 	app.BoolVar(&quiet, "quiet", false, "suppress error messages")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate Markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// App Options
 	app.StringVar(&bylineExp, "b,byline", mkpage.BylineExp, "set byline regexp")
@@ -107,10 +105,6 @@ func main() {
 	// Handle Options
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
 	if showHelp || showExamples {

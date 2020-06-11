@@ -13,7 +13,7 @@ on GitHub and click latest release
 You will seea list of filenames is in the form of 
 `mkpage-VERSION_NO-PLATFORM_NAME.zip`.
 
-> VERSION_NUMBER is a [symantic version number](http://semver.org/) (e.g. v0.1.2)
+> VERSION_NUMBER is a [symantic version number](http://semver.org/) (e.g. v0.1.1)
 
 > PLATFROM_NAME is a description of a platform (e.g. windows-amd64, macosx-amd64).
 

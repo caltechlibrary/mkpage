@@ -34,9 +34,6 @@ import (
 
 const (
 	description = `
-
-SYNOPSIS for --mkslides
-
 %s converts a Markdown file into a sequence of HTML5 slides using the
 key/value pairs to populate the templates and render to stdout.
 
@@ -70,9 +67,6 @@ actions like "next slide" to the space bar or mourse click.
 `
 
 	examples = `
-
-EXAMPLE
-
 In this example we're using the default slide template.
 Here's an example of a three slide presentation
 
@@ -124,7 +118,6 @@ var (
 	outputFName      string
 	quiet            bool
 	generateMarkdown bool
-	generateManPage  bool
 
 	// Application Options
 	cssPath           string
@@ -159,7 +152,6 @@ func main() {
 	app.BoolVar(&showVersion, "version", false, "display version")
 	app.BoolVar(&showExamples, "example", false, "display example(s)")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate Markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Application specific options
 	app.StringVar(&cssPath, "c", "", "Specify the CSS file to use")
@@ -181,10 +173,6 @@ func main() {
 	// Process options and update the environment as needed.
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
 	if showHelp || showExamples {

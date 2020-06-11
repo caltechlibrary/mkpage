@@ -32,25 +32,17 @@ import (
 
 var (
 	description = `
-
-SYNOPSIS
-
 %s is a simple command line utility to URL decode content. By default
 it reads from standard input and writes to standard out.  You can
 also specifty the string to decode as a command line parameter.
-
 `
 
 	examples = `
-
-EXAMPLES
-
     echo 'This%%20is%%20the%%20string%%20to%%20encode%%20&%%20nothing%%20else%%0A' | %s
 
 would yield
 
     This is the string to encode & nothing else!
-
 `
 
 	// Standard Options
@@ -62,7 +54,6 @@ would yield
 	outputFName      string
 	newLine          bool
 	generateMarkdown bool
-	generateManPage  bool
 	quiet            bool
 
 	// App Options
@@ -90,7 +81,6 @@ func main() {
 	app.StringVar(&outputFName, "o,output", "", "set output filename")
 	app.BoolVar(&newLine, "nl,newline", false, "if true add a trailing newline to output")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 	app.BoolVar(&quiet, "quiet", false, "suppress error messages")
 
 	// App Options
@@ -114,10 +104,6 @@ func main() {
 	// Handle the default options
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
 	if showHelp || showExamples {

@@ -127,7 +127,7 @@ Results in text like
 
 #### Explanation
 
-We use the range function to iterate over the key/value pairs of our JSON object. Additionally we assign those values to the template variables called "$key" and "$val". These are then used to format our output. Also notice the trailing values "-" which supresses and extra new line.
+We use the range function to iterate over the key/value pairs of our JSON object. Additionally we assign those values to the template variables called "`$key`" and "`$val`". These are then used to format our output. Also notice the trailing values "-" which supresses and extra new line.
 
 ## Files are data source
 

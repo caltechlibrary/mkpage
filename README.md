@@ -23,38 +23,27 @@ JSON.
 content management systems and distilling the rendering functions
 down to a core set of simple command line tools.  It is well suited for
 building sites hosted on services like GitHub Pages or Amazon's S3.
-It is comprised of a set of command line utilities that augment the
-standard suite of Unix/POSIX commands available on most POSIX based
-operating systems for text processing (e.g. Linux, macOS,
-Raspberry Pi and Windows systems that have a port of Bash). It uses
-the widely adopted [Pandoc](https://pandoc.org) as its markup
-conversion engine and template engine.  As such you can create your
-website using a variety of light weight markup languages such as
-[Markdown](https://daringfireball.net/projects/markdown/),
+It uses the widely adopted [Pandoc](https://pandoc.org) as its markup 
+conversion engine and [template engine](https://pandoc.org/MANUAL.html#templates).
+As such you can create your website using a variety of light weight 
+markup languages such as [Markdown](https://daringfireball.net/projects/markdown/),
 [Textile](http://redcloth.org/textile),
 [ReStructureText](https://docutils.sourceforge.io/docs/ref/rst/introduction.html) and [Jira's](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all) wiki markup.
 
+The **MkPage Project**'s tools can run on machines as small as 
+a Raspberry Pi.  Their small foot print and minimal dependencies 
+(only Pandoc) means installation usually boils down to copying the 
+precompiled binaries to a bin directory in your path after a installing 
+Pandoc.  Precompiled binaries of **MkPage Project** are available for 
+Linux, Windows 10 and macOS running on Intel as well as for the 
+ARM7 versions of Raspbian running on Raspberry Pi.
 
-The _mkpage_ tools can run on machines as small as a Raspberry Pi.
-Their small foot print and minimal dependencies (only Pandoc) means
-installation usually boils down to copying the precompiled binaries
-to a bin directory in your path after a installing Pandoc.
-Precompiled binaries are available for Linux, Windows and macOS
-running on Intel as well as for the ARM7 versions of Raspbian running
-on Raspberry Pi.
-
-The _mkpage_ command supports
-[Pandoc](https://pandoc.org/MANUAL.html#templates)'s template language.
-This language is easy to learn and well documented. It is
-generally easier to use than more ambitious template engines like
-[Jekyll](https://jekyllrb.com/) or [Hugo](https://gohugo.io).
-
-_mkpage_'s minimalism is an advantage. It plays nice with
+**MkPage Project**'s minimalism is an advantage. It plays nice with
 the standard suite of text processing tools available with
 most Unix/POSIX compatible operating systems[^posix]. This makes
-scripting a **MkPage Project** using languages like Python, Make or
-Bash straight forward.  Each _mkpage_ utility is independent. You
-can use as few or as many or as few as you like. You determine the
+scripting a **MkPage Project** using languages like Python, Julia, 
+Lua, Make or Bash straight forward.  Each _mkpage_ utility is independent. 
+You can use as few or as many or as few as you like. You determine the
 workflow and build process that best fits your needs.
 
 [^posix]: Common POSIX compatible systems include macOS, Linux, and recent versions of Windows 10

@@ -36,6 +36,7 @@ testdata/*.html
 *.swp
 *.zip
 temp.html
+temp.md
 copyright.html
 DEVELOPERS.html
 RELEASE-NOTES.html

@@ -56,13 +56,14 @@
 </nav>
 
 <section>
-<h1 id="urlencode">
-urlencode
-</h1>
-<h2 id="usage">
+<h1 id="usage">
 USAGE
-</h2>
-<pre><code>urlencode [OPTIONS] [STRING_TO_ENCODE]</code></pre>
+</h1>
+<blockquote>
+<p>
+urlencode [OPTIONS] [STRING_TO_ENCODE]
+</p>
+</blockquote>
 <h2 id="description">
 DESCRIPTION
 </h2>
@@ -76,7 +77,6 @@ OPTIONS
 Below are a set of options available.
 </p>
 <pre><code>    -examples            display example(s)
-    -generate-manpage    generate man page
     -generate-markdown   generate markdown documentation
     -h, -help            display help
     -i, -input           set input filename
@@ -86,14 +86,17 @@ Below are a set of options available.
     -q, -query           use query escape (pluses for spaces)
     -quiet               suppress error messages
     -v, -version         display version</code></pre>
-<h2 id="example">
-EXAMPLE
+<h2 id="examples">
+EXAMPLES
 </h2>
-<pre class="shell"><code>    echo &quot;This is the string to encode &amp; nothing else!&quot; | urlencode</code></pre>
+<pre><code>    echo &quot;This is the string to encode &amp; nothing else!&quot; | urlencode</code></pre>
 <p>
 would yield
 </p>
 <pre><code>    This%20is%20the%20string%20to%20encode%20&amp;%20nothing%20else%0A</code></pre>
+<p>
+urlencode v0.1.1
+</p>
 </section>
 
 <footer>

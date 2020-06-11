@@ -59,7 +59,11 @@
 <h1 id="usage">
 USAGE
 </h1>
-<pre><code>mkrss [OPTIONS] HTDOCS [RSS_FILENAME]</code></pre>
+<blockquote>
+<p>
+mkrss [OPTIONS] HTDOCS [RSS_FILENAME]
+</p>
+</blockquote>
 <h2 id="description">
 DESCRIPTION
 </h2>
@@ -85,7 +89,6 @@ Below are a set of options available.
     -d, -date-format       set date regexp
     -e                     A colon delimited list of path exclusions
     -examples              display example(s)
-    -generate-manpage      generate man page
     -generate-markdown     generate markdown documentation
     -h, -help              display help
     -i, -input             set input filename
@@ -94,18 +97,21 @@ Below are a set of options available.
     -quiet                 suppress error messages
     -t, -title             set title regexp
     -v, -version           display version</code></pre>
-<h2 id="example">
-EXAMPLE
+<h2 id="examples">
+EXAMPLES
 </h2>
 <p>
 If our htdocs folder is our document root and out blog is htdocs/myblog.
 </p>
-<pre class="shell"><code>    mkrss -channel-title=&quot;This Great Beyond&quot; \
+<pre><code>    mkrss -channel-title=&quot;This Great Beyond&quot; \
         -channel-description=&quot;Blog to save the world&quot; \
         -channel-link=&quot;http://blog.example.org&quot; \
         htdocs htdocs/rss.xml</code></pre>
 <p>
 This would build an RSS 2 file in htdocs/rss.xml from the articles in htdocs/myblog/YYYY/MM/DD.
+</p>
+<p>
+mkrss v0.1.1
 </p>
 </section>
 

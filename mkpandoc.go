@@ -27,11 +27,40 @@ import (
 	"os/exec"
 )
 
+// Return the Pandoc version that will be used when calling Pandoc.
+func GetPandocVersion() (string, error) {
+	var (
+		out, eOut bytes.Buffer
+	)
+	pandoc, err := exec.LookPath("pandoc")
+	if err != nil {
+		return "", err
+	}
+	cmd := exec.Command(pandoc, "--version")
+	cmd.Stdout = &out
+	cmd.Stderr = &eOut
+	err = cmd.Run()
+	if err != nil {
+		if eOut.Len() > 0 {
+			err = fmt.Errorf("%q says, %s\n%s", pandoc, eOut.String(), err)
+		} else {
+			err = fmt.Errorf("%q exit error, %s", pandoc, err)
+		}
+		return "", err
+	}
+	if eOut.Len() > 0 {
+		fmt.Fprintf(os.Stderr, "%q warns, %s", pandoc, eOut.String())
+	}
+	return out.String(), err
+}
+
 // pandocProcessor accepts an array of bytes as input and returns
 // a `pandoc -f markdown -t html` output of an array if
 // bytes and error.
 func pandocProcessor(input []byte, from string, to string) ([]byte, error) {
-	var out bytes.Buffer
+	var (
+		out, eOut bytes.Buffer
+	)
 
 	if from == "" {
 		from = "markdown"
@@ -46,18 +75,28 @@ func pandocProcessor(input []byte, from string, to string) ([]byte, error) {
 	cmd := exec.Command(pandoc, "-f", from, "-t", to)
 	cmd.Stdin = bytes.NewReader(input)
 	cmd.Stdout = &out
-	if err := cmd.Run(); err != nil {
+	cmd.Stderr = &eOut
+	err = cmd.Run()
+	if err != nil {
+		if eOut.Len() > 0 {
+			err = fmt.Errorf("%q says, %s\n%s", pandoc, eOut.String(), err)
+		} else {
+			err = fmt.Errorf("%q exit error, %s", pandoc, err)
+		}
 		return nil, err
 	}
-	return out.Bytes(), nil
+	if eOut.Len() > 0 {
+		fmt.Fprintf(os.Stderr, "%q warns, %s", pandoc, eOut.String())
+	}
+	return out.Bytes(), err
 }
 
 // MakePandoc resolves key/value map rendering metadata suitable for processing with pandoc along with template information
 // rendering and returns an error if something goes wrong
 func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) error {
 	var (
-		out     bytes.Buffer
-		options []string
+		out, eOut bytes.Buffer
+		options   []string
 	)
 
 	pandoc, err := exec.LookPath("pandoc")
@@ -66,19 +105,30 @@ func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) 
 	}
 	data, err := ResolveData(keyValues)
 	if err != nil {
-		return fmt.Errorf("Can't resolve data source %s", err)
+		return fmt.Errorf("Data resolution error: %s", err)
+	}
+	// NOTE: If a template is not provided (empty string) then
+	// see is one is specified in the metadata
+	if templateName == "" {
+		if val, ok := data["template"]; ok == true {
+			templateName = val.(string)
+		}
 	}
 	// NOTE: Pandocs default template expects content to be called $body$.
 	// we need to remap from data["content"] to data["body"] otherwise
 	// we need to look in data to see if a template was specified.
 	if templateName == "" {
-		if val, ok := data["template"]; ok == true {
-			templateName = val.(string)
-		} else if val, ok := data["content"]; ok == true {
+		if val, ok := data["content"]; ok == true {
 			delete(data, "content")
 			data["body"] = val
 		}
 	}
+	// NOTE: when using a template, title metadata is required.
+	if _, ok := data["title"]; !ok {
+		// Insert a title to prevent warning.
+		data["title"] = "..."
+	}
+
 	src, err := json.Marshal(data)
 	if err != nil {
 		return fmt.Errorf("Marshal error, %q", err)
@@ -90,22 +140,34 @@ func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) 
 	if _, err := metadata.Write(src); err != nil {
 		return fmt.Errorf("Write error, %q", err)
 	}
-	// Check if document has front matter, split and write to temp files.
 	defer os.Remove(metadata.Name())
+	// Check if document has front matter, split and write to temp files.
 	options = []string{
-		"-s", "-t", "html",
+		"-t", "html",
 		"--metadata-file", metadata.Name(),
 	}
 	if templateName != "" {
 		options = append(options, []string{"--template", templateName}...)
+	} else {
+		options = append(options, "--standalone")
 	}
 	cmd := exec.Command(pandoc, options...)
 	cmd.Stdout = &out
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("%s, %s", pandoc, err)
+	cmd.Stderr = &eOut
+	err = cmd.Run()
+	if err != nil {
+		if eOut.Len() > 0 {
+			err = fmt.Errorf("%q says, %s\n%s", pandoc, eOut.String(), err)
+		} else {
+			err = fmt.Errorf("%q exit error, %s", pandoc, err)
+		}
+		return err
+	}
+	if eOut.Len() > 0 {
+		fmt.Fprintf(os.Stderr, "%q warns, %s", pandoc, eOut.String())
 	}
 	wr.Write(out.Bytes())
-	return nil
+	return err
 }
 
 // PandocBlock will attempt to convert a src byte array from
