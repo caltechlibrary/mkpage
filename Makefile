@@ -109,22 +109,8 @@ clean:
 	if [ -f assets.go ]; then rm assets.go; fi
 	if [ -d bin ]; then rm -fR bin; fi
 	if [ -d dist ]; then rm -fR dist; fi
-	if [ -d man ]; then rm -fR man; fi
 	if [ -d test ]; then rm -fR test/*; fi
 
-man: build
-	mkdir -p man/man1
-	bin/mkpage -generate-manpage | nroff -Tutf8 -man > man/man1/mkpage.1
-	bin/mkrss -generate-manpage | nroff -Tutf8 -man > man/man1/mkrss.1
-	bin/sitemapper -generate-manpage | nroff -Tutf8 -man > man/man1/sitemapper.1
-	bin/byline -generate-manpage | nroff -Tutf8 -man > man/man1/byline.1
-	bin/titleline -generate-manpage | nroff -Tutf8 -man > man/man1/titleline.1
-	bin/reldocpath -generate-manpage | nroff -Tutf8 -man > man/man1/reldocpath.1
-	bin/urldecode -generate-manpage | nroff -Tutf8 -man > man/man1/urldecode.1
-	bin/urlencode -generate-manpage | nroff -Tutf8 -man > man/man1/urlencode.1
-	bin/ws -generate-manpage | nroff -Tutf8 -man > man/man1/ws.1
-	bin/frontmatter -generate-manpage | nroff -Tutf8 -man > man/man1/frontmatter.1
-	bin/blogit -generate-manpage | nroff -Tutf8 -man > man/man1/blogit.1
 
 install: 
 	env GOBIN=$(GOPATH)/bin go install cmd/mkpage/mkpage.go

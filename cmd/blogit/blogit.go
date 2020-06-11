@@ -40,7 +40,6 @@ for inclusion in navigation.
 `
 
 	examples = `
-
 I have a Markdown file called, "my-vacation-day.md". I want to
 add it to my blog for the date July 1, 2020.  I've written
 "my-vacation-day.md" in my home "Documents" folder and my blog
@@ -48,14 +47,14 @@ repository is in my "Sites" folder under "Sites/me.example.org".
 Adding "my-vacation-day.md" to the blog me.example.org would
 use the following command.
 
-   cd $HOME/Sites/me.example.org
-   %s $HOME/my-vacation-day.md 2020-07-01
+   cd Sites/me.example.org
+   %s my-vacation-day.md 2020-07-01
 
 The *%s* command will copy "my-vacation-day.md", creating any
-necessary file directories to "$HOME/Sites/me.example.org/2020/06/01".
+necessary file directories to "Sites/me.example.org/2020/06/01".
 It will also update article lists (index.md) at the year level, 
 month, and day level and month level of the directory tree and
-and generate/update a posts.json in the "$HOME/Sites/my.example.org"
+and generate/update a posts.json in the "Sites/my.example.org"
 that can be used in your home page template for listing recent
 posts.
 
@@ -68,7 +67,7 @@ structures for things like podcasts or videocasts.
     # Add an audio file containing the podcast
     %s -prefix=podcast my-vacation.wav 2020-07-01
 
-   -p, -prefix    Set the prefix path before the YYYY/MM/DD path.
+Where "-p, -prefix" sets the prefix path before the YYYY/MM/DD path.
 
 
 If you have an existing blog paths in the form of
@@ -89,7 +88,6 @@ for blog posts for that year.
 	showExamples     bool
 	quiet            bool
 	generateMarkdown bool
-	generateManPage  bool
 
 	// Application Options
 	prefixPath     string
@@ -131,7 +129,6 @@ func main() {
 	app.BoolVar(&showExamples, "e,examples", false, "display examples")
 	app.BoolVar(&showLicense, "l,license", false, "display license")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Application specific options
 	app.StringVar(&prefixPath, "P,prefix", "", "Set the prefix path before YYYY/MM/DD.")
@@ -180,10 +177,6 @@ func main() {
 	// Process flags and update the environment as needed.
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
 

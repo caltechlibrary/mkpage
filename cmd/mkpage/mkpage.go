@@ -33,15 +33,10 @@ import (
 
 var (
 	description = `
-SYNOPSIS
-
 Using the key/value pairs populate the template(s) and render to stdout.
 `
 
 	examples = `
-
-EXAMPLE
-
 Template (named "examples/weather.tmpl")
     
     Date: $now$
@@ -84,7 +79,6 @@ That would be expressed on the command line as follows
 	inputFName       string
 	outputFName      string
 	generateMarkdown bool
-	generateManPage  bool
 
 	// Application Options
 	templateFNames string
@@ -104,9 +98,6 @@ func main() {
 	app.AddHelp("description", []byte(fmt.Sprintf(description)))
 	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName)))
 
-	// Setup Environment variables
-	app.EnvStringVar(&templateFNames, "MKPAGE_TEMPLATES", "", "set the default template path")
-
 	// Standard Options
 	app.BoolVar(&showHelp, "h,help", false, "display help")
 	app.BoolVar(&showVersion, "v,version", false, "display version")
@@ -115,7 +106,6 @@ func main() {
 	app.StringVar(&inputFName, "i,input", "", "input filename")
 	app.StringVar(&outputFName, "o,output", "", "output filename")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Application specific options
 	app.StringVar(&templateFNames, "t,templates", "", "colon delimited list of Go text templates to use")
@@ -172,13 +162,9 @@ func main() {
 	cli.ExitOnError(app.Eout, err, true)
 	defer cli.CloseFile(outputFName, app.Out)
 
-	// Process flags and update the environment as needed.
+	// Process flags as needed.
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
 
@@ -208,9 +194,9 @@ func main() {
 	// Make the page with pandoc, go templates and Go Markdown
 	switch {
 	case useGoTemplates:
-		// DEPRECIATED: This is maintained for backard compatibility
-		// for now. It should be removed when the transition is
-		// completed.
+		// DEPRECIATED: Go template support is included for
+		// backward compatibility. It will be removed when the
+		// transition is before v1.x.
 
 		// Create our Tmpl struct with our function map
 		tmpl := tmplfn.New(tmplfn.AllFuncs())

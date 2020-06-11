@@ -1,9 +1,7 @@
 
-# byline
+# USAGE
 
-## USAGE
-
-	byline [OPTIONS]
+>	byline \[OPTIONS\]
 
 ## DESCRIPTION
 
@@ -18,16 +16,15 @@ to specific files using an option.
 Below are a set of options available.
 
 ```
-    -b, -byline         set byline regexp
-    -examples           display example(s)
-    -generate-manpage   generate man page
-    -generate-markdown  generate Markdown documentation
-    -h, -help           display help
-    -i, -input          input filename
-    -l, -license        display license
-    -o, -output         output filename
-    -quiet              suppress error messages
-    -v, -version        display version
+    -b, -byline          set byline regexp
+    -examples            display example(s)
+    -generate-markdown   generate Markdown documentation
+    -h, -help            display help
+    -i, -input           input filename
+    -l, -license         display license
+    -o, -output          output filename
+    -quiet               suppress error messages
+    -v, -version         display version
 ```
 
 
@@ -36,10 +33,12 @@ Below are a set of options available.
 
 Extract a byline from article.md.
 
-```shell
+```
     cat article.md | byline
 ```
 
 This will display the byline if one is found in article.md.
 
+
+byline v0.1.1
 

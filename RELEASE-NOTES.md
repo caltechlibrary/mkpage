@@ -1,6 +1,15 @@
 
 # Release Notes
 
+## v0.1.1
+
++ To use Go language templates you must use the `-t` or `-templates` option
++ Fixed bug where JSON documents were parsed as frontmatter
++ Added pandoc info to `-version` documents
++ Removed support for environment variable in tools
++ Fully dropped let's encrypt support (available from other none project tools)
+
+
 ## v0.1.0a
 
 + Documentation cleanup, code cleanup, some bug fixes

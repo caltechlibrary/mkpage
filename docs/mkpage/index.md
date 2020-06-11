@@ -1,55 +1,39 @@
 
-# mkpage
+# USAGE
 
-## USAGE
-
-	mkpage [OPTIONS] [KEY/VALUE DATA PAIRS] [TEMPLATE_FILENAMES]
+>	mkpage \[OPTIONS\] \[KEY/VALUE DATA PAIRS\] \[TEMPLATE_FILENAMES\]
 
 ## DESCRIPTION
 
-A Pandoc preprossor supporting front matter in YAML, TOML and JSON.
-The command parameter language use the key/value pairs populate 
-template(s) and render to stdout. Values can be explicitly typed,
-derived from files and their extensions or retrieved from the net.
+Using the key/value pairs populate the template(s) and render to stdout.
+
 
 ## OPTIONS
 
-Below are a set of options available. Options will override any corresponding environment settings.
+Below are a set of options available.
 
 ```
-    -code               outout just code blocks for language, 
-                        e.g. shell or json, reads from standard input
-    -codesnip           output just the code bocks, reads from
-                        standard input
-    -examples           display example(s)
-    -generate-manpage   generate man page
-    -generate-markdown  generate markdown documentation
-    -gt, -go-templates  (DEPRECIATED) use Go's template engine instead of 
-                        Pandoc's template engine
-    -h, -help           display help
-    -i, -input          input filename
-    -l, -license        display license
-    -o, -output         output filename
-    -quiet              suppress error messages
-    -s, -show-template  display source for a default page template
-    -t, -templates      (DEPRECIATED) colon delimited list of 
-                        templates to use
-    -v, -version        display version
+    -code                outout just code blocks for specific language, e.g. shell or json, reads from standard input
+    -codesnip            output just the code bocks, reads from standard input
+    -examples            display example(s)
+    -generate-markdown   generate markdown documentation
+    -h, -help            display help
+    -i, -input           input filename
+    -l, -license         display license
+    -o, -output          output filename
+    -t, -templates       colon delimited list of Go text templates to use
+    -v, -version         display version
 ```
 
 
 ## EXAMPLES
 
-
-
-EXAMPLE
-
 Template (named "examples/weather.tmpl")
     
 ```
-    Date: ${now}
+    Date: $now$
     
-    Hello ${name},
+    Hello $name$,
         
     The weather forcast is
     
@@ -59,8 +43,7 @@ Template (named "examples/weather.tmpl")
     
     Thank you
     
-    ${signature}
-
+    $signature$
 ```
 
 Render the template above (i.e. examples/weather.tmpl) would be 
@@ -74,12 +57,12 @@ accomplished from the following data sources--
 
 That would be expressed on the command line as follows
 
-```shell
+```
     mkpage "now=text:$(date)" "name=text:Little Frieda" \
         "weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
         signature=examples/signature.txt \
         examples/weather.tmpl     
 ```
 
-
+mkpage v0.1.1
 

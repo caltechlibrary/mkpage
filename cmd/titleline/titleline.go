@@ -34,17 +34,13 @@ import (
 
 var (
 	description = `
-SYNOPSIS
-
 %s extracts the first title line from a Markdown file. By default it reads
 from standard in and writes to standard out but can read/write
 to specific files using an option.
 `
 
 	examples = `
-EXAMPLE
-
-cat article.md | %s
+    cat article.md | %s
 
 This will display the title of an article.md.
 `
@@ -57,7 +53,6 @@ This will display the title of an article.md.
 	inputFName       string
 	outputFName      string
 	generateMarkdown bool
-	generateManPage  bool
 	quiet            bool
 
 	// App Options
@@ -81,7 +76,6 @@ func main() {
 	app.StringVar(&inputFName, "i,input", "", "input filename")
 	app.StringVar(&outputFName, "o,output", "", "output filename")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 	app.BoolVar(&quiet, "quiet", false, "suppress error messages")
 
 	// App Options
@@ -93,10 +87,6 @@ func main() {
 	// Configuration and command line interation
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
 	if showHelp || showExamples {

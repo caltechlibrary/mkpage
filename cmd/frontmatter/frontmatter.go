@@ -63,7 +63,6 @@ Will also do the same.
 	outputFName      string
 	quiet            bool
 	generateMarkdown bool
-	generateManPage  bool
 
 	// App Options
 	jsonFormat bool
@@ -82,7 +81,6 @@ func main() {
 	app.StringVar(&outputFName, "o,output", "", "output filename")
 	app.BoolVar(&quiet, "quiet", false, "suppress error messages")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate Markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Configuration and command line interation
 	app.AddHelp("license", []byte(fmt.Sprintf(mkpage.LicenseText, appName, mkpage.Version)))
@@ -110,10 +108,6 @@ func main() {
 	// Handle Options
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
 	if showHelp || showExamples {

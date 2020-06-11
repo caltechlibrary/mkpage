@@ -1,19 +1,13 @@
-{
-    "has_code": true
-}
-
 
 # The Basics
 
 _mkpage_ uses Pandoc's template engine to render content. This template 
 is documented on the [Pandoc](https://pandoc.org/MANUAL.html#templates).
-It is a simple template system compared to systems like [Jykell]() and
-[Go text/templates]().
 
 ## Basic element
 
-Like a templated data element is wrapped in a `${` .. `}` or in
-`$` .. `$`.  A template that says "Hello" followed by a value
+Like a templated data element is wrapped in a `\$\{` .. `\}` or in
+`\$` .. `\$`.  A template that says "Hello" followed by a value
 named "world" would look something like this
 
 ```
@@ -34,8 +28,8 @@ Running these two command should result in output like
 ```
 
 The line with the `echo` is just creating our template and saving it 
-as the file _hello-world.tmpl_.  In the template the only special part 
-is `${world}`. "world" is a variable will be replaced by something we 
+as the file "hello-world.tmpl".  In the template the only special part 
+is `\$\{world\}`. "world" is a variable will be replaced by something we 
 define.  In the line with `mkpage` we define the value for "world" as 
 plain text. Note we don't need to prefix "world" in the command line. 
 The 'text:' before the variable name to indicate the type of object, 
@@ -81,13 +75,13 @@ just ignores "Name=text:Fred" because "Name" isn't found in the template.
 
 ### Conditional elements
 
-Pandoc templates have conditional elements.  `${if()} ... ${endif}` 
-and `${for()} ... ${endfor}` are simimlar.  The "if" will display
+Pandoc templates have conditional elements.  `\$\{if()\} ... \$\{endif\}` 
+and `\$\{for()\} ... \$\{endfor\}` are simimlar.  The "if" will display
 the contents if the variable passing to the "if" function is non-empty.
 If the object is an array it will concatenate the elements together,
 if it is a map then it will display true. The "for" function is similar
 but iterates over the elements provided and those elements can be accessed
-with an alias of `${it}`.  See the Pandoc Manual for details.    
+with an alias of `\$\{it\}`.  See the Pandoc Manual for details.    
 
 ```
    ${if(title)}Title: ${title}${endif}
@@ -103,7 +97,7 @@ Let's create a template file with both these statements called _title-demo.tmpl_
 _mkpage_ command.
 
 ```shell
-    echo '${if(title)Title: ${title}${endif}' > title-demo.tmpl
+    echo '${if(title)}Title: ${title}${endif}' > title-demo.tmpl
     echo 'By ${for(authors)}${it}$sep$ and ${endif}' >> title-demo.tmpl 
     mkpage 'title=text:This is a title demo' \
            'authors=json:[ 'Jane', 'Carol' ]' \

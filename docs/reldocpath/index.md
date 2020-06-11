@@ -1,9 +1,7 @@
 
-# reldocpath
+# USAGE
 
-## USAGE
-
-	reldocpath [OPTIONS] SOURCE_DOC_PATH TARGET_DOC_PATH
+>	reldocpath \[OPTIONS\] SOURCE_DOC_PATH TARGET_DOC_PATH
 
 ## DESCRIPTION
 
@@ -16,21 +14,20 @@ the implied common base path calculate the relative path for target.
 Below are a set of options available.
 
 ```
-    -examples           display example(s)
-    -generate-manpage   generate man page
-    -generate-markdown  generate markdown documentation
-    -h, -help           display help
-    -l, -license        display license
-    -quiet              suppress error messages
-    -v, -version        display version
+    -examples            display example(s)
+    -generate-markdown   generate markdown documentation
+    -h, -help            display help
+    -l, -license         display license
+    -quiet               suppress error messages
+    -v, -version         display version
 ```
 
 
-## EXAMPLE
+## EXAMPLES
 
 Given
 
-```shell
+```
     reldocpath chapter-01/lesson-03.html css/site.css
 ```
 
@@ -40,4 +37,5 @@ would output
     .../css/site.css
 ```
 
+reldocpath v0.1.1
 

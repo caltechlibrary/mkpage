@@ -1,9 +1,7 @@
 
-# sitemapper
+# USAGE
 
-## USAGE
-
-	sitemapper [OPTIONS] HTDOCS_PATH MAP_FILENAME PUBLIC_BASE_URL
+>	sitemapper \[OPTIONS\] HTDOCS_PATH MAP_FILENAME PUBLIC_BASE_URL
 
 ## DESCRIPTION
 
@@ -28,7 +26,6 @@ Below are a set of options available. Options will override any corresponding en
     -docs                        set the htdoc root
     -examples                    display example(s)
     -exclude                     A colon delimited list of path parts to exclude from sitemap
-    -generate-manpage            generate man page
     -generate-markdown           generate markdown documentation
     -h, -help                    display help
     -l, -license                 display license
@@ -41,10 +38,11 @@ Below are a set of options available. Options will override any corresponding en
 ```
 
 
-## EXAMPLE
-
+## EXAMPLES
 
 ```
     sitemapper htdocs htdocs/sitemap.xml http://eprints.example.edu
 ```
+
+sitemapper v0.1.1
 

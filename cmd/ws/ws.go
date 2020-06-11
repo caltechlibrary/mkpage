@@ -41,49 +41,22 @@ import (
 var (
 	description = `
 
-SYNOPSIS
-
 	a nimble web server
 
 %s is a command line utility for developing and testing static websites.
 It uses Go's standard http libraries and can supports both http 1 and 2
 out of the box.  It is intended as a minimal wrapper for Go's standard
 http libraries supporting http/https versions 1 and 2 out of the box.
-
-CONFIGURATION
-
-%s can be configurated through environment settings. The following are
-supported.
-
-+ MKPAGE_URL  - sets the URL to listen on (e.g. http://localhost:8000)
-+ MKPAGE_DOCROOT - sets the document path to use
-+ MKPAGE_SSL_KEY - the path to the SSL key if using https
-+ MKPAGE_SSL_CERT - the path to the SSL cert if using https
-
 `
 
 	examples = `
-
-EXAMPLES
-
 Run web server using the content in the current directory
-(assumes the environment variables MKPAGE_DOCROOT are not defined).
 
    %s
 
 Run web server using a specified directory
 
    %s /www/htdocs
-
-Running web server using ACME TLS support (i.e. Let's Encrypt).
-Note will only include the hostname as the ACME setup is for
-listenning on port 443. This may require privileged account
-and will require that the hostname listed matches the public
-DNS for the machine (this is need by the ACME protocol to
-issue the cert, see https://letsencrypt.org for details)
-
-   %s -acme -url www.example.org /www/htdocs
-
 `
 
 	// Standard options
@@ -93,7 +66,6 @@ issue the cert, see https://letsencrypt.org for details)
 	showExamples     bool
 	outputFName      string
 	generateMarkdown bool
-	generateManPage  bool
 	quiet            bool
 
 	// local app options
@@ -101,7 +73,6 @@ issue the cert, see https://letsencrypt.org for details)
 	docRoot      string
 	sslKey       string
 	sslCert      string
-	letsEncrypt  bool
 	CORSOrigin   string
 	redirectsCSV string
 )
@@ -126,17 +97,11 @@ func main() {
 
 	// Add Help Docs
 	app.AddHelp("license", []byte(fmt.Sprintf(mkpage.LicenseText, appName, mkpage.Version)))
-	app.AddHelp("description", []byte(fmt.Sprintf(description, appName, appName)))
-	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName, appName, appName)))
+	app.AddHelp("description", []byte(fmt.Sprintf(description, appName)))
+	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName, appName)))
 
 	defaultDocRoot := "."
 	defaultURL := "http://localhost:8000"
-
-	// Environment Options
-	app.EnvStringVar(&docRoot, "MKPAGE_DOCROOT", "", "set the htdoc root")
-	app.EnvStringVar(&uri, "MKPAGE_URL", "", "set the URL to listen on, defaults to http://localhost:8000")
-	app.EnvStringVar(&sslKey, "MKPAGE_SSL_KEY", "", "set the path to the SSL KEY")
-	app.EnvStringVar(&sslCert, "MKPAGE_SSL_CERT", "", "set the path to the SSL Certificate")
 
 	// Standard Options
 	app.BoolVar(&showHelp, "h", false, "display help")
@@ -147,19 +112,13 @@ func main() {
 	app.BoolVar(&showVersion, "version", false, "display version")
 	app.BoolVar(&showExamples, "example", false, "display example(s)")
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 	app.BoolVar(&quiet, "quiet", false, "suppress error messages")
 
 	// Application Options
-	app.StringVar(&docRoot, "d", defaultDocRoot, "Set the htdocs path")
-	app.StringVar(&docRoot, "docs", defaultDocRoot, "Set the htdocs path")
-	app.StringVar(&uri, "u", defaultURL, "The protocol and hostname listen for as a URL")
-	app.StringVar(&uri, "url", defaultURL, "The protocol and hostname listen for as a URL")
-	app.StringVar(&sslKey, "k", "", "Set the path for the SSL Key")
-	app.StringVar(&sslKey, "key", "", "Set the path for the SSL Key")
-	app.StringVar(&sslCert, "c", "", "Set the path for the SSL Cert")
-	app.StringVar(&sslCert, "cert", "", "Set the path for the SSL Cert")
-	app.BoolVar(&letsEncrypt, "acme", false, "Enable Let's Encypt ACME TLS support")
+	app.StringVar(&docRoot, "d,docs", defaultDocRoot, "Set the htdocs path")
+	app.StringVar(&uri, "u,url", defaultURL, "The protocol and hostname listen for as a URL")
+	app.StringVar(&sslKey, "k,key", "", "Set the path for the SSL Key")
+	app.StringVar(&sslCert, "c,cert", "", "Set the path for the SSL Cert")
 	app.StringVar(&CORSOrigin, "cors-origin", "*", "Set the CORS Origin Policy to a specific host or *")
 	app.StringVar(&redirectsCSV, "redirects-csv", "", "Use target,destination replacement paths defined in CSV file")
 
@@ -178,10 +137,6 @@ func main() {
 	// Process flags and update the environment as needed.
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(app.Out)
 		os.Exit(0)
 	}
 	if showHelp || showExamples {
@@ -213,7 +168,7 @@ func main() {
 		cli.ExitOnError(app.Eout, err, quiet)
 	}
 
-	if u.Scheme == "https" && letsEncrypt == false {
+	if u.Scheme == "https" {
 		log.Printf("SSL Key %s", sslKey)
 		log.Printf("SSL Cert %s", sslCert)
 	}
