@@ -21,7 +21,7 @@ build: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/ws$(EXT) bin/frontmatter$(EXT) bin/blogit$(EXT)
 
 
-bin/mkpage$(EXT): version.go mkpage.go codesnip.go mkpandoc.go cmd/mkpage/mkpage.go blogit.go mkpandoc.go
+bin/mkpage$(EXT): version.go mkpage.go codesnip.go mkpandoc.go cmd/mkpage/mkpage.go blogit.go mkpandoc.go generators.go
 	go build -o bin/mkpage$(EXT) cmd/mkpage/mkpage.go
 
 bin/mkrss$(EXT): version.go mkpage.go mkrss.go mkpandoc.go cmd/mkrss/mkrss.go
@@ -91,7 +91,7 @@ format:
 	gofmt -w cmd/ws/ws.go
 	gofmt -w cmd/frontmatter/frontmatter.go
 
-test: bin/mkpage$(EXT) bin/mkrss$(EXT) \
+test: .FORCE bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/sitemapper$(EXT) bin/byline$(EXT) bin/titleline$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
 	bin/ws$(EXT) bin/frontmatter$(EXT) bin/blogit$(ext)

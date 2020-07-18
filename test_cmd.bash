@@ -93,6 +93,13 @@ function test_mkpage() {
     RESULT=$(cmp examples/codemeta.md temp.md)
     assert_equal "test_mkpage (markdown doc)" "$EXPECTED" "$RESULT"
 
+    bin/mkpage "title=text:Author Test" \
+      "authors=json-generator:python3 examples/fmt-authors.py examples/authors-list.json" \
+      examples/authors.tmpl > temp.md
+    assert_exists "test_mkpage (generator)" "temp.md"
+    RESULT=$(cmp examples/authors.md temp.md)
+    assert_equal "test_mkpage (generator doc)" "$EXPECTED" "$RESULT"
+
     echo "test_mkpage() OK"
 }
 

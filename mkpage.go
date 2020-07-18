@@ -398,12 +398,13 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 			//NOTE: JSONGenerator expects a command line that results
 			// in JSON written to stdout. It then passes this back to
 			// be processed by pandoc in the metadata file.
+			var o interface{}
 			cmd := strings.TrimPrefix(val, JSONGeneratorPrefix)
-			src, err := JSONGenerator(cmd)
+			err := JSONGenerator(cmd, &o)
 			if err != nil {
-				return out, fmt.Errorf("(%q:) %q failed, %s", key, cmd, err)
+				return out, fmt.Errorf("(key: %q) %q failed, %s", key, cmd, err)
 			}
-			out[key] = fmt.Sprintf("%s", src)
+			out[key] = o
 		case strings.HasPrefix(val, "http://") == true || strings.HasPrefix(val, "https://") == true:
 			resp, err := http.Get(val)
 			if err != nil {

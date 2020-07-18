@@ -28,19 +28,18 @@ import (
 
 // JSONGenerator accepts  command line string and executes it.
 // It take command's output, validates that it is JSON and returns it.
-func JSONGenerator(cmdExpr string) ([]byte, error) {
+func JSONGenerator(cmdExpr string, obj interface{}) error {
 	var (
 		out, eOut bytes.Buffer
 		generator string
 		params    []string
 		err       error
-		obj       interface{}
 	)
 	line := strings.Split(cmdExpr, " ")
 	switch len(line) {
 	case 0:
 		err = fmt.Errorf("Missing generator command")
-		return nil, err
+		return err
 	case 1:
 		generator = cmdExpr
 	default:
@@ -57,11 +56,11 @@ func JSONGenerator(cmdExpr string) ([]byte, error) {
 		} else {
 			err = fmt.Errorf("%q exit error, %s", cmdExpr, err)
 		}
-		return nil, err
+		return err
 	}
 	if eOut.Len() > 0 {
 		fmt.Fprintf(os.Stderr, "%q warns, %s", cmdExpr, eOut.String())
-		return nil, err
+		return err
 	}
 	src := out.Bytes()
 	//NOTE: Validate our JSON by trying to unmarshaling it
@@ -69,5 +68,5 @@ func JSONGenerator(cmdExpr string) ([]byte, error) {
 	if err != nil {
 		err = fmt.Errorf("Invalid JSON from %q exit error, %s", cmdExpr, err)
 	}
-	return src, err
+	return err
 }
