@@ -47,9 +47,16 @@ const (
 
 	// JSONPrefix designates a string as JSON formatted content
 	JSONPrefix = "json:"
-	// MarkdownPrefix designates a string as Markdown (common mark) content
-	// to be parsed by pandoc
+	// CommonMarkPrefix designates a string as Common Mark
+	// (a rich markdown dialect) content
+	CommonMarkPrefix = "commonmark:"
+	// MarkdownPrefix designates a string as Markdown (pandoc's dialect)
+	// content
 	MarkdownPrefix = "markdown:"
+	// MarkdownStrict designates a strnig as John Gruber's Markdown content
+	MarkdownStrictPrefix = "markdown_strict:"
+	// GfmMarkdownPrefix designates a string as GitHub Flavored Markdown
+	GfmMarkdownPrefix = "gfm:"
 	// MMarkPrefix designates MMark format, for now this will just be passed to pandoc.
 	MMarkPrefix = "mmark:"
 	// TextPrefix designates a string as text/plain not needed processing
@@ -62,6 +69,9 @@ const (
 	ReStructureTextPrefix = "rst:"
 	// JiraPrefix markup designates source as Jire text for processing by pandoc
 	JiraPrefix = "jira:"
+	// JSONGeneratorPrefix evaluates the value as a command line that
+	// returns JSON.
+	JSONGeneratorPrefix = "json-generator:"
 
 	// DateExp is the default format used by mkpage utilities for date exp
 	DateExp = `[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]`
@@ -317,14 +327,35 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 			out[key] = strings.TrimPrefix(val, TextPrefix)
 		case strings.HasPrefix(val, MMarkPrefix) == true:
 			//NOTE: We're using pandoc as our default processor
-			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, MMarkPrefix)), "markdown", "html")
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, MMarkPrefix)), "markdown_mmd", "html")
+			if err != nil {
+				return out, err
+			}
+			out[key] = fmt.Sprintf("%s", src)
+		case strings.HasPrefix(val, CommonMarkPrefix) == true:
+			//NOTE: We're using pandoc as our default processor
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, CommonMarkPrefix)), "commonmark", "html")
 			if err != nil {
 				return out, err
 			}
 			out[key] = fmt.Sprintf("%s", src)
 		case strings.HasPrefix(val, MarkdownPrefix) == true:
-			//NOTE: We're using pandoc as our default processor
+			//NOTE: We're using pandoc's flavor Markdown as our processor
 			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, MarkdownPrefix)), "markdown", "html")
+			if err != nil {
+				return out, err
+			}
+			out[key] = fmt.Sprintf("%s", src)
+		case strings.HasPrefix(val, MarkdownStrictPrefix) == true:
+			//NOTE: We're using origanal John Gruber Markdown
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, MarkdownStrictPrefix)), "markdown_strict", "html")
+			if err != nil {
+				return out, err
+			}
+			out[key] = fmt.Sprintf("%s", src)
+		case strings.HasPrefix(val, GfmMarkdownPrefix) == true:
+			//NOTE: We're using pandoc as our default processor
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, GfmMarkdownPrefix)), "gfm", "html")
 			if err != nil {
 				return out, err
 			}
@@ -363,6 +394,16 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 				return out, fmt.Errorf("Can't JSON decode (%s) %s, %s", key, val, err)
 			}
 			out[key] = o
+		case strings.HasPrefix(val, JSONGeneratorPrefix) == true:
+			//NOTE: JSONGenerator expects a command line that results
+			// in JSON written to stdout. It then passes this back to
+			// be processed by pandoc in the metadata file.
+			cmd := strings.TrimPrefix(val, JSONGeneratorPrefix)
+			src, err := JSONGenerator(cmd)
+			if err != nil {
+				return out, fmt.Errorf("(%q:) %q failed, %s", key, cmd, err)
+			}
+			out[key] = fmt.Sprintf("%s", src)
 		case strings.HasPrefix(val, "http://") == true || strings.HasPrefix(val, "https://") == true:
 			resp, err := http.Get(val)
 			if err != nil {
@@ -401,6 +442,18 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 							return nil, err
 						}
 						out[key] = fmt.Sprintf("%s", src)
+					case isContentType(contentTypes, "text/commonmark") == true:
+						src, err := pandocProcessor(buf, "commonmark", "html")
+						if err != nil {
+							return nil, err
+						}
+						out[key] = fmt.Sprintf("%s", src)
+					case isContentType(contentTypes, "text/mmark") == true:
+						src, err := pandocProcessor(buf, "mmark", "html")
+						if err != nil {
+							return nil, err
+						}
+						out[key] = fmt.Sprintf("%s", src)
 					case isContentType(contentTypes, "text/fountain") == true:
 						src, err := fountainProcessor(buf)
 						if err != nil {
@@ -421,7 +474,8 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 				return out, fmt.Errorf("Can't read (%s) %q, %s", key, val, err)
 			}
 			//NOTE: We only split front matter for supported markup
-			// formats, e.g. Markdown, Textile, ReStructureText, JiraText
+			// formats, e.g. MultiMarkdown, CommonMark, Markdown, Textile,
+			// ReStructureText, JiraText, Fountain
 			if strings.Compare(ext, ".json") != 0 {
 				fmType, fmSrc, docSrc := SplitFrontMatter(buf)
 				if len(fmSrc) > 0 {
@@ -445,7 +499,13 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 				}
 				out[key] = fmt.Sprintf("%s", src)
 			case strings.Compare(ext, ".md") == 0:
-				src, err := pandocProcessor(buf, "markdown", "html")
+				src, err := pandocProcessor(buf, "commonmark", "html")
+				if err != nil {
+					return nil, err
+				}
+				out[key] = fmt.Sprintf("%s", src)
+			case strings.Compare(ext, ".mmd") == 0:
+				src, err := pandocProcessor(buf, "mmark", "html")
 				if err != nil {
 					return nil, err
 				}

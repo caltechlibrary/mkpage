@@ -55,7 +55,7 @@ func GetPandocVersion() (string, error) {
 }
 
 // pandocProcessor accepts an array of bytes as input and returns
-// a `pandoc -f markdown -t html` output of an array if
+// a `pandoc -f commonmark -t html` output of an array if
 // bytes and error.
 func pandocProcessor(input []byte, from string, to string) ([]byte, error) {
 	var (
@@ -63,7 +63,7 @@ func pandocProcessor(input []byte, from string, to string) ([]byte, error) {
 	)
 
 	if from == "" {
-		from = "markdown"
+		from = "commonmark"
 	}
 	if to == "" {
 		to = "html"
@@ -143,6 +143,7 @@ func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) 
 	defer os.Remove(metadata.Name())
 	// Check if document has front matter, split and write to temp files.
 	options = []string{
+		"-f", "commonmark",
 		"-t", "html",
 		"--metadata-file", metadata.Name(),
 	}
