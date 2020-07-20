@@ -26,6 +26,52 @@ import (
 	"strings"
 )
 
+func scanArgs(s string) (string, []string) {
+	var (
+		tok       string
+		generator string
+		params    []string
+		i, j      int
+	)
+	for i = 0; i < len(s) && (tok != " "); i++ {
+		tok = string(s[i])
+	}
+	generator = strings.TrimSpace(string(s[0:i]))
+	params = []string{}
+	j = len(generator) + 1
+	for ; i < len(s); i++ {
+		tok = string(s[i])
+		switch tok {
+		case "'":
+			for ; i < len(s) && tok != "'"; i++ {
+				// advance to next single quote.
+				tok = string(s[i])
+				if tok == "\\" {
+					i += 1
+					tok = string(s[i])
+				}
+			}
+		case `"`:
+			for ; i < len(s) && tok != `"`; i++ {
+				// advance to next double quote.
+				tok = string(s[i])
+				if tok == "\\" {
+					i += 1
+					tok = string(s[i])
+				}
+			}
+		case " ":
+			params = append(params, strings.TrimSpace(string(s[j:i])))
+			j = i
+		}
+	}
+	if j < i {
+		params = append(params, strings.TrimSpace(string(s[j:i])))
+	}
+	//fmt.Fprintf(os.Stderr, "DEBUG generator %q\nDEBUG params %+v\n", generator, params)
+	return generator, params
+}
+
 // JSONGenerator accepts  command line string and executes it.
 // It take command's output, validates that it is JSON and returns it.
 func JSONGenerator(cmdExpr string, obj interface{}) error {
@@ -35,17 +81,9 @@ func JSONGenerator(cmdExpr string, obj interface{}) error {
 		params    []string
 		err       error
 	)
-	line := strings.Split(cmdExpr, " ")
-	switch len(line) {
-	case 0:
-		err = fmt.Errorf("Missing generator command")
-		return err
-	case 1:
-		generator = cmdExpr
-	default:
-		generator, params = line[0], line[1:]
-	}
-
+	//NOTE: We use the scanner because we want to treat quote strings
+	// as one parameter.
+	generator, params = scanArgs(cmdExpr)
 	cmd := exec.Command(generator, params...)
 	cmd.Stdout = &out
 	cmd.Stderr = &eOut

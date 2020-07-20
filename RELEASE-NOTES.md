@@ -1,6 +1,12 @@
 
 # Release Notes
 
+## v0.1.2
+
++ Switched default pandoc parsing mode to commonmark to limit the false positive attempts to process TeX in markdown documents
++ Added json-generator type to allow processing of JSON content by external scripts (e.g. Python), script should return JSON via stdout
++ Added support to include more explicit pandoc markdown interpretation, e.g. commonmark, markdown_strict, gfm
+
 ## v0.1.1
 
 + To use Go language templates you must use the `-t` or `-templates` option
