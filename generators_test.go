@@ -39,4 +39,5 @@ func TestScanArgs(t *testing.T) {
 			t.Errorf("expected param(%d) %q, got %q from %+v", i, val, params[i], params)
 		}
 	}
+	t.Errorf("DEBUG param[2] -> %q", params[2])
 }
