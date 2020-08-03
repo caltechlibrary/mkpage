@@ -10,73 +10,34 @@
 </header>
 <nav>
 <ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="../">Up</a>
-</li>
-<li>
-<a href="../mkpage/">mkpage</a>
-</li>
-<li>
-<a href="../blogit/">blogit</a>
-</li>
-<li>
-<a href="../frontmatter/">frontmatter</a>
-</li>
-<li>
-<a href="../titleline/">titleline</a>
-</li>
-<li>
-<a href="../byline/">byline</a>
-</li>
-<li>
-<a href="../ws/">ws</a>
-</li>
-<li>
-<a href="../urlencode/">urlencode</a>
-</li>
-<li>
-<a href="../urldecode/">urldecode</a>
-</li>
-<li>
-<a href="../sitemapper/">sitemapper</a>
-</li>
-<li>
-<a href="../mkrss/">mkrss</a>
-</li>
-<li>
-<a href="../reldocpath/">reldocpath</a>
-</li>
-<li>
-<a href="../../how-to/">How To…</a>
-</li>
+<li><a href="/">Home</a></li>
+<li><a href="../">Up</a></li>
+<li><a href="../mkpage/">mkpage</a></li>
+<li><a href="../blogit/">blogit</a></li>
+<li><a href="../frontmatter/">frontmatter</a></li>
+<li><a href="../titleline/">titleline</a></li>
+<li><a href="../byline/">byline</a></li>
+<li><a href="../ws/">ws</a></li>
+<li><a href="../urlencode/">urlencode</a></li>
+<li><a href="../urldecode/">urldecode</a></li>
+<li><a href="../sitemapper/">sitemapper</a></li>
+<li><a href="../mkrss/">mkrss</a></li>
+<li><a href="../reldocpath/">reldocpath</a></li>
+<li><a href="../../how-to/">How To...</a></li>
 </ul>
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
-</h1>
+<h1>USAGE</h1>
 <blockquote>
-<p>
-ws [OPTIONS] [DOCROOT]
-</p>
+<p>ws [OPTIONS] [DOCROOT]</p>
 </blockquote>
-<h2 id="description">
-DESCRIPTION
-</h2>
-<pre><code>a nimble web server</code></pre>
-<p>
-ws is a command line utility for developing and testing static websites. It uses Go’s standard http libraries and can supports both http 1 and 2 out of the box. It is intended as a minimal wrapper for Go’s standard http libraries supporting http/https versions 1 and 2 out of the box.
-</p>
-<h2 id="options">
-OPTIONS
-</h2>
-<p>
-Below are a set of options available.
-</p>
+<h2>DESCRIPTION</h2>
+<pre><code>a nimble web server
+</code></pre>
+<p>ws is a command line utility for developing and testing static websites. It uses Go's standard http libraries and can supports both http 1 and 2 out of the box. It is intended as a minimal wrapper for Go's standard http libraries supporting http/https versions 1 and 2 out of the box.</p>
+<h2>OPTIONS</h2>
+<p>Below are a set of options available.</p>
 <pre><code>    -c, -cert            Set the path for the SSL Cert
     -cors-origin         Set the CORS Origin Policy to a specific host or *
     -d, -docs            Set the htdocs path
@@ -91,21 +52,16 @@ Below are a set of options available.
     -redirects-csv       Use target,destination replacement paths defined in CSV file
     -u, -url             The protocol and hostname listen for as a URL
     -v                   display version
-    -version             display version</code></pre>
-<h2 id="examples">
-EXAMPLES
-</h2>
-<p>
-Run web server using the content in the current directory
-</p>
-<pre><code>   ws</code></pre>
-<p>
-Run web server using a specified directory
-</p>
-<pre><code>   ws /www/htdocs</code></pre>
-<p>
-ws v0.1.1
-</p>
+    -version             display version
+</code></pre>
+<h2>EXAMPLES</h2>
+<p>Run web server using the content in the current directory</p>
+<pre><code>   ws
+</code></pre>
+<p>Run web server using a specified directory</p>
+<pre><code>   ws /www/htdocs
+</code></pre>
+<p>ws v0.1.1</p>
 </section>
 
 <footer>

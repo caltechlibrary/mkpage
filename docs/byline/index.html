@@ -10,72 +10,32 @@
 </header>
 <nav>
 <ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="../">Up</a>
-</li>
-<li>
-<a href="../mkpage/">mkpage</a>
-</li>
-<li>
-<a href="../blogit/">blogit</a>
-</li>
-<li>
-<a href="../frontmatter/">frontmatter</a>
-</li>
-<li>
-<a href="../titleline/">titleline</a>
-</li>
-<li>
-<a href="../byline/">byline</a>
-</li>
-<li>
-<a href="../ws/">ws</a>
-</li>
-<li>
-<a href="../urlencode/">urlencode</a>
-</li>
-<li>
-<a href="../urldecode/">urldecode</a>
-</li>
-<li>
-<a href="../sitemapper/">sitemapper</a>
-</li>
-<li>
-<a href="../mkrss/">mkrss</a>
-</li>
-<li>
-<a href="../reldocpath/">reldocpath</a>
-</li>
-<li>
-<a href="../../how-to/">How To…</a>
-</li>
+<li><a href="/">Home</a></li>
+<li><a href="../">Up</a></li>
+<li><a href="../mkpage/">mkpage</a></li>
+<li><a href="../blogit/">blogit</a></li>
+<li><a href="../frontmatter/">frontmatter</a></li>
+<li><a href="../titleline/">titleline</a></li>
+<li><a href="../byline/">byline</a></li>
+<li><a href="../ws/">ws</a></li>
+<li><a href="../urlencode/">urlencode</a></li>
+<li><a href="../urldecode/">urldecode</a></li>
+<li><a href="../sitemapper/">sitemapper</a></li>
+<li><a href="../mkrss/">mkrss</a></li>
+<li><a href="../reldocpath/">reldocpath</a></li>
+<li><a href="../../how-to/">How To...</a></li>
 </ul>
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
-</h1>
+<h1>USAGE</h1>
 <blockquote>
-<p>
-byline [OPTIONS]
-</p>
+<p>byline [OPTIONS]</p>
 </blockquote>
-<h2 id="description">
-DESCRIPTION
-</h2>
-<p>
-byline extracts a byline from a Markdown file. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.
-</p>
-<h2 id="options">
-OPTIONS
-</h2>
-<p>
-Below are a set of options available.
-</p>
+<h2>DESCRIPTION</h2>
+<p>byline extracts a byline from a Markdown file. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.</p>
+<h2>OPTIONS</h2>
+<p>Below are a set of options available.</p>
 <pre><code>    -b, -byline          set byline regexp
     -examples            display example(s)
     -generate-markdown   generate Markdown documentation
@@ -84,20 +44,14 @@ Below are a set of options available.
     -l, -license         display license
     -o, -output          output filename
     -quiet               suppress error messages
-    -v, -version         display version</code></pre>
-<h2 id="examples">
-EXAMPLES
-</h2>
-<p>
-Extract a byline from article.md.
-</p>
-<pre><code>    cat article.md | byline</code></pre>
-<p>
-This will display the byline if one is found in article.md.
-</p>
-<p>
-byline v0.1.1
-</p>
+    -v, -version         display version
+</code></pre>
+<h2>EXAMPLES</h2>
+<p>Extract a byline from article.md.</p>
+<pre><code>    cat article.md | byline
+</code></pre>
+<p>This will display the byline if one is found in article.md.</p>
+<p>byline v0.1.1</p>
 </section>
 
 <footer>

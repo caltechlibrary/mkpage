@@ -10,81 +10,38 @@
 </header>
 <nav>
 <ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="../">Up</a>
-</li>
-<li>
-<a href="../mkpage/">mkpage</a>
-</li>
-<li>
-<a href="../blogit/">blogit</a>
-</li>
-<li>
-<a href="../frontmatter/">frontmatter</a>
-</li>
-<li>
-<a href="../titleline/">titleline</a>
-</li>
-<li>
-<a href="../byline/">byline</a>
-</li>
-<li>
-<a href="../ws/">ws</a>
-</li>
-<li>
-<a href="../urlencode/">urlencode</a>
-</li>
-<li>
-<a href="../urldecode/">urldecode</a>
-</li>
-<li>
-<a href="../sitemapper/">sitemapper</a>
-</li>
-<li>
-<a href="../mkrss/">mkrss</a>
-</li>
-<li>
-<a href="../reldocpath/">reldocpath</a>
-</li>
-<li>
-<a href="../../how-to/">How To…</a>
-</li>
+<li><a href="/">Home</a></li>
+<li><a href="../">Up</a></li>
+<li><a href="../mkpage/">mkpage</a></li>
+<li><a href="../blogit/">blogit</a></li>
+<li><a href="../frontmatter/">frontmatter</a></li>
+<li><a href="../titleline/">titleline</a></li>
+<li><a href="../byline/">byline</a></li>
+<li><a href="../ws/">ws</a></li>
+<li><a href="../urlencode/">urlencode</a></li>
+<li><a href="../urldecode/">urldecode</a></li>
+<li><a href="../sitemapper/">sitemapper</a></li>
+<li><a href="../mkrss/">mkrss</a></li>
+<li><a href="../reldocpath/">reldocpath</a></li>
+<li><a href="../../how-to/">How To...</a></li>
 </ul>
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
-</h1>
+<h1>USAGE</h1>
 <blockquote>
-<p>
-sitemapper [OPTIONS] HTDOCS_PATH MAP_FILENAME PUBLIC_BASE_URL
-</p>
+<p>sitemapper [OPTIONS] HTDOCS_PATH MAP_FILENAME PUBLIC_BASE_URL</p>
 </blockquote>
-<h2 id="description">
-DESCRIPTION
-</h2>
-<p>
-sitemapper generates a sitemap for the website.
-</p>
-<h2 id="environment">
-ENVIRONMENT
-</h2>
-<p>
-Environment variables can be overridden by corresponding options
-</p>
+<h2>DESCRIPTION</h2>
+<p>sitemapper generates a sitemap for the website.</p>
+<h2>ENVIRONMENT</h2>
+<p>Environment variables can be overridden by corresponding options</p>
 <pre><code>    MKPAGE_DOCROOT   # set the document root, defaults to current working directory
     MKPAGE_SITEMAP   # set the sitemap filename and path
-    MKPAGE_SITEURL   # set the site url</code></pre>
-<h2 id="options">
-OPTIONS
-</h2>
-<p>
-Below are a set of options available. Options will override any corresponding environment settings.
-</p>
+    MKPAGE_SITEURL   # set the site url
+</code></pre>
+<h2>OPTIONS</h2>
+<p>Below are a set of options available. Options will override any corresponding environment settings.</p>
 <pre><code>    -docs                        set the htdoc root
     -examples                    display example(s)
     -exclude                     A colon delimited list of path parts to exclude from sitemap
@@ -96,14 +53,12 @@ Below are a set of options available. Options will override any corresponding en
     -sitemap                     set the sitemap filename and path
     -update, -update-frequency   Set the change frequencely value, e.g. daily, weekly, monthly
     -url                         set the site URL
-    -v, -version                 display version</code></pre>
-<h2 id="examples">
-EXAMPLES
-</h2>
-<pre><code>    sitemapper htdocs htdocs/sitemap.xml http://eprints.example.edu</code></pre>
-<p>
-sitemapper v0.1.1
-</p>
+    -v, -version                 display version
+</code></pre>
+<h2>EXAMPLES</h2>
+<pre><code>    sitemapper htdocs htdocs/sitemap.xml http://eprints.example.edu
+</code></pre>
+<p>sitemapper v0.1.1</p>
 </section>
 
 <footer>

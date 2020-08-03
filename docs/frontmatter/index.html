@@ -10,72 +10,32 @@
 </header>
 <nav>
 <ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="../">Up</a>
-</li>
-<li>
-<a href="../mkpage/">mkpage</a>
-</li>
-<li>
-<a href="../blogit/">blogit</a>
-</li>
-<li>
-<a href="../frontmatter/">frontmatter</a>
-</li>
-<li>
-<a href="../titleline/">titleline</a>
-</li>
-<li>
-<a href="../byline/">byline</a>
-</li>
-<li>
-<a href="../ws/">ws</a>
-</li>
-<li>
-<a href="../urlencode/">urlencode</a>
-</li>
-<li>
-<a href="../urldecode/">urldecode</a>
-</li>
-<li>
-<a href="../sitemapper/">sitemapper</a>
-</li>
-<li>
-<a href="../mkrss/">mkrss</a>
-</li>
-<li>
-<a href="../reldocpath/">reldocpath</a>
-</li>
-<li>
-<a href="../../how-to/">How To…</a>
-</li>
+<li><a href="/">Home</a></li>
+<li><a href="../">Up</a></li>
+<li><a href="../mkpage/">mkpage</a></li>
+<li><a href="../blogit/">blogit</a></li>
+<li><a href="../frontmatter/">frontmatter</a></li>
+<li><a href="../titleline/">titleline</a></li>
+<li><a href="../byline/">byline</a></li>
+<li><a href="../ws/">ws</a></li>
+<li><a href="../urlencode/">urlencode</a></li>
+<li><a href="../urldecode/">urldecode</a></li>
+<li><a href="../sitemapper/">sitemapper</a></li>
+<li><a href="../mkrss/">mkrss</a></li>
+<li><a href="../reldocpath/">reldocpath</a></li>
+<li><a href="../../how-to/">How To...</a></li>
 </ul>
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
-</h1>
+<h1>USAGE</h1>
 <blockquote>
-<p>
-frontmatter [OPTIONS]
-</p>
+<p>frontmatter [OPTIONS]</p>
 </blockquote>
-<h2 id="description">
-DESCRIPTION
-</h2>
-<p>
-frontmatter extracts a front matter from a Markdown file. If no front matter is present then an empty file is returned. Note frontmatter doesn’t process the data extracted. It returns it unprocessed. Other tools can be used to process the front matter appropriately. By default frontmatter reads from standard in and writes to standard out. This makes it very suitable for pipeline processing or for passing JSON formatted front matter back to mkpage for integration into the templates processed.
-</p>
-<h2 id="options">
-OPTIONS
-</h2>
-<p>
-Below are a set of options available.
-</p>
+<h2>DESCRIPTION</h2>
+<p>frontmatter extracts a front matter from a Markdown file. If no front matter is present then an empty file is returned. Note frontmatter doesn’t process the data extracted. It returns it unprocessed. Other tools can be used to process the front matter appropriately. By default frontmatter reads from standard in and writes to standard out. This makes it very suitable for pipeline processing or for passing JSON formatted front matter back to mkpage for integration into the templates processed.</p>
+<h2>OPTIONS</h2>
+<p>Below are a set of options available.</p>
 <pre><code>    -examples            display example(s)
     -generate-markdown   generate Markdown documentation
     -h, -help            display help
@@ -84,24 +44,17 @@ Below are a set of options available.
     -l, -license         display license
     -o, -output          output filename
     -quiet               suppress error messages
-    -v, -version         display version</code></pre>
-<h2 id="examples">
-EXAMPLES
-</h2>
-<p>
-Extract a front matter from article.md.
-</p>
-<pre><code>    cat article.md | frontmatter</code></pre>
-<p>
-This will display the front matter if found in article.md.
-</p>
-<pre><code>    frontmatter -i article.md</code></pre>
-<p>
-Will also do the same.
-</p>
-<p>
-frontmatter v0.1.1
-</p>
+    -v, -version         display version
+</code></pre>
+<h2>EXAMPLES</h2>
+<p>Extract a front matter from article.md.</p>
+<pre><code>    cat article.md | frontmatter
+</code></pre>
+<p>This will display the front matter if found in article.md.</p>
+<pre><code>    frontmatter -i article.md
+</code></pre>
+<p>Will also do the same.</p>
+<p>frontmatter v0.1.1</p>
 </section>
 
 <footer>

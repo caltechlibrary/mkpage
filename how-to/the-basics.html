@@ -10,197 +10,116 @@
 </header>
 <nav>
 <ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="../">Up</a>
-</li>
-<li>
-<a href="the-basics.html">The Basics</a>
-</li>
-<li>
-<a href="simple/">Simple</a>
-</li>
-<li>
-<a href="simple-with-nav/">Simple w/Nav</a>
-</li>
-<li>
-<a href="fountain-demo/">Fountain Demo</a>
-</li>
+<li><a href="/">Home</a></li>
+<li><a href="../">Up</a></li>
+<li><a href="the-basics.html">The Basics</a></li>
+<li><a href="simple/">Simple</a></li>
+<li><a href="simple-with-nav/">Simple w/Nav</a></li>
+<li><a href="fountain-demo/">Fountain Demo</a></li>
 </ul>
 </nav>
 
 <section>
-<h1 id="the-basics">
-The Basics
-</h1>
-<p>
-<em>mkpage</em> uses Pandoc’s template engine to render content. This template is documented on the <a href="https://pandoc.org/MANUAL.html#templates">Pandoc</a>.
-</p>
-<h2 id="basic-element">
-Basic element
-</h2>
-<p>
-Like a templated data element is wrapped in a <code>${</code> .. <code>}</code> or in <code>$</code> .. <code>$</code>. A template that says “Hello” followed by a value named “world” would look something like this
-</p>
-<pre><code>    Hello ${world}</code></pre>
-<p>
-We can use the template to say Hello to “Georgina”
-</p>
+<h1>The Basics</h1>
+<p><em>mkpage</em> uses Pandoc's template engine to render content. This template is documented on the <a href="https://pandoc.org/MANUAL.html#templates">Pandoc</a>.</p>
+<h2>Basic element</h2>
+<p>Like a templated data element is wrapped in a <code>\$\{</code> .. <code>\}</code> or in <code>\$</code> .. <code>\$</code>. A template that says "Hello" followed by a value named "world" would look something like this</p>
+<pre><code>    Hello ${world}
+</code></pre>
+<p>We can use the template to say Hello to "Georgina"</p>
 <pre class="shell"><code>    echo &#39;Hello ${world}&#39; &gt; hello-world.tmpl
-    mkpage &quot;world=text:Georgina&quot; hello-world.tmpl</code></pre>
-<p>
-Running these two command should result in output like
-</p>
-<pre><code>    Hello Georgina</code></pre>
-<p>
-The line with the <code>echo</code> is just creating our template and saving it as the file “hello-world.tmpl”. In the template the only special part is <code>${world}</code>. “world” is a variable will be replaced by something we define. In the line with <code>mkpage</code> we define the value for “world” as plain text. Note we don’t need to prefix “world” in the command line. The ‘text:’ before the variable name to indicate the type of object, in this case plain text. The line tells the template to replace <code>${world}</code> with the text value “Georgina”. The last part of the command instructs <em>mkpage</em> to use our <em>hello-world.tmpl</em> template.
-</p>
-<p>
-If we did not include <code>world=…</code> with the <em>mkpage</em> command using the <em>hello-world.tmpl</em> template <em>mkpage</em> would return output like
-</p>
-<pre><code>    Hello</code></pre>
-<p>
-If we included other key/value pairs not mentioned in the template they would be silently ignored.
-</p>
-<p>
-If we made a typo in <em>hello-world.tmpl</em> then we would see an error message from the <a href="https://pandoc.org/MANUAL.html#exit-codes">pandoc template engine</a>. NOTE: “5 PandocTemplateError” is the one that tells you you have a template error.
-</p>
-<p>
-Try the following to get a feel for how key/value pairs work with <em>mkpage</em>. The first two will render but display <code>Hello</code>. The first example fails because no value is provided and the second fails because the value provided doesn’t match what is in the template (notice the typo “wrold” vs. “world”). the next one will display an error because <em>text:</em> wasn’t included on the value side of the key/value pair. By default <em>mkpage</em> assumes the value is refering to a file and in this case can’t find the file Georgina in your current directory. The last two will display <code>Hello Georgina</code> should display since the value for “world” is provided. The last one just ignores “Name=text:Fred” because “Name” isn’t found in the template.
-</p>
+    mkpage &quot;world=text:Georgina&quot; hello-world.tmpl
+</code></pre>
+<p>Running these two command should result in output like</p>
+<pre><code>    Hello Georgina
+</code></pre>
+<p>The line with the <code>echo</code> is just creating our template and saving it as the file "hello-world.tmpl". In the template the only special part is <code>\$\{world\}</code>. "world" is a variable will be replaced by something we define. In the line with <code>mkpage</code> we define the value for "world" as plain text. Note we don't need to prefix "world" in the command line. The 'text:' before the variable name to indicate the type of object, in this case plain text. The line tells the template to replace <code>${world}</code> with the text value "Georgina". The last part of the command instructs <em>mkpage</em> to use our <em>hello-world.tmpl</em> template.</p>
+<p>If we did not include <code>world=...</code> with the <em>mkpage</em> command using the <em>hello-world.tmpl</em> template <em>mkpage</em> would return output like</p>
+<pre><code>    Hello
+</code></pre>
+<p>If we included other key/value pairs not mentioned in the template they would be silently ignored.</p>
+<p>If we made a typo in <em>hello-world.tmpl</em> then we would see an error message from the <a href="https://pandoc.org/MANUAL.html#exit-codes">pandoc template engine</a>. NOTE: "5 PandocTemplateError" is the one that tells you you have a template error.</p>
+<p>Try the following to get a feel for how key/value pairs work with <em>mkpage</em>. The first two will render but display <code>Hello</code>. The first example fails because no value is provided and the second fails because the value provided doesn't match what is in the template (notice the typo "wrold" vs. "world"). the next one will display an error because <em>text:</em> wasn't included on the value side of the key/value pair. By default <em>mkpage</em> assumes the value is refering to a file and in this case can't find the file Georgina in your current directory. The last two will display <code>Hello Georgina</code> should display since the value for "world" is provided. The last one just ignores "Name=text:Fred" because "Name" isn't found in the template.</p>
 <pre class="shell"><code>    mkpage hello-world.tmpl
     mkpage &quot;wrold=text:Georgina&quot; hello-world.tmpl
     mkpage &quot;world=Georgina&quot; hello-world.tmpl
     mkpage &quot;world=text:Georgina&quot; &quot;name=text:Fred&quot; hello-world.tmpl
-    mkpage &quot;world=text:Georgina&quot; hello-world.tmpl</code></pre>
-<h3 id="conditional-elements">
-Conditional elements
-</h3>
-<p>
-Pandoc templates have conditional elements. <code>${if()} … ${endif}</code> and <code>${for()} … ${endfor}</code> are simimlar. The “if” will display the contents if the variable passing to the “if” function is non-empty. If the object is an array it will concatenate the elements together, if it is a map then it will display true. The “for” function is similar but iterates over the elements provided and those elements can be accessed with an alias of <code>${it}</code>. See the Pandoc Manual for details.
-</p>
-<pre><code>   ${if(title)}Title: ${title}${endif}</code></pre>
-<p>
-or using “for”
-</p>
-<pre><code>    By ${for(authors)}${it}$sep$, ${endfor}</code></pre>
-<p>
-Let’s create a template file with both these statements called <em>title-demo.tmpl</em> and run the <em>mkpage</em> command.
-</p>
+    mkpage &quot;world=text:Georgina&quot; hello-world.tmpl
+</code></pre>
+<h3>Conditional elements</h3>
+<p>Pandoc templates have conditional elements. <code>\$\{if()\} ... \$\{endif\}</code> and <code>\$\{for()\} ... \$\{endfor\}</code> are simimlar. The "if" will display the contents if the variable passing to the "if" function is non-empty. If the object is an array it will concatenate the elements together, if it is a map then it will display true. The "for" function is similar but iterates over the elements provided and those elements can be accessed with an alias of <code>\$\{it\}</code>. See the Pandoc Manual for details.</p>
+<pre><code>   ${if(title)}Title: ${title}${endif}
+</code></pre>
+<p>or using "for"</p>
+<pre><code>    By ${for(authors)}${it}$sep$, ${endfor}
+</code></pre>
+<p>Let's create a template file with both these statements called <em>title-demo.tmpl</em> and run the <em>mkpage</em> command.</p>
 <pre class="shell"><code>    echo &#39;${if(title)}Title: ${title}${endif}&#39; &gt; title-demo.tmpl
     echo &#39;By ${for(authors)}${it}$sep$ and ${endif}&#39; &gt;&gt; title-demo.tmpl 
     mkpage &#39;title=text:This is a title demo&#39; \
            &#39;authors=json:[ &#39;Jane&#39;, &#39;Carol&#39; ]&#39; \
-           title-demo.tmpl</code></pre>
-<p>
-The output should look like
-</p>
+           title-demo.tmpl
+</code></pre>
+<p>The output should look like</p>
 <pre><code>    Title: This is a title demo
-    By Jane and Carol</code></pre>
-<p>
-In the first line with the <em>if</em> we use “title” as the variable, just like “world” in our first example. The second line uses a <em>for</em> to iterate over authors names and insert an “and” between them. What happens if you run this command?
-</p>
-<pre class="shell"><code>    mkpage title-demo.tmpl</code></pre>
-<p>
-This produces two lines of output that look something . The reason we don’t see something like
-</p>
+    By Jane and Carol
+</code></pre>
+<p>In the first line with the <em>if</em> we use "title" as the variable, just like "world" in our first example. The second line uses a <em>for</em> to iterate over authors names and insert an "and" between them. What happens if you run this command?</p>
+<pre class="shell"><code>    mkpage title-demo.tmpl
+</code></pre>
+<p>This produces two lines of output that look something . The reason we don't see something like</p>
 <pre><code>    
-    By</code></pre>
-<p>
-We see the “By” because it is outside the <em>for</em> loop, but we don’t see a title because “Title:” is inside the <em>if</em> block.
-</p>
-<h3 id="template-and-sub-templates">
-Template and sub templates
-</h3>
-<p>
-Pandoc provides for a simple mechanism to include sub templates. If the same directory as your main template any template can be included as its own function. This is easier to see in practice than to describe.
-</p>
-<p>
-Create two templates, “header.tmpl” and “footer.tmpl”.
-</p>
-<p>
-This would be the header.
-</p>
-<pre><code>   &lt;header&gt;${if(title)}&lt;h1&gt;${title}&lt;/h1&gt;${endif}&lt;/header&gt;</code></pre>
-<p>
-This would be for the footer.
-</p>
-<pre><code>    &lt;footer&gt;By ${for(authors)}${it}$sep$, ${endfor}&lt;/footer&gt;</code></pre>
-<p>
-Now create a third temaplte called “main.tmpl”
-</p>
+    By
+</code></pre>
+<p>We see the "By" because it is outside the <em>for</em> loop, but we don't see a title because "Title: " is inside the <em>if</em> block.</p>
+<h3>Template and sub templates</h3>
+<p>Pandoc provides for a simple mechanism to include sub templates. If the same directory as your main template any template can be included as its own function. This is easier to see in practice than to describe.</p>
+<p>Create two templates, "header.tmpl" and "footer.tmpl".</p>
+<p>This would be the header.</p>
+<pre><code>   &lt;header&gt;${if(title)}&lt;h1&gt;${title}&lt;/h1&gt;${endif}&lt;/header&gt;
+</code></pre>
+<p>This would be for the footer.</p>
+<pre><code>    &lt;footer&gt;By ${for(authors)}${it}$sep$, ${endfor}&lt;/footer&gt;
+</code></pre>
+<p>Now create a third temaplte called "main.tmpl"</p>
 <pre><code>   ${header()}
    &lt;section&gt;
    This is the title: ${title}
    &lt;p&gt;
    Authors are: ${authors[, ]}
    &lt;/section&gt;
-   ${footer()}</code></pre>
-<p>
-Now run our <em>mkpage</em> command providing our “title” and “authors” values and the template named “main.tmpl”.
-</p>
+   ${footer()}
+</code></pre>
+<p>Now run our <em>mkpage</em> command providing our "title" and "authors" values and the template named "main.tmpl".</p>
 <pre><code>    mkpage &#39;title=text:This is a big template project&#39; \
            &#39;authors=text:Me, Myself and I&#39; \
-           main.tmpl</code></pre>
-<p>
-This output should look like
-</p>
-<div id="cb16" class="sourceCode">
-<pre class="sourceCode html"><code class="sourceCode html"><span id="cb16-1"><a href="#cb16-1"></a>    <span class="kw">&lt;header&gt;&lt;h1&gt;</span>Hi there<span class="kw">&lt;/h1&gt;&lt;/header&gt;&lt;section&gt;</span></span>
+           main.tmpl
+</code></pre>
+<p>This output should look like</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb16-1"><a href="#cb16-1"></a>    <span class="kw">&lt;header&gt;&lt;h1&gt;</span>Hi there<span class="kw">&lt;/h1&gt;&lt;/header&gt;&lt;section&gt;</span></span>
 <span id="cb16-2"><a href="#cb16-2"></a>    This is the title: Hi there</span>
 <span id="cb16-3"><a href="#cb16-3"></a>    <span class="kw">&lt;p&gt;</span></span>
 <span id="cb16-4"><a href="#cb16-4"></a>    Authors are: Me, Myself and I</span>
 <span id="cb16-5"><a href="#cb16-5"></a>    <span class="kw">&lt;/section&gt;</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a>    <span class="kw">&lt;footer&gt;</span></span></code></pre>
-</div>
-<p>
-In this case “header.tmpl” and “footer.tmpl” are found because they are in the same directory as “main.tmpl”.
-</p>
-<h2 id="content-formats-and-data-sources">
-Content formats and data sources
-</h2>
-<p>
-<em>mkpage</em> understands several content formats
-</p>
+<span id="cb16-6"><a href="#cb16-6"></a>    <span class="kw">&lt;footer&gt;</span></span></code></pre></div>
+<p>In this case "header.tmpl" and "footer.tmpl" are found because they are in the same directory as "main.tmpl".</p>
+<h2>Content formats and data sources</h2>
+<p><em>mkpage</em> understands several content formats</p>
 <ul>
-<li>
-text/plain (e.g. “text:” strings and any file expect those having the extension “.md” or “.json”)
-</li>
-<li>
-text/markdown (e.g. “markdown:” strings and file extension “.md”)
-</li>
-<li>
-application/json (e.g. “json:” strings and file extension “.json”)
-</li>
-<li>
-text/restructured (e.g. “rst:” strings and file extension “.rst”)
-</li>
-<li>
-text/textile (e.g. “textile:” strings and file extension “.textile”)
-</li>
-<li>
-text/fountain (e.g. “fountain:” strings and file extension “.fountain”)
-</li>
+<li>text/plain (e.g. "text:" strings and any file expect those having the extension ".md" or ".json")</li>
+<li>text/markdown (e.g. "markdown:" strings and file extension ".md")</li>
+<li>application/json (e.g. "json:" strings and file extension ".json")</li>
+<li>text/restructured (e.g. "rst:" strings and file extension ".rst")</li>
+<li>text/textile (e.g. "textile:" strings and file extension ".textile")</li>
+<li>text/fountain (e.g. "fountain:" strings and file extension ".fountain")</li>
 </ul>
-<p>
-It also supports three data sources
-</p>
+<p>It also supports three data sources</p>
 <ul>
-<li>
-an explicit string (prefixed with a format, e.g. “text:”, “markdown:”, “json:”)
-</li>
-<li>
-a filepath and filename (the default data source)
-</li>
-<li>
-a URL (identified by the URL prefixes http:// and https://)
-</li>
+<li>an explicit string (prefixed with a format, e.g. "text:", "markdown:", "json:")</li>
+<li>a filepath and filename (the default data source)</li>
+<li>a URL (identified by the URL prefixes http:// and https://)</li>
 </ul>
-<p>
-Content type is evaluated, transformed (if necessary), and sent to the Pandoc template engine.
-</p>
+<p>Content type is evaluated, transformed (if necessary), and sent to the Pandoc template engine.</p>
 <pre><code>    This is a plain text string: &quot;${string}&quot;
 
     Below is a an included file:
@@ -208,31 +127,22 @@ Content type is evaluated, transformed (if necessary), and sent to the Pandoc te
     
     Finally below is data from a URL:
     ${url}
-    ${end}</code></pre>
-<p>
-Create a text file named <em>hello.md</em>.
-</p>
+    ${end}
+</code></pre>
+<p>Create a text file named <em>hello.md</em>.</p>
 <pre><code>    # this is a file
 
-    Hello World!</code></pre>
-<p>
-Type the following
-</p>
+    Hello World!
+</code></pre>
+<p>Type the following</p>
 <pre class="shell"><code>    mkpage &quot;string=text:Hello World&quot; &quot;file=hello.md&quot; \
       &quot;url=https://raw.githubusercontent.com/caltechlibrary/mkpage/master/nav.md&quot; \
-      data-source-demo.tmpl</code></pre>
-<p>
-What do you see?
-</p>
-<h2 id="a-note-about-markdown-dialect">
-A note about Markdown dialect
-</h2>
-<p>
-<em>mkpage</em> uses <a href="https://pandoc.org">Pandoc</a> as its markdown (markup) and template (output) engine.
-</p>
-<p>
-The markdown processor is invoked for values with the “markdown:” hint prefix, files ending in “.md” extension or URL content with the content type returned as “text/markdown” (i.e. content with a type of “text/plain” does not use the markdown process and is treated as plain text).
-</p>
+      data-source-demo.tmpl
+</code></pre>
+<p>What do you see?</p>
+<h2>A note about Markdown dialect</h2>
+<p><em>mkpage</em> uses <a href="https://pandoc.org">Pandoc</a> as its markdown (markup) and template (output) engine.</p>
+<p>The markdown processor is invoked for values with the "markdown:" hint prefix, files ending in ".md" extension or URL content with the content type returned as "text/markdown" (i.e. content with a type of "text/plain" does not use the markdown process and is treated as plain text).</p>
 </section>
 
 <footer>

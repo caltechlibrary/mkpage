@@ -10,72 +10,32 @@
 </header>
 <nav>
 <ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="../">Up</a>
-</li>
-<li>
-<a href="../mkpage/">mkpage</a>
-</li>
-<li>
-<a href="../blogit/">blogit</a>
-</li>
-<li>
-<a href="../frontmatter/">frontmatter</a>
-</li>
-<li>
-<a href="../titleline/">titleline</a>
-</li>
-<li>
-<a href="../byline/">byline</a>
-</li>
-<li>
-<a href="../ws/">ws</a>
-</li>
-<li>
-<a href="../urlencode/">urlencode</a>
-</li>
-<li>
-<a href="../urldecode/">urldecode</a>
-</li>
-<li>
-<a href="../sitemapper/">sitemapper</a>
-</li>
-<li>
-<a href="../mkrss/">mkrss</a>
-</li>
-<li>
-<a href="../reldocpath/">reldocpath</a>
-</li>
-<li>
-<a href="../../how-to/">How To…</a>
-</li>
+<li><a href="/">Home</a></li>
+<li><a href="../">Up</a></li>
+<li><a href="../mkpage/">mkpage</a></li>
+<li><a href="../blogit/">blogit</a></li>
+<li><a href="../frontmatter/">frontmatter</a></li>
+<li><a href="../titleline/">titleline</a></li>
+<li><a href="../byline/">byline</a></li>
+<li><a href="../ws/">ws</a></li>
+<li><a href="../urlencode/">urlencode</a></li>
+<li><a href="../urldecode/">urldecode</a></li>
+<li><a href="../sitemapper/">sitemapper</a></li>
+<li><a href="../mkrss/">mkrss</a></li>
+<li><a href="../reldocpath/">reldocpath</a></li>
+<li><a href="../../how-to/">How To...</a></li>
 </ul>
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
-</h1>
+<h1>USAGE</h1>
 <blockquote>
-<p>
-mkpage [OPTIONS] [KEY/VALUE DATA PAIRS] [TEMPLATE_FILENAMES]
-</p>
+<p>mkpage [OPTIONS] [KEY/VALUE DATA PAIRS] [TEMPLATE_FILENAMES]</p>
 </blockquote>
-<h2 id="description">
-DESCRIPTION
-</h2>
-<p>
-Using the key/value pairs populate the template(s) and render to stdout.
-</p>
-<h2 id="options">
-OPTIONS
-</h2>
-<p>
-Below are a set of options available.
-</p>
+<h2>DESCRIPTION</h2>
+<p>Using the key/value pairs populate the template(s) and render to stdout.</p>
+<h2>OPTIONS</h2>
+<p>Below are a set of options available.</p>
 <pre><code>    -code                outout just code blocks for specific language, e.g. shell or json, reads from standard input
     -codesnip            output just the code bocks, reads from standard input
     -examples            display example(s)
@@ -85,13 +45,10 @@ Below are a set of options available.
     -l, -license         display license
     -o, -output          output filename
     -t, -templates       colon delimited list of Go text templates to use
-    -v, -version         display version</code></pre>
-<h2 id="examples">
-EXAMPLES
-</h2>
-<p>
-Template (named “examples/weather.tmpl”)
-</p>
+    -v, -version         display version
+</code></pre>
+<h2>EXAMPLES</h2>
+<p>Template (named "examples/weather.tmpl")</p>
 <pre><code>    Date: $now$
     
     Hello $name$,
@@ -104,39 +61,25 @@ Template (named “examples/weather.tmpl”)
     
     Thank you
     
-    $signature$</code></pre>
-<p>
-Render the template above (i.e. examples/weather.tmpl) would be accomplished from the following data sources–
-</p>
+    $signature$
+</code></pre>
+<p>Render the template above (i.e. examples/weather.tmpl) would be accomplished from the following data sources--</p>
 <ul>
-<li>
-“now” and “name” are strings
-</li>
-<li>
-“weather” is JSON data retrieved from a URL
+<li>"now" and "name" are strings</li>
+<li>"weather" is JSON data retrieved from a URL
 <ul>
-<li>
-“.data.weather” is a data path inside the JSON document
-</li>
-<li>
-“index” let’s us pull our the “0”-th element (i.e. the initial element of the array)
-</li>
+<li>".data.weather" is a data path inside the JSON document</li>
+<li>"index" let's us pull our the "0"-th element (i.e. the initial element of the array)</li>
+</ul></li>
+<li>"signature" comes from a file in our local disc (i.e. examples/signature.txt)</li>
 </ul>
-</li>
-<li>
-“signature” comes from a file in our local disc (i.e. examples/signature.txt)
-</li>
-</ul>
-<p>
-That would be expressed on the command line as follows
-</p>
+<p>That would be expressed on the command line as follows</p>
 <pre><code>    mkpage &quot;now=text:$(date)&quot; &quot;name=text:Little Frieda&quot; \
         &quot;weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
         signature=examples/signature.txt \
-        examples/weather.tmpl     </code></pre>
-<p>
-mkpage v0.1.1
-</p>
+        examples/weather.tmpl     
+</code></pre>
+<p>mkpage v0.1.1</p>
 </section>
 
 <footer>

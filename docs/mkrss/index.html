@@ -10,72 +10,32 @@
 </header>
 <nav>
 <ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="../">Up</a>
-</li>
-<li>
-<a href="../mkpage/">mkpage</a>
-</li>
-<li>
-<a href="../blogit/">blogit</a>
-</li>
-<li>
-<a href="../frontmatter/">frontmatter</a>
-</li>
-<li>
-<a href="../titleline/">titleline</a>
-</li>
-<li>
-<a href="../byline/">byline</a>
-</li>
-<li>
-<a href="../ws/">ws</a>
-</li>
-<li>
-<a href="../urlencode/">urlencode</a>
-</li>
-<li>
-<a href="../urldecode/">urldecode</a>
-</li>
-<li>
-<a href="../sitemapper/">sitemapper</a>
-</li>
-<li>
-<a href="../mkrss/">mkrss</a>
-</li>
-<li>
-<a href="../reldocpath/">reldocpath</a>
-</li>
-<li>
-<a href="../../how-to/">How To…</a>
-</li>
+<li><a href="/">Home</a></li>
+<li><a href="../">Up</a></li>
+<li><a href="../mkpage/">mkpage</a></li>
+<li><a href="../blogit/">blogit</a></li>
+<li><a href="../frontmatter/">frontmatter</a></li>
+<li><a href="../titleline/">titleline</a></li>
+<li><a href="../byline/">byline</a></li>
+<li><a href="../ws/">ws</a></li>
+<li><a href="../urlencode/">urlencode</a></li>
+<li><a href="../urldecode/">urldecode</a></li>
+<li><a href="../sitemapper/">sitemapper</a></li>
+<li><a href="../mkrss/">mkrss</a></li>
+<li><a href="../reldocpath/">reldocpath</a></li>
+<li><a href="../../how-to/">How To...</a></li>
 </ul>
 </nav>
 
 <section>
-<h1 id="usage">
-USAGE
-</h1>
+<h1>USAGE</h1>
 <blockquote>
-<p>
-mkrss [OPTIONS] HTDOCS [RSS_FILENAME]
-</p>
+<p>mkrss [OPTIONS] HTDOCS [RSS_FILENAME]</p>
 </blockquote>
-<h2 id="description">
-DESCRIPTION
-</h2>
-<p>
-mkrss walks the file system to generate a RSS2 file. It assumes that the directory for HTDOCS is is the base directory containing subdirectories in the form of /YYYY/MM/DD/ARTICLE_HTML where YYYY/MM/DD (Year, Month, Day) corresponds to the publication date of ARTICLE_HTML.
-</p>
-<h2 id="options">
-OPTIONS
-</h2>
-<p>
-Below are a set of options available.
-</p>
+<h2>DESCRIPTION</h2>
+<p>mkrss walks the file system to generate a RSS2 file. It assumes that the directory for HTDOCS is is the base directory containing subdirectories in the form of /YYYY/MM/DD/ARTICLE_HTML where YYYY/MM/DD (Year, Month, Day) corresponds to the publication date of ARTICLE_HTML.</p>
+<h2>OPTIONS</h2>
+<p>Below are a set of options available.</p>
 <pre><code>    -b, -byline            set byline regexp
     -channel-builddate     Build Date for channel (e.g. 2006-01-02 15:04:05 -0700)
     -channel-category      category for channel
@@ -96,23 +56,17 @@ Below are a set of options available.
     -o, -output            set output filename
     -quiet                 suppress error messages
     -t, -title             set title regexp
-    -v, -version           display version</code></pre>
-<h2 id="examples">
-EXAMPLES
-</h2>
-<p>
-If our htdocs folder is our document root and out blog is htdocs/myblog.
-</p>
+    -v, -version           display version
+</code></pre>
+<h2>EXAMPLES</h2>
+<p>If our htdocs folder is our document root and out blog is htdocs/myblog.</p>
 <pre><code>    mkrss -channel-title=&quot;This Great Beyond&quot; \
         -channel-description=&quot;Blog to save the world&quot; \
         -channel-link=&quot;http://blog.example.org&quot; \
-        htdocs htdocs/rss.xml</code></pre>
-<p>
-This would build an RSS 2 file in htdocs/rss.xml from the articles in htdocs/myblog/YYYY/MM/DD.
-</p>
-<p>
-mkrss v0.1.1
-</p>
+        htdocs htdocs/rss.xml
+</code></pre>
+<p>This would build an RSS 2 file in htdocs/rss.xml from the articles in htdocs/myblog/YYYY/MM/DD.</p>
+<p>mkrss v0.1.1</p>
 </section>
 
 <footer>
