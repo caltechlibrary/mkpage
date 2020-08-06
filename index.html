@@ -10,117 +10,44 @@
 </header>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="index.html">README</a></li>
-<li><a href="license.html">LICENSE</a></li>
-<li><a href="install.html">INSTALL</a></li>
-<li><a href="docs/">Documentation</a></li>
-<li><a href="how-to/">HOW TO</a></li>
-<li><a href="RELEASE-NOTES.html">Release Notes</a></li>
-<li><a href="https://github.com/caltechlibrary/mkpage">Github</a></li>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="index.html">README</a>
+</li>
+<li>
+<a href="license.html">LICENSE</a>
+</li>
+<li>
+<a href="install.html">INSTALL</a>
+</li>
+<li>
+<a href="docs/">Documentation</a>
+</li>
+<li>
+<a href="how-to/">HOW TO</a>
+</li>
+<li>
+<a href="RELEASE-NOTES.html">Release Notes</a>
+</li>
+<li>
+<a href="https://github.com/caltechlibrary/mkpage">Github</a>
+</li>
 </ul>
 </nav>
 
 <section>
-<p><a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed." /></a></p>
-<h1>MkPage Project</h1>
-<p><strong>MkPage Project</strong> is a collection of tools for rendering static websites. Featured is the <em>mkpage</em> command, a front end to <a href="https://pandoc.org">Pandoc</a> (&gt;= v2.9.x). Pandoc supports converting from many <a href="https://pandoc.org/" title="Pandoc&#39;s list of supported formats">lightweight markup languages</a>. <em>mkpage</em> supports metadata encoded as front matter[^frontmatter] using <a href="https://yaml.org">YAML</a>, <a href="https://github.com/toml-lang/toml">TOML</a> and <a href="https://www.json.org/json-en.html">JSON</a> as well as additional data sources expressed on the command line in a simple command language. Content is rendered using Pandoc's <a href="https://pandoc.org/MANUAL.html#templates">template language</a>.</p>
-<p>[^frontmatter]: Front matter in light weight markup languages like Markdown start at the top of the file and begin and end with a simple set of delimiters. <code>---</code> (three dashes) is used for YAML, <code>+++</code> (three plus signs) for TOML, open and close curly braces are used by JSON.</p>
-<p><strong>MkPage Project</strong> was inspired by deconstructing more complex content management systems and distilling the rendering functions down to a core set of simple command line tools. It is well suited for building sites hosted on services like GitHub Pages or Amazon's S3. It uses the widely adopted <a href="https://pandoc.org">Pandoc</a> as its markup conversion engine and <a href="https://pandoc.org/MANUAL.html#templates">template engine</a>. As such you can create your website using a variety of light weight markup languages such as <a href="https://daringfireball.net/projects/markdown/">Markdown</a>, <a href="http://redcloth.org/textile">Textile</a>, <a href="https://docutils.sourceforge.io/docs/ref/rst/introduction.html">ReStructureText</a> and <a href="https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all">Jira's</a> wiki markup.</p>
-<p>The <strong>MkPage Project</strong>'s tools can run on machines as small as a Raspberry Pi. Their small foot print and minimal dependencies (only Pandoc) means installation usually boils down to copying the precompiled binaries to a bin directory in your path after a installing Pandoc. Precompiled binaries of <strong>MkPage Project</strong> are available for Linux, Windows 10 and macOS running on Intel as well as for the ARM7 versions of Raspbian running on Raspberry Pi.</p>
-<p><strong>MkPage Project</strong>'s minimalism is an advantage. It plays nice with the standard suite of text processing tools available with most Unix/POSIX compatible operating systems[^posix]. This makes scripting a <strong>MkPage Project</strong> using languages like Python, Julia, Lua, Make or Bash straight forward. Each <em>mkpage</em> utility is independent. You can use as few or as many or as few as you like. You determine the workflow and build process that best fits your needs.</p>
-<p>[^posix]: Common POSIX compatible systems include macOS, Linux, and recent versions of Windows 10</p>
-<h2>A quick tour <em>mkpage</em> command</h2>
-<p>The <em>mkpage</em> command accepts key/value pairs as command line parameters. The pairs can be explicit data types, files on disc or resources from the web. Additionally <em>mkpage</em> will merge in any front matter found in your light weight markup such as Markdown documents. <em>mkpage</em> assembles the all metadata into a JSON structure which will be processed by Pandoc when rendering a Pandoc template. Additionally <em>mkpage</em> understands the <a href="https://fountain.io">Fountain</a> markup language will will handle conversion before passing to onto Pandoc.</p>
-<h3><em>mkpage</em>'s command language</h3>
-<p>The "key" in our key/value pairs is used to map into the <a href="https://pandoc.org/MANUAL.html">Pandoc</a> templates you want rendered. If a key was called "content" the template element would be like <code>${content}</code>. The value of "content" would replace <code>${content}</code> in the Pandoc template. Pandoc templates can combine logic and iteration to make more complex pages. See the Pandoc <a href="https://pandoc.org/MANUAL.html#templates">User Guide</a> for more details.</p>
-<p>On the "value" side of the key/value pair you have strings of one of several formats - plain text, markdown, <a href="https://fountain.io">fountain</a>, ReStructureText, Jira text and JSON. The values can be from explicit strings associated with a data type, data from a file where the file extension identifies the content type, or content retrieved via a URL based on the mime-type sent from the web service. Here's a basic demonstration of sampling of capabilities and integrating data from the <a href="http://weather.gov">NOAA weather website</a>.</p>
-<p>Next is an example of a basic Pandoc template followed by an example command line for invoking <em>mkpage</em>.</p>
-<h4>A basic template</h4>
-<pre class="template"><code>
-    Date: ${now}
-    
-    Hello ${name},
-        
-    The weather forecast is
-    
-    ${if(weather.data.weather)}
-      ${weather.data.weather[; ]}
-    ${endif}
-    
-    Thank you
-    
-    ${signature}
-
-</code></pre>
-<p>To render the template above (i.e. <a href="examples/weather.tmpl">weather.tmpl</a>) is expecting values from various data sources broken down as follows.</p>
-<ul>
-<li>"now" and "name" will be explicit strings
-<ul>
-<li>"now" integrates getting data from the Unix <em>date</em> command</li>
-</ul></li>
-<li>"weather" will come from a URL which returns a JSON document
-<ul>
-<li>".data.weather" is the path into the JSON document</li>
-</ul></li>
-<li>"signature" will come from a plain text file in your local disc</li>
-</ul>
-<h4>typing the <em>mkpage</em> command</h4>
-<p>Here is how we would express the key/value pairs on the command line.</p>
-<pre class="shell"><code>    mkpage &quot;now=text:$(date)&quot; \
-        &#39;name=text:Little Frieda&#39; \
-        &#39;weather=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&#39; \
-        &#39;signature=examples/signature.txt&#39; \
-        &#39;examples/weather.tmpl&#39;
-</code></pre>
-<p>Notice the two explicit strings are prefixed with "text:" (other formats include "markdown:" and "json:"). Values without a prefix are assumed to be local file paths. We see that in testdata/signature.txt is one. Likewise the weather data is coming from a URL identified by the "http:" protocol reference . <em>mkpage</em> uses the "protocol" prefix to distinguish between literals, file paths and URL based based content. "http:" and "https:" returns an HTTP header the header is used to identify the content type for processing by <em>mkpage</em> before handing off to Pandoc. E.g. "Content-Type: text/markdown" tells us to use Pandoc to translate from Markdown to HTML. For data contained in files we rely on the file extension to identify content type, e.g. ".md" is markdown, ".rst" is ReStructureText, ".json" is a JSON document. If no content type is discernible then we assume the content is plain text.</p>
-<h3>MkPage Project Tools</h3>
-<h4>mkpage</h4>
-<p><a href="docs/mkpage/">mkpage</a> is a page renderer and front end to Pandoc. It is used to aggregate metadata and templates into a complete website page. It serves as a pre-processor for Markdown, <a href="https://fountain.io">Fountain</a>, ReStructureText, Textile, Jira markup, JSON using <a href="https://pandoc.org">Pandoc</a> as conversion and template engine.</p>
-<h4>blogit</h4>
-<p><a href="docs/blogit/">blogit</a> performs two tasks, first if given a filename and date (in YYYY-MM-DD format) blogit will copy the file into an appropriate blog path based on the date provided. The second task it performs is to maintain a <code>blog.json</code> file describing the content of the blog. This is placed in the same folder as the where the year folders for the blog are create.</p>
-<h4>mkrss</h4>
-<p><a href="docs/mkrss/">mkrss</a> is an RSS feed generator for content authored in Markdown. It can read a <code>blog.json</code> file created with the <em>blogit</em> and produce an RSS feed from it or scan the directory tree for Markdown files with corresponding HTML files and generate an RSS feed.</p>
-<h4>frontmatter</h4>
-<p><a href="docs/frontmatter/">frontmatter</a> will extract a light weight markup files' (e.g. Markdown) front matter so you can process it with another tool. It can optional convert the front matter into JSON even if the front matter was defined in YAML or TOML.</p>
-<h4>byline</h4>
-<p><a href="docs/byline/">byline</a> inside a Markdown file's front matter for a "byline" field and return it before scanning the file using a regular expression for the byline. If nothing is found in either the front matter or the regular expression then it'll return an empty string.</p>
-<h4>titleline</h4>
-<p><a href="docs/titleline/">titleline</a> will look inside a markdown file's front matter for a "title" field it if not present in the front matter it'll look for the h1 demlimiter (Markdown '# ') and return it's content. It will return an empty string if it finds none.</p>
-<h4>reldocpath</h4>
-<p><a href="docs/reldocpath/">reldocpath</a> is intended to simplify the calculation of relative asset paths (e.g. common CSS files, images, RSS files) when working from a common project directory.</p>
-<h5>Example reldocpath</h5>
-<p>You know the path from the source document to target document from the project root folder.</p>
-<ul>
-<li>Source is <em>course/week/01/readings.html</em></li>
-<li>Target is <em>css/site.css</em>.</li>
-</ul>
-<p>In Bash this would look like--</p>
-<pre class="shell"><code>    # We know the paths relative to the project directory
-    DOC_PATH=&quot;course/week/01/readings.html&quot;
-    CSS_PATH=&quot;css/site.css&quot;
-    echo $(reldocpath $DOC_PATH $CSS_PATH)
-</code></pre>
-<p>the output would look like</p>
-<pre class="shell"><code>    ../../../css/site.css
-</code></pre>
-<h4>sitemapper</h4>
-<p><a href="docs/sitemapper/">sitemapper</a> a simplistic XML Sitemap generator. Sitemaps are used by web crawls to find content in your website and can help your website be more search-able by modern full text search engines.</p>
-<h4>ws</h4>
-<p><a href="docs/ws/">ws</a> is a simple static file web server. It is suitable for viewing your local copy of your static website on your machine. It runs with minimal resources and by default will serve content out to the URL http://localhost:8000. It is a fast, small, web server for site development and copyedit work.</p>
-<h5>Example</h5>
-<pre class="shell"><code>    ws Sites/mysite.example.org
-</code></pre>
-<p>This would start the web server up listen for browser requests on <em>http://localhost:8000</em>. The content viewable by your web browser would be the files inside the <em>Sites/mysite.example.org</em> directory.</p>
-<pre class="shell"><code>    ws -url http://mysite.example.org:80 Sites/mysite.example.org
-</code></pre>
-<p>Assume the machine where you are running <em>ws</em> has the name mysite.example.org then your could point your web browser at <em>http://mysite.example.org</em> and see the web content you have in <em>Site/mysite.example.org</em> directory.</p>
-<h2>Problem Reporting and lending a hand</h2>
-<p><strong>MkPage</strong> project is hosted at <a href="https://github.com/caltechlibrary/mkpage">GitHub</a> and bugs can be reported via the <a href="https://github.com/caltechlibrary/mkpage/issues">Issue Tracker</a>. As an open source project pull requests as well as bug reports are appreciated.</p>
-<h2>Getting your copy of <strong>MkPage Project</strong></h2>
-<p>You can find releases of <strong>MkPage Project</strong> at <a href="https://github.com/caltechlibrary/mkpage/releases">github.com/caltechlibrary/mkpage</a></p>
-<h2>License</h2>
-<p><strong>MkPage Project</strong> is released under an open source <a href="license.html">license</a>.</p>
+<p>
+<a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed." /></a>
+</p>
+<h1>
+MkPage Project
+</h1>
+<p>
+<strong>MkPage Project</strong> is a collection of tools for rendering static websites. Featured is the <em>mkpage</em> command, a front end to <a href="https://pandoc.org">Pandoc</a> (&gt;= v2.10.x). Pandoc supports converting from many <a href="https://pandoc.org/" title="Pandoc&#39;s list of supported formats">lightweight markup languages</a>. <em>mkpage</em> supports metadata encoded as front matter[^frontmatter] using <a href="https://yaml.org">YAML</a>, <a href="https://github.com/toml-lang/toml">TOML</a> and <a href="https://www.json.org/json-en.html">JSON</a> as well as additional data sources expressed on the command line in a simple command language. Content is rendered using Pandoc’s <a href="https://pandoc.org/MANUAL.html#templates">template language</a>.
+</p>
+<p>
 </section>
 
 <footer>

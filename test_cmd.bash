@@ -79,21 +79,22 @@ function test_mkpage() {
     # test basic markdown processing
     if [[ -f "temp.html" ]]; then rm temp.html; fi
     if [[ -f "temp.md" ]]; then rm temp.md; fi
-    bin/mkpage "title=text:Hello World" \
+    bin/mkpage -f commonmark \
+        "title=text:Hello World" \
         content=examples/helloworld.md page.tmpl > temp.html
     EXPECTED=""
     assert_exists "test_mkpage (simple)" "temp.html"
     RESULT=$(cmp examples/helloworld.html temp.html)
     assert_equal "test_mkpage (simple)" "$EXPECTED" "$RESULT"
 
-    bin/mkpage -templates=testdata/codemeta.tmpl \
+    bin/mkpage -t markdown testdata/codemeta.tmpl \
         "codemeta=codemeta.json" > temp.md
     EXPECTED=""
     assert_exists "test_mkpage (markdown doc)" "temp.md"
     RESULT=$(cmp examples/codemeta.md temp.md)
     assert_equal "test_mkpage (markdown doc)" "$EXPECTED" "$RESULT"
 
-    bin/mkpage "title=text:Author Test" \
+    bin/mkpage -t markdown "title=text:Author Test" \
       'authors=json-generator:python3 examples/fmt-authors.py examples/authors-list.json 2 "et el."' \
       examples/authors.tmpl > temp.md
     assert_exists "test_mkpage (generator)" "temp.md"

@@ -7,9 +7,9 @@
 
 ## Next (road to v1.0.0)
 
-+ [ ] Figure out how to support all pandoc conversion formats
++ [x] Figure out how to support all pandoc conversion formats
 + [ ] Better error messaging (preferrably passing through Pandoc's own error message) for non-0 exit values from Pandoc
-+ [ ] Remove support for Go templates, remove pkgassets dependency
++ [x] Remove support for Go templates, remove pkgassets dependency
 + [ ] Decide what do about `sitemappper`, depreciate in favor of other tools or improve to support large sites (e.g. feeds.library.caltech.edu)
     + Current sitemap cli is too naive for sites more than a couple dozen pages
     + Need to support possibly nested sitemap XML references

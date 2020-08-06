@@ -10,32 +10,72 @@
 </header>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="../">Up</a></li>
-<li><a href="../mkpage/">mkpage</a></li>
-<li><a href="../blogit/">blogit</a></li>
-<li><a href="../frontmatter/">frontmatter</a></li>
-<li><a href="../titleline/">titleline</a></li>
-<li><a href="../byline/">byline</a></li>
-<li><a href="../ws/">ws</a></li>
-<li><a href="../urlencode/">urlencode</a></li>
-<li><a href="../urldecode/">urldecode</a></li>
-<li><a href="../sitemapper/">sitemapper</a></li>
-<li><a href="../mkrss/">mkrss</a></li>
-<li><a href="../reldocpath/">reldocpath</a></li>
-<li><a href="../../how-to/">How To...</a></li>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">Up</a>
+</li>
+<li>
+<a href="../mkpage/">mkpage</a>
+</li>
+<li>
+<a href="../blogit/">blogit</a>
+</li>
+<li>
+<a href="../frontmatter/">frontmatter</a>
+</li>
+<li>
+<a href="../titleline/">titleline</a>
+</li>
+<li>
+<a href="../byline/">byline</a>
+</li>
+<li>
+<a href="../ws/">ws</a>
+</li>
+<li>
+<a href="../urlencode/">urlencode</a>
+</li>
+<li>
+<a href="../urldecode/">urldecode</a>
+</li>
+<li>
+<a href="../sitemapper/">sitemapper</a>
+</li>
+<li>
+<a href="../mkrss/">mkrss</a>
+</li>
+<li>
+<a href="../reldocpath/">reldocpath</a>
+</li>
+<li>
+<a href="../../how-to/">How To…</a>
+</li>
 </ul>
 </nav>
 
 <section>
-<h1>USAGE</h1>
+<h1>
+USAGE
+</h1>
 <blockquote>
-<p>blogit [OPTIONS] DOCUMENT_NAME [DATE]</p>
+<p>
+blogit [OPTIONS] DOCUMENT_NAME [DATE]
+</p>
 </blockquote>
-<h2>DESCRIPTION</h2>
-<p>Blogit provides a quick tool to add or replace blog content organized around a date oriented file path. In addition to placing documents it also will generate simple markdown documents for inclusion in navigation.</p>
-<h2>OPTIONS</h2>
-<p>Below are a set of options available.</p>
+<h2>
+DESCRIPTION
+</h2>
+<p>
+Blogit provides a quick tool to add or replace blog content organized around a date oriented file path. In addition to placing documents it also will generate simple markdown documents for inclusion in navigation.
+</p>
+<h2>
+OPTIONS
+</h2>
+<p>
+Below are a set of options available.
+</p>
 <pre><code>    -C, -copyright       Set the blog copyright notice.
     -D, -description     Set the blog description
     -E, -ended           Set the blog ended date.
@@ -55,26 +95,38 @@
     -generate-markdown   generate markdown documentation
     -h, -help            display help
     -l, -license         display license
-    -v, -version         display version
-</code></pre>
-<h2>EXAMPLES</h2>
-<p>I have a Markdown file called, "my-vacation-day.md". I want to add it to my blog for the date July 1, 2020. I've written "my-vacation-day.md" in my home "Documents" folder and my blog repository is in my "Sites" folder under "Sites/me.example.org". Adding "my-vacation-day.md" to the blog me.example.org would use the following command.</p>
+    -v, -version         display version</code></pre>
+<h2>
+EXAMPLES
+</h2>
+<p>
+I have a Markdown file called, “my-vacation-day.md”. I want to add it to my blog for the date July 1, 2020. I’ve written “my-vacation-day.md” in my home “Documents” folder and my blog repository is in my “Sites” folder under “Sites/me.example.org”. Adding “my-vacation-day.md” to the blog me.example.org would use the following command.
+</p>
 <pre><code>   cd Sites/me.example.org
-   blogit my-vacation-day.md 2020-07-01
-</code></pre>
-<p>The <em>blogit</em> command will copy "my-vacation-day.md", creating any necessary file directories to "Sites/me.example.org/2020/06/01". It will also update article lists (index.md) at the year level, month, and day level and month level of the directory tree and and generate/update a posts.json in the "Sites/my.example.org" that can be used in your home page template for listing recent posts.</p>
-<p><em>blogit</em> includes an option to set the prefix path to the blog posting. In this way you could have separate blogs structures for things like podcasts or videocasts.</p>
+   blogit my-vacation-day.md 2020-07-01</code></pre>
+<p>
+The <em>blogit</em> command will copy “my-vacation-day.md”, creating any necessary file directories to “Sites/me.example.org/2020/06/01”. It will also update article lists (index.md) at the year level, month, and day level and month level of the directory tree and and generate/update a posts.json in the “Sites/my.example.org” that can be used in your home page template for listing recent posts.
+</p>
+<p>
+<em>blogit</em> includes an option to set the prefix path to the blog posting. In this way you could have separate blogs structures for things like podcasts or videocasts.
+</p>
 <pre><code>    # Add a landing page for the podcast
     blogit -prefix=podcast my-vacation.md 2020-07-01
     # Add an audio file containing the podcast
-    blogit -prefix=podcast my-vacation.wav 2020-07-01
-</code></pre>
-<p>Where <code>-p, -prefix</code> sets the prefix path before the YYYY/MM/DD path.</p>
-<p>If you have an existing blog paths in the form of PREFIX/YYYY/MM/DD you can use blogit to create/update/recreate the blog.json file.</p>
-<pre><code>    blogit -prefix=blog -year=2020
-</code></pre>
-<p>The option "-year" is what indicates you want to crawl for blog posts for that year.</p>
-<p>blogit v0.1.1</p>
+    blogit -prefix=podcast my-vacation.wav 2020-07-01</code></pre>
+<p>
+Where <code>-p, -prefix</code> sets the prefix path before the YYYY/MM/DD path.
+</p>
+<p>
+If you have an existing blog paths in the form of PREFIX/YYYY/MM/DD you can use blogit to create/update/recreate the blog.json file.
+</p>
+<pre><code>    blogit -prefix=blog -year=2020</code></pre>
+<p>
+The option “-year” is what indicates you want to crawl for blog posts for that year.
+</p>
+<p>
+blogit v0.1.1
+</p>
 </section>
 
 <footer>

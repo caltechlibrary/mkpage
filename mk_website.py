@@ -134,7 +134,7 @@ def main(args):
                 if in_name.endswith("LICENSE"):
                     with open(in_name) as f:
                         src = f.read()
-                        page_data.append(f"content=markdown:{src}")
+                        page_data.append(f"content=commonmark:{src}")
                 else:
                     page_data.append(f"content={in_name}")
                 err = mkpage(out_name, [ "page.tmpl" ], page_data)

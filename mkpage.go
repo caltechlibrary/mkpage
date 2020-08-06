@@ -22,8 +22,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	//"go/ast"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -31,7 +29,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"text/template"
 	"time"
 
 	// 3rd Party Packages
@@ -542,23 +539,6 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 		}
 	}
 	return out, nil
-}
-
-// MakePage applies the key/value map to the named template in tmpl and renders to writer and returns an error if something goes wrong
-func MakePage(wr io.Writer, templateName string, tmpl *template.Template, keyValues map[string]string) error {
-	data, err := ResolveData(keyValues)
-	if err != nil {
-		return fmt.Errorf("Can't resolve data source %s", err)
-	}
-	return tmpl.ExecuteTemplate(wr, templateName, data)
-}
-
-// MakePageString applies the key/value map to the named template tmpl and renders the results to a string and error if something goes wrong
-func MakePageString(templateName string, tmpl *template.Template, keyValues map[string]string) (string, error) {
-	var buf bytes.Buffer
-	wr := io.Writer(&buf)
-	err := MakePage(wr, templateName, tmpl, keyValues)
-	return buf.String(), err
 }
 
 //

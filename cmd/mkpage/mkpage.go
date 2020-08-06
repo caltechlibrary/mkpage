@@ -22,18 +22,17 @@ package main
 import (
 	"fmt"
 	"os"
-	"path"
 	"strings"
 
 	// Caltech Library packages
 	"github.com/caltechlibrary/cli"
 	"github.com/caltechlibrary/mkpage"
-	"github.com/caltechlibrary/tmplfn"
 )
 
 var (
 	description = `
 Using the key/value pairs populate the template(s) and render to stdout.
+MkPage renders markdown using Pandoc (version >= v2.10). 
 `
 
 	examples = `
@@ -81,9 +80,10 @@ That would be expressed on the command line as follows
 	generateMarkdown bool
 
 	// Application Options
-	templateFNames string
-	codesnip       bool
-	codeType       string
+	codesnip bool
+	codeType string
+	from     string
+	to       string
 )
 
 func main() {
@@ -108,9 +108,10 @@ func main() {
 	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate markdown documentation")
 
 	// Application specific options
-	app.StringVar(&templateFNames, "t,templates", "", "colon delimited list of Go text templates to use")
 	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks, reads from standard input")
 	app.StringVar(&codeType, "code", "", "outout just code blocks for specific language, e.g. shell or json, reads from standard input")
+	app.StringVar(&from, "f,from", "markdown", "set the from value (e.g. markdown) used by pandoc")
+	app.StringVar(&to, "t,to", "html", "set the from value (e.g. html) used by pandoc")
 
 	app.Parse()
 	args := app.Args()
@@ -139,16 +140,6 @@ func main() {
 
 	// Default template name is page.tmpl
 	templateName := ""
-	templateSources := []string{}
-	useGoTemplates := false
-
-	// Make sure we have a configured command to run
-	if len(templateFNames) > 0 {
-		useGoTemplates = true
-		for _, fname := range strings.Split(templateFNames, ":") {
-			templateSources = append(templateSources, fname)
-		}
-	}
 
 	// Setup IO
 	var err error
@@ -166,6 +157,12 @@ func main() {
 	if generateMarkdown {
 		app.GenerateMarkdown(app.Out)
 		os.Exit(0)
+	}
+	if from != "" {
+		mkpage.PandocFrom = from
+	}
+	if to != "" {
+		mkpage.PandocTo = to
 	}
 
 	if codesnip || codeType != "" {
@@ -186,57 +183,15 @@ func main() {
 			data[pair[0]] = pair[1]
 		} else {
 			// Must be the template source
-			useGoTemplates = false
-			templateSources = append(templateSources, arg)
+			templateName = arg
 		}
 	}
 
-	// Make the page with pandoc, go templates and Go Markdown
-	switch {
-	case useGoTemplates:
-		// DEPRECIATED: Go template support is included for
-		// backward compatibility. It will be removed when the
-		// transition is before v1.x.
-
-		// Create our Tmpl struct with our function map
-		tmpl := tmplfn.New(tmplfn.AllFuncs())
-
-		// Load any user supplied templates
-		if len(templateSources) > 0 {
-			err = tmpl.ReadFiles(templateSources...)
-			if err != nil {
-				fmt.Fprintf(app.Eout, "%s\n", err)
-				os.Exit(1)
-			}
-			templateName = path.Base(templateSources[0])
-		} else {
-			// Load our default template maps
-			if err != nil {
-				fmt.Fprintf(app.Eout, "mkpage %q does note support default templates.", mkpage.Version)
-				os.Exit(1)
-			}
-		}
-		// Build a template and send to MakePage
-		t, err := tmpl.Assemble()
-		if err != nil {
-			fmt.Fprintf(app.Eout, "template assemblere error, %s\n", err)
-			os.Exit(1)
-		}
-		err = mkpage.MakePage(app.Out, templateName, t, data)
-		if err != nil {
-			fmt.Fprintf(app.Eout, "MakePage error, %s\n", err)
-			os.Exit(1)
-		}
-		os.Exit(0)
-	default:
-		if len(templateSources) > 0 {
-			templateName = templateSources[0]
-		}
-		err = mkpage.MakePandoc(app.Out, templateName, data)
-		if err != nil {
-			fmt.Fprintf(app.Eout, "Pandoc error, %s\n", err)
-			os.Exit(1)
-		}
-		os.Exit(0)
+	// Make the page with Pandoc
+	err = mkpage.MakePandoc(app.Out, templateName, data)
+	if err != nil {
+		fmt.Fprintf(app.Eout, "Pandoc error, %s\n", err)
+		os.Exit(1)
 	}
+	os.Exit(0)
 }

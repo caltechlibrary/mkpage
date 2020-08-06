@@ -4,7 +4,7 @@
 
 **MkPage Project** is a collection of tools for rendering static websites.
 Featured is the _mkpage_ command, a front end to
-[Pandoc](https://pandoc.org) (>= v2.9.x). Pandoc supports converting from many
+[Pandoc](https://pandoc.org) (>= v2.10.x). Pandoc supports converting from many
 [lightweight markup languages](https://pandoc.org/ "Pandoc's list of supported formats"). _mkpage_ supports metadata encoded as
 front matter[^frontmatter] using [YAML](https://yaml.org),
 [TOML](https://github.com/toml-lang/toml) and

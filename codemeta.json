@@ -1,12 +1,12 @@
 {
     "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
     "@type": "SoftwareSourceCode",
-    "description": "Command line tools for web content generation and publishing using Markdown, Fountain, JSON and Golang template.",
+    "description": "Command line tools for web content generation and publishing using Markdown, Fountain, JSON and Pandoc template.",
     "name": "mkpage",
     "codeRepository": "https://github.com/caltechlibrary/mkpage",
     "issueTracker": "https://github.com/caltechlibrary/mkpage/issues",
     "license": "https://data.caltech.edu/license",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "author": [
         {
             "@type": "Person",
@@ -25,7 +25,6 @@
         "static site generation",
         "web server",
         "blogging",
-        "slides",
         "markdown",
         "fountain",
         "pandoc"

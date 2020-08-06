@@ -10,47 +10,92 @@
 </header>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="index.html">README</a></li>
-<li><a href="license.html">LICENSE</a></li>
-<li><a href="install.html">INSTALL</a></li>
-<li><a href="docs/">Documentation</a></li>
-<li><a href="how-to/">HOW TO</a></li>
-<li><a href="RELEASE-NOTES.html">Release Notes</a></li>
-<li><a href="https://github.com/caltechlibrary/mkpage">Github</a></li>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="index.html">README</a>
+</li>
+<li>
+<a href="license.html">LICENSE</a>
+</li>
+<li>
+<a href="install.html">INSTALL</a>
+</li>
+<li>
+<a href="docs/">Documentation</a>
+</li>
+<li>
+<a href="how-to/">HOW TO</a>
+</li>
+<li>
+<a href="RELEASE-NOTES.html">Release Notes</a>
+</li>
+<li>
+<a href="https://github.com/caltechlibrary/mkpage">Github</a>
+</li>
 </ul>
 </nav>
 
 <section>
-<h1>Notes on compile <em>mkpage</em></h1>
-<h2>Requirements</h2>
+<h1>
+Notes on compile <em>mkpage</em>
+</h1>
+<h2>
+Requirements
+</h2>
 <ul>
-<li>Pandoc needs to be installed, it is used to convert markup formats to HTMLand as the template engine for HTML output.</li>
-<li>go 1.14 or better</li>
-<li><em>make</em> if you want to the <em>Makefile</em> to build the project.</li>
-<li><a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> for generating a new <em>assets.go</em></li>
-<li>Caltech Library Go Packages
+<li>
+Pandoc needs to be installed, it is used to convert markup formats to HTMLand as the template engine for HTML output.
+</li>
+<li>
+go 1.14 or better
+</li>
+<li>
+<em>make</em> if you want to the <em>Makefile</em> to build the project.
+</li>
+<li>
+<a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> for generating a new <em>assets.go</em>
+</li>
+<li>
+Caltech Library Go Packages
 <ul>
-<li>github.com/caltechlibrary/cli</li>
-<li>github.com/caltechlibrary/tmplfn</li>
-<li>github.com/caltechlibrary/rss2</li>
-</ul></li>
+<li>
+github.com/caltechlibrary/cli
+</li>
+<li>
+github.com/caltechlibrary/tmplfn
+</li>
+<li>
+github.com/caltechlibrary/rss2
+</li>
 </ul>
-<h2>Compiling from source</h2>
-<p>Using <em>go get</em></p>
+</li>
+</ul>
+<h2>
+Compiling from source
+</h2>
+<p>
+Using <em>go get</em>
+</p>
 <pre class="shell"><code>    go get -u github.com/caltechlibrary/pkgassets/...
-    go get -u github.com/caltechlibrary/mkpage/...
-</code></pre>
-<p>Manual using only the go command</p>
+    go get -u github.com/caltechlibrary/mkpage/...</code></pre>
+<p>
+Manual using only the go command
+</p>
 <pre class="shell"><code>    for PNAME in byline mkpage mkrss mkslides reldocpath sitemapper titleline urldecode urlencode ws; do
         go build -o &quot;bin/${PNAME}&quot; &quot;cmds/${PNAME}/${PNAME}.go&quot;
-    done
-</code></pre>
-<h3>regenerating assets.go</h3>
-<p><em>assets.go</em> holds the go source code for a map containing the contents of the <em>defaults</em> directory (e.g. templates/page.tmpl and templates/slides.tmpl). If you modify those files you'll need to recreate <em>assets.go</em>. You can do so with the <a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> tool.</p>
-<pre class="shell"><code>    pkgassets -o assets.go -p mkpage Defaults defaults
-</code></pre>
-<p>If you're not modifying the contents of the defaults directory you do not need to regenerate <em>assets.go</em>.</p>
+    done</code></pre>
+<h3>
+regenerating assets.go
+</h3>
+<p>
+<em>assets.go</em> holds the go source code for a map containing the contents of the <em>defaults</em> directory (e.g. templates/page.tmpl and templates/slides.tmpl). If you modify those files you’ll need to recreate <em>assets.go</em>. You can do so with the <a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> tool.
+</p>
+<pre class="shell"><code>    pkgassets -o assets.go -p mkpage Defaults defaults</code></pre>
+<p>
+If you’re not modifying the contents of the defaults directory you do not need to regenerate <em>assets.go</em>.
+</p>
 </section>
 
 <footer>

@@ -1,6 +1,14 @@
 
 # Release Notes
 
+## v0.2.0
+
++ mkpage assumes pandoc v2.10.x or better
++ mkpage nolonger support Golang templates
++ `-t, -to` now set the "to" value passed to pandoc v2.10.x or better
++ `-f, -from` now sets the "from" value passed to pandoc v2.10.x or better
++ removed mkslides command line program, Pandoc replaces that functionality
+
 ## v0.1.2
 
 + Switched default pandoc parsing mode to commonmark to limit the false positive attempts to process TeX in markdown documents

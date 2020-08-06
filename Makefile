@@ -21,10 +21,10 @@ build: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/ws$(EXT) bin/frontmatter$(EXT) bin/blogit$(EXT)
 
 
-bin/mkpage$(EXT): version.go mkpage.go codesnip.go mkpandoc.go cmd/mkpage/mkpage.go blogit.go mkpandoc.go generators.go
+bin/mkpage$(EXT): version.go mkpage.go codesnip.go pandoc.go cmd/mkpage/mkpage.go blogit.go pandoc.go generators.go
 	go build -o bin/mkpage$(EXT) cmd/mkpage/mkpage.go
 
-bin/mkrss$(EXT): version.go mkpage.go mkrss.go mkpandoc.go cmd/mkrss/mkrss.go
+bin/mkrss$(EXT): version.go mkpage.go mkrss.go pandoc.go cmd/mkrss/mkrss.go
 	go build -o bin/mkrss$(EXT) cmd/mkrss/mkrss.go
 
 bin/sitemapper$(EXT): version.go mkpage.go cmd/sitemapper/sitemapper.go
@@ -57,8 +57,8 @@ bin/blogit$(EXT): version.go blogit.go mkpage.go cmd/blogit/blogit.go
 lint:
 	golint mkpage.go
 	golint mkpage_test.go
-	golint mkpandoc.go
-	golint mkpandoc_test.go
+	golint pandoc.go
+	golint pandoc_test.go
 	golint blogit.go
 	golint blogit_test.go
 	golint cmd/mkpage/mkpage.go
@@ -76,8 +76,8 @@ lint:
 format:
 	gofmt -w mkpage.go
 	gofmt -w mkpage_test.go
-	gofmt -w mkpandoc.go
-	gofmt -w mkpandoc_test.go
+	gofmt -w pandoc.go
+	gofmt -w pandoc_test.go
 	gofmt -w blogit.go
 	gofmt -w blogit_test.go
 	gofmt -w cmd/mkpage/mkpage.go

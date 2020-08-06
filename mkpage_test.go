@@ -25,7 +25,6 @@ import (
 	"path"
 	"strings"
 	"testing"
-	"text/template"
 )
 
 func TestResolveData(t *testing.T) {
@@ -109,15 +108,13 @@ func TestMakePage(t *testing.T) {
 	}
 
 	src := `
-{{define "Hello"}}
-Hello {{.hello}}
+Hello ${hello}
 
-Nav: {{.nav}}
+Nav: ${nav}
 
-Content: {{.content}}
+Content: ${content}
 
-Weather: {{.weather.data.text}}
-{{end}}
+Weather: ${weather.data.text}
 `
 
 	keyValues := map[string]string{
@@ -127,8 +124,7 @@ Weather: {{.weather.data.text}}
 		"weather": "http://forecast.weather.gov/MapClick.php?lat=13.4712&lon=144.7496&FcstType=json",
 	}
 
-	tmpl := template.Must(template.New("test.tmpl").Parse(src))
-	out, err := MakePageString("Hello", tmpl, keyValues)
+	out, err := MakePandocString(src, keyValues)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
