@@ -3,7 +3,7 @@
 
 ## v0.2.1
 
-+ Compiled now depends on v0.0.5 of wsfm package, this is used in the ws command
++ Compiled now depends on v0.0.5 of wsfn package, this is used in the ws command, this adds support for correctly setting the content types of `.mjs` files
 
 ## v0.2.0
 
