@@ -3,6 +3,7 @@
 
 ## Bugs
 
++ [ ] ws, `*.mjs` should be served as "text/javascript" by default, `.mjs` is the JS file extension for JS Modules some sites use
 + [ ] **sitemapper** needs to respect the 50K/50MB url and size limits per spec, see https://www.sitemaps.org/protocol.html
 
 ## Next (road to v1.0.0)

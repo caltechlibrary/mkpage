@@ -1,6 +1,10 @@
 
 # Release Notes
 
+## v0.2.1
+
++ Compiled now depends on v0.0.5 of wsfm package, this is used in the ws command
+
 ## v0.2.0
 
 + mkpage assumes pandoc v2.10.x or better
