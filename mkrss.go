@@ -55,6 +55,14 @@ func BlogMetaToRSS(blog *BlogMeta, feed *rss2.RSS2) error {
 					if err != nil {
 						return err
 					}
+					// NOTE: We only want to process Markdown documents.
+					// We look for Markdown related file extensions.
+					includeDescription := false
+					for _, ext := range []string{".md", ".markdown", ".txt", ".asciidoc"} {
+						if strings.HasSuffix(post.Document, ext) {
+							includeDescription = true
+						}
+					}
 					item := new(rss2.Item)
 					item.Title = post.Title
 					item.Link = strings.Join([]string{blog.BaseURL, post.Document}, "/")
@@ -75,13 +83,12 @@ func BlogMetaToRSS(blog *BlogMeta, feed *rss2.RSS2) error {
 						}
 						if val, ok := fMatter["description"]; ok {
 							post.Description = val.(string)
-						} else {
+						} else if includeDescription {
 							post.Description = OpeningParagraphs(fmt.Sprintf("%s", tSrc), 5, "\n\n")
 							if len(post.Description) < len(tSrc) {
 								post.Description += " ..."
 							}
-							post.Description = PandocBlock(post.Description, "markdown", "html")
-							post.Description = PandocBlock(post.Description, "html", "xml")
+							post.Description = PandocBlock(post.Description, "markdown", "xml")
 						}
 					}
 					if len(post.Abstract) > 0 {
@@ -90,7 +97,9 @@ func BlogMetaToRSS(blog *BlogMeta, feed *rss2.RSS2) error {
 					if len(post.Description) > 0 {
 						item.Description = post.Description
 					}
-					feed.ItemList = append(feed.ItemList, *item)
+					if item.Title != "" || item.Description != "" {
+						feed.ItemList = append(feed.ItemList, *item)
+					}
 				}
 			}
 		}
@@ -98,7 +107,7 @@ func BlogMetaToRSS(blog *BlogMeta, feed *rss2.RSS2) error {
 	return nil
 }
 
-// Generate an Feed by walking the file system.
+// Generate a Feed by walking the file system.
 func WalkRSS(feed *rss2.RSS2, htdocs string, excludeList string, titleExp string, bylineExp string, dateExp string) error {
 	// Required
 	channelLink := feed.Link
@@ -171,8 +180,7 @@ func WalkRSS(feed *rss2.RSS2, htdocs string, excludeList string, titleExp string
 			if len(description) < len(tSrc) {
 				description += " ..."
 			}
-			description = PandocBlock(description, "markdown", "html")
-			description = PandocBlock(description, "html", "xml")
+			description = PandocBlock(description, "markdown", "xml")
 		}
 		if val, ok := fMatter["creator"]; ok {
 			author = val.(string)

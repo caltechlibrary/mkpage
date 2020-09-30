@@ -74,9 +74,9 @@ If you have an existing blog paths in the form of
 PREFIX/YYYY/MM/DD you can use blogit to create/update/recreate
 the blog.json file.
 
-    %s -prefix=blog -year=2020
+    %s -prefix=blog -refresh=2020
 
-The option "-year" is what indicates you want to crawl
+The option "-refresh" is what indicates you want to crawl
 for blog posts for that year.
 `
 
