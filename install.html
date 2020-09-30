@@ -38,7 +38,7 @@
 </nav>
 
 <section>
-<h1>
+<h1 id="installation">
 Installation
 </h1>
 <p>
@@ -74,37 +74,27 @@ Compiled versions are available for macOS (amd64 processor, macosx-amd64), Linux
 | macOS       | mkpage-VERSION_NUMBER-macosx-amd64.zip  |
 | Linux/Intel | mkpage-VERSION_NUMBER-linux-amd64.zip   |
 | Raspbery Pi | mkpage-VERSION_NUMBER-raspbian-arm7.zip |</code></pre>
-<h2>
+<h2 id="the-basic-recipe">
 The basic recipe
 </h2>
 <ul>
 <li>
-<p>
 Download the zip file matching your platform
-</p>
 </li>
 <li>
-<p>
 Unzip it
-</p>
 </li>
 <li>
-<p>
 Copy the contents of the “bin” folder to a folder in your shell’s path (e.g. $HOME/bin).
-</p>
 </li>
 <li>
-<p>
 Adjust you PATH if needed
-</p>
 </li>
 <li>
-<p>
 test to see if it worked
-</p>
 </li>
 </ul>
-<h3>
+<h3 id="macos">
 macOS
 </h3>
 <ol type="1">
@@ -130,7 +120,7 @@ Here’s an example of the commands run in the Terminal App after downloading th
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
     mkpage -version</code></pre>
-<h3>
+<h3 id="windows-10">
 Windows 10
 </h3>
 <ol type="1">
@@ -156,7 +146,7 @@ Here’s an example of the commands run in from the Bash shell on Windows 10 aft
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
     mkpage -version</code></pre>
-<h3>
+<h3 id="linux">
 Linux
 </h3>
 <ol type="1">
@@ -182,7 +172,7 @@ Here’s an example of the commands run in from the Bash shell after downloading
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
     mkpage -version</code></pre>
-<h3>
+<h3 id="raspberry-pi">
 Raspberry Pi
 </h3>
 <p>
@@ -211,7 +201,7 @@ Here’s an example of the commands run in from the Bash shell after downloading
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
     mkpage -version</code></pre>
-<h2>
+<h2 id="compiling-from-source">
 Compiling from source
 </h2>
 <p>

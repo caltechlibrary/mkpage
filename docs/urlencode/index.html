@@ -56,7 +56,7 @@
 </nav>
 
 <section>
-<h1>
+<h1 id="usage">
 USAGE
 </h1>
 <blockquote>
@@ -64,13 +64,13 @@ USAGE
 urlencode [OPTIONS] [STRING_TO_ENCODE]
 </p>
 </blockquote>
-<h2>
+<h2 id="description">
 DESCRIPTION
 </h2>
 <p>
 urlencode is a simple command line utility to URL encode content. By default it reads from standard input and writes to standard out. You can also specifty the string to encode as a command line parameter.
 </p>
-<h2>
+<h2 id="options">
 OPTIONS
 </h2>
 <p>
@@ -86,7 +86,7 @@ Below are a set of options available.
     -q, -query           use query escape (pluses for spaces)
     -quiet               suppress error messages
     -v, -version         display version</code></pre>
-<h2>
+<h2 id="examples">
 EXAMPLES
 </h2>
 <pre><code>    echo &quot;This is the string to encode &amp; nothing else!&quot; | urlencode</code></pre>

@@ -38,10 +38,10 @@
 </nav>
 
 <section>
-<h1>
+<h1 id="notes-on-compile-mkpage">
 Notes on compile <em>mkpage</em>
 </h1>
-<h2>
+<h2 id="requirements">
 Requirements
 </h2>
 <ul>
@@ -72,7 +72,7 @@ github.com/caltechlibrary/rss2
 </ul>
 </li>
 </ul>
-<h2>
+<h2 id="compiling-from-source">
 Compiling from source
 </h2>
 <p>
@@ -86,7 +86,7 @@ Manual using only the go command
 <pre class="shell"><code>    for PNAME in byline mkpage mkrss mkslides reldocpath sitemapper titleline urldecode urlencode ws; do
         go build -o &quot;bin/${PNAME}&quot; &quot;cmds/${PNAME}/${PNAME}.go&quot;
     done</code></pre>
-<h3>
+<h3 id="regenerating-assets.go">
 regenerating assets.go
 </h3>
 <p>

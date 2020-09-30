@@ -56,7 +56,7 @@
 </nav>
 
 <section>
-<h1>
+<h1 id="usage">
 USAGE
 </h1>
 <blockquote>
@@ -64,13 +64,13 @@ USAGE
 frontmatter [OPTIONS]
 </p>
 </blockquote>
-<h2>
+<h2 id="description">
 DESCRIPTION
 </h2>
 <p>
 frontmatter extracts a front matter from a Markdown file. If no front matter is present then an empty file is returned. Note frontmatter doesn’t process the data extracted. It returns it unprocessed. Other tools can be used to process the front matter appropriately. By default frontmatter reads from standard in and writes to standard out. This makes it very suitable for pipeline processing or for passing JSON formatted front matter back to mkpage for integration into the templates processed.
 </p>
-<h2>
+<h2 id="options">
 OPTIONS
 </h2>
 <p>
@@ -85,7 +85,7 @@ Below are a set of options available.
     -o, -output          output filename
     -quiet               suppress error messages
     -v, -version         display version</code></pre>
-<h2>
+<h2 id="examples">
 EXAMPLES
 </h2>
 <p>

@@ -160,7 +160,7 @@ dist/windows-amd64:
 	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
-dist/macosx-amd64:
+dist/macos-amd64:
 	mkdir -p dist/bin
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkpage cmd/mkpage/mkpage.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkrss cmd/mkrss/mkrss.go
@@ -173,7 +173,7 @@ dist/macosx-amd64:
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/blogit cmd/blogit/blogit.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-macosx-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
+	cd dist && zip -r $(PROJECT)-$(VERSION)-macos-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
 dist/raspbian-arm7:
@@ -204,7 +204,7 @@ distribute_docs:
 	#FIXME: need to pull package versions from go.mod file.
 	#./package-versions.bash > dist/package-versions.txt
 
-release: clean website distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7
+release: clean website distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macos-amd64 dist/raspbian-arm7
 
 website:
 	./mk_website.py

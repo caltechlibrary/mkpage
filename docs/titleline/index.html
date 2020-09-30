@@ -56,7 +56,7 @@
 </nav>
 
 <section>
-<h1>
+<h1 id="usage">
 USAGE
 </h1>
 <blockquote>
@@ -64,13 +64,13 @@ USAGE
 titleline [OPTIONS]
 </p>
 </blockquote>
-<h2>
+<h2 id="description">
 DESCRIPTION
 </h2>
 <p>
 titleline extracts the first title line from a Markdown file. By default it reads from standard in and writes to standard out but can read/write to specific files using an option.
 </p>
-<h2>
+<h2 id="options">
 OPTIONS
 </h2>
 <p>
@@ -85,7 +85,7 @@ Below are a set of options available.
     -quiet               suppress error messages
     -t, -title           set title regexp
     -v, -version         display version</code></pre>
-<h2>
+<h2 id="examples">
 EXAMPLES
 </h2>
 <pre><code>    cat article.md | titleline</code></pre>

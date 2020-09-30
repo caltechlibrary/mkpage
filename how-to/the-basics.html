@@ -32,13 +32,13 @@
 </nav>
 
 <section>
-<h1>
+<h1 id="the-basics">
 The Basics
 </h1>
 <p>
 <em>mkpage</em> uses Pandoc’s template engine to render content. This template is documented on the <a href="https://pandoc.org/MANUAL.html#templates">Pandoc</a>.
 </p>
-<h2>
+<h2 id="basic-element">
 Basic element
 </h2>
 <p>
@@ -48,7 +48,7 @@ A templated data element is wrapped in a dollar sign, opening curly bracket, the
 <p>
 We can use the template to say Hello to “Georgina”
 </p>
-<pre class="{.shell}"><code>    echo &#39;Hello ${world}&#39; &gt; hello-world.tmpl
+<pre class="shell"><code>    echo &#39;Hello ${world}&#39; &gt; hello-world.tmpl
     mkpage &quot;world=text:Georgina&quot; hello-world.tmpl</code></pre>
 <p>
 Running these two command should result in output like
@@ -70,12 +70,12 @@ If we made a typo in <em>hello-world.tmpl</em> then we would see an error messag
 <p>
 Try the following to get a feel for how key/value pairs work with <em>mkpage</em>. The first two will render but display <code>Hello</code>. The first example fails because no value is provided and the second fails because the value provided doesn’t match what is in the template (notice the typo “wrold” vs. “world”). the next one will display an error because <em>text:</em> wasn’t included on the value side of the key/value pair. By default <em>mkpage</em> assumes the value is refering to a file and in this case can’t find the file Georgina in your current directory. The last two will display <code>Hello Georgina</code> should display since the value for “world” is provided. The last one just ignores “Name=text:Fred” because “Name” isn’t found in the template.
 </p>
-<pre class="{.shell}"><code>    mkpage hello-world.tmpl
+<pre class="shell"><code>    mkpage hello-world.tmpl
     mkpage &quot;wrold=text:Georgina&quot; hello-world.tmpl
     mkpage &quot;world=Georgina&quot; hello-world.tmpl
     mkpage &quot;world=text:Georgina&quot; &quot;name=text:Fred&quot; hello-world.tmpl
     mkpage &quot;world=text:Georgina&quot; hello-world.tmpl</code></pre>
-<h3>
+<h3 id="conditional-elements">
 Conditional elements
 </h3>
 <p>
@@ -89,7 +89,7 @@ or using “for”
 <p>
 Let’s create a template file with both these statements called <em>title-demo.tmpl</em> and run the <em>mkpage</em> command.
 </p>
-<pre class="{.shell}"><code>    echo &#39;${if(title)}Title: ${title}${endif}&#39; &gt; title-demo.tmpl
+<pre class="shell"><code>    echo &#39;${if(title)}Title: ${title}${endif}&#39; &gt; title-demo.tmpl
     echo &#39;By ${for(authors)}${it}$sep$ and ${endif}&#39; &gt;&gt; title-demo.tmpl 
     mkpage &#39;title=text:This is a title demo&#39; \
            &#39;authors=json:[ &#39;Jane&#39;, &#39;Carol&#39; ]&#39; \
@@ -102,7 +102,7 @@ The output should look like
 <p>
 In the first line with the <em>if</em> we use “title” as the variable, just like “world” in our first example. The second line uses a <em>for</em> to iterate over authors names and insert an “and” between them. What happens if you run this command?
 </p>
-<pre class="{.shell}"><code>    mkpage title-demo.tmpl</code></pre>
+<pre class="shell"><code>    mkpage title-demo.tmpl</code></pre>
 <p>
 This produces two lines of output that look something . The reason we don’t see something like
 </p>
@@ -110,7 +110,7 @@ This produces two lines of output that look something . The reason we don’t se
 <p>
 We see the “By” because it is outside the <em>for</em> loop, but we don’t see a title because “Title:” is inside the <em>if</em> block.
 </p>
-<h3>
+<h3 id="template-and-sub-templates">
 Template and sub templates
 </h3>
 <p>
@@ -146,16 +146,18 @@ Now run our <em>mkpage</em> command providing our “title” and “authors” 
 <p>
 This output should look like
 </p>
-<pre class="{.html}"><code>    &lt;header&gt;&lt;h1&gt;Hi there&lt;/h1&gt;&lt;/header&gt;&lt;section&gt;
-    This is the title: Hi there
-    &lt;p&gt;
-    Authors are: Me, Myself and I
-    &lt;/section&gt;
-    &lt;footer&gt;</code></pre>
+<div id="cb16" class="sourceCode">
+<pre class="sourceCode html"><code class="sourceCode html"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a>    <span class="kw">&lt;header&gt;&lt;h1&gt;</span>Hi there<span class="kw">&lt;/h1&gt;&lt;/header&gt;&lt;section&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>    This is the title: Hi there</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>    <span class="kw">&lt;p&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>    Authors are: Me, Myself and I</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    <span class="kw">&lt;/section&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>    <span class="kw">&lt;footer&gt;</span></span></code></pre>
+</div>
 <p>
 In this case “header.tmpl” and “footer.tmpl” are found because they are in the same directory as “main.tmpl”.
 </p>
-<h2>
+<h2 id="content-formats-and-data-sources">
 Content formats and data sources
 </h2>
 <p>
@@ -215,13 +217,13 @@ Create a text file named <em>hello.md</em>.
 <p>
 Type the following
 </p>
-<pre class="{.shell}"><code>    mkpage &quot;string=text:Hello World&quot; &quot;file=hello.md&quot; \
+<pre class="shell"><code>    mkpage &quot;string=text:Hello World&quot; &quot;file=hello.md&quot; \
       &quot;url=https://raw.githubusercontent.com/caltechlibrary/mkpage/master/nav.md&quot; \
       data-source-demo.tmpl</code></pre>
 <p>
 What do you see?
 </p>
-<h2>
+<h2 id="a-note-about-markdown-dialect">
 A note about Markdown dialect
 </h2>
 <p>
