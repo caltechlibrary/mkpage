@@ -331,7 +331,7 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 			out[key] = fmt.Sprintf("%s", src)
 		case strings.HasPrefix(val, CommonMarkPrefix) == true:
 			//NOTE: We're using pandoc as our default processor
-			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, CommonMarkPrefix)), "commonmark", "html")
+			src, err := pandocProcessor([]byte(strings.TrimPrefix(val, CommonMarkPrefix)), "commonmark_x", "html")
 			if err != nil {
 				return out, err
 			}
@@ -435,13 +435,13 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 						}
 						out[key] = o
 					case isContentType(contentTypes, "text/markdown") == true:
-						src, err := pandocProcessor(buf, "markdown", "html")
+						src, err := pandocProcessor(buf, "", "html")
 						if err != nil {
 							return nil, err
 						}
 						out[key] = fmt.Sprintf("%s", src)
 					case isContentType(contentTypes, "text/commonmark") == true:
-						src, err := pandocProcessor(buf, "commonmark", "html")
+						src, err := pandocProcessor(buf, "commonmark_x", "html")
 						if err != nil {
 							return nil, err
 						}
@@ -497,13 +497,13 @@ func ResolveData(data map[string]string) (map[string]interface{}, error) {
 				}
 				out[key] = fmt.Sprintf("%s", src)
 			case strings.Compare(ext, ".md") == 0:
-				src, err := pandocProcessor(buf, "commonmark", "html")
+				src, err := pandocProcessor(buf, "", "html")
 				if err != nil {
 					return nil, err
 				}
 				out[key] = fmt.Sprintf("%s", src)
 			case strings.Compare(ext, ".mmd") == 0:
-				src, err := pandocProcessor(buf, "mmark", "html")
+				src, err := pandocProcessor(buf, "markdown_mmd", "html")
 				if err != nil {
 					return nil, err
 				}
