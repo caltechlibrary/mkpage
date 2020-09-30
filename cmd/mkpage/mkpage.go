@@ -110,7 +110,7 @@ func main() {
 	// Application specific options
 	app.BoolVar(&codesnip, "codesnip", false, "output just the code bocks, reads from standard input")
 	app.StringVar(&codeType, "code", "", "outout just code blocks for specific language, e.g. shell or json, reads from standard input")
-	app.StringVar(&from, "f,from", "markdown", "set the from value (e.g. markdown) used by pandoc")
+	app.StringVar(&from, "f,from", "", "set the from value (e.g. markdown) used by pandoc")
 	app.StringVar(&to, "t,to", "html", "set the from value (e.g. html) used by pandoc")
 
 	app.Parse()
