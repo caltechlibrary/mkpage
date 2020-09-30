@@ -1,15 +1,11 @@
-{{- define "codemeta.tmpl" -}}
-{{ with .codemeta }}
+${if(codemeta)}
 
-# {{ .name }}
+# ${codemeta.name}
 
-{{ .description }}
+${codemeta.description}
 
-
-{{- else }}
+${else}
 
 Something went wrong. We should accessed the codameta.json object.
 
-{{- end }}
-
-{{ end }}
+${endif}

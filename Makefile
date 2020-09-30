@@ -21,10 +21,10 @@ build: bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/ws$(EXT) bin/frontmatter$(EXT) bin/blogit$(EXT)
 
 
-bin/mkpage$(EXT): version.go mkpage.go codesnip.go mkpandoc.go cmd/mkpage/mkpage.go blogit.go mkpandoc.go
+bin/mkpage$(EXT): version.go mkpage.go codesnip.go pandoc.go cmd/mkpage/mkpage.go blogit.go pandoc.go generators.go
 	go build -o bin/mkpage$(EXT) cmd/mkpage/mkpage.go
 
-bin/mkrss$(EXT): version.go mkpage.go mkrss.go mkpandoc.go cmd/mkrss/mkrss.go
+bin/mkrss$(EXT): version.go mkpage.go mkrss.go pandoc.go cmd/mkrss/mkrss.go
 	go build -o bin/mkrss$(EXT) cmd/mkrss/mkrss.go
 
 bin/sitemapper$(EXT): version.go mkpage.go cmd/sitemapper/sitemapper.go
@@ -57,8 +57,8 @@ bin/blogit$(EXT): version.go blogit.go mkpage.go cmd/blogit/blogit.go
 lint:
 	golint mkpage.go
 	golint mkpage_test.go
-	golint mkpandoc.go
-	golint mkpandoc_test.go
+	golint pandoc.go
+	golint pandoc_test.go
 	golint blogit.go
 	golint blogit_test.go
 	golint cmd/mkpage/mkpage.go
@@ -76,8 +76,8 @@ lint:
 format:
 	gofmt -w mkpage.go
 	gofmt -w mkpage_test.go
-	gofmt -w mkpandoc.go
-	gofmt -w mkpandoc_test.go
+	gofmt -w pandoc.go
+	gofmt -w pandoc_test.go
 	gofmt -w blogit.go
 	gofmt -w blogit_test.go
 	gofmt -w cmd/mkpage/mkpage.go
@@ -91,7 +91,7 @@ format:
 	gofmt -w cmd/ws/ws.go
 	gofmt -w cmd/frontmatter/frontmatter.go
 
-test: bin/mkpage$(EXT) bin/mkrss$(EXT) \
+test: .FORCE bin/mkpage$(EXT) bin/mkrss$(EXT) \
 	bin/sitemapper$(EXT) bin/byline$(EXT) bin/titleline$(EXT) \
 	bin/reldocpath$(EXT) bin/urlencode$(EXT) bin/urldecode$(EXT) \
 	bin/ws$(EXT) bin/frontmatter$(EXT) bin/blogit$(ext)
@@ -160,7 +160,7 @@ dist/windows-amd64:
 	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
-dist/macosx-amd64:
+dist/macos-amd64:
 	mkdir -p dist/bin
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkpage cmd/mkpage/mkpage.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/mkrss cmd/mkrss/mkrss.go
@@ -173,7 +173,7 @@ dist/macosx-amd64:
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/ws cmd/ws/ws.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
 	env  GOOS=darwin GOARCH=amd64 go build -o dist/bin/blogit cmd/blogit/blogit.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-macosx-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
+	cd dist && zip -r $(PROJECT)-$(VERSION)-macos-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
 dist/raspbian-arm7:
@@ -204,7 +204,7 @@ distribute_docs:
 	#FIXME: need to pull package versions from go.mod file.
 	#./package-versions.bash > dist/package-versions.txt
 
-release: clean website distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7
+release: clean website distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macos-amd64 dist/raspbian-arm7
 
 website:
 	./mk_website.py

@@ -1,6 +1,24 @@
 
 # Release Notes
 
+## v0.2.1
+
++ Compiled now depends on v0.0.5 of wsfn package, this is used in the ws command, this adds support for correctly setting the content types of `.mjs` files
+
+## v0.2.0
+
++ mkpage assumes pandoc v2.10.x or better
++ mkpage nolonger support Golang templates
++ `-t, -to` now set the "to" value passed to pandoc v2.10.x or better
++ `-f, -from` now sets the "from" value passed to pandoc v2.10.x or better
++ removed mkslides command line program, Pandoc replaces that functionality
+
+## v0.1.2
+
++ Switched default pandoc parsing mode to commonmark to limit the false positive attempts to process TeX in markdown documents
++ Added json-generator type to allow processing of JSON content by external scripts (e.g. Python), script should return JSON via stdout
++ Added support to include more explicit pandoc markdown interpretation, e.g. commonmark, markdown_strict, gfm
+
 ## v0.1.1
 
 + To use Go language templates you must use the `-t` or `-templates` option
