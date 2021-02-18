@@ -3,7 +3,7 @@
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
-// Copyright (c) 2020, Caltech
+// Copyright (c) 2021, Caltech
 // All rights not granted herein are expressly reserved by Caltech
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -91,7 +91,7 @@ func TestExportedFuncs(t *testing.T) {
 		src = []byte(fmt.Sprintf(`{
 	"title": "Hello No. %d",
 	"subtitle": "This is the %d(th) test blog post",
-	"date": "2020-05-%02d",
+	"date": "2021-05-%02d",
 	"keywords": [ "test" ],
 	"creators": [ "R. S. Doiel" ],
 	"byline": "By R. S. Doiel"
@@ -108,7 +108,7 @@ Test Blog post.
 			t.FailNow()
 		}
 
-		dateString := fmt.Sprintf("2020-05-%02d", i)
+		dateString := fmt.Sprintf("2021-05-%02d", i)
 		if err := blogMeta.BlogIt(blogPrefix, pName, dateString); err != nil {
 			t.Errorf("BlogIt(%q, %q, %q) failed, %s", blogPrefix, pName, dateString, err)
 			t.FailNow()
@@ -122,7 +122,7 @@ Test Blog post.
 
 func TestRefreshFromPath(t *testing.T) {
 	meta := new(BlogMeta)
-	year := "2020"
+	year := "2021"
 	prefix := "test"
 	blogPrefix := path.Join(prefix, "blog")
 	blogJSON := path.Join(blogPrefix, "blog.json")

@@ -1,9 +1,10 @@
-+++
-[fountain]
-page = false
-link_css = true
-css = "fountain.css"
-+++
+{
+    "fountain": {
+        "page": false,
+        "link_css": true,
+        "css": "fountain.css"
+    }
+}
 
 Title: An interview with a Dog
 Author: R. S. Doiel

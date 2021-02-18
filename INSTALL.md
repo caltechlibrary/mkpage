@@ -1,5 +1,6 @@
 
-# Installation
+Installation
+============
 
 **MkPage Project** is a set of command line programs run from a shell
 like Bash.  NOTE: *mkpage* depends on
@@ -15,23 +16,25 @@ You will seea list of filenames is in the form of
 
 > VERSION_NUMBER is a [symantic version number](http://semver.org/) (e.g. v0.1.1)
 
-> PLATFROM_NAME is a description of a platform (e.g. windows-amd64, macosx-amd64).
+> PLATFROM_NAME is a description of a platform (e.g. windows-amd64, macos-amd64).
 
-Compiled versions are available for macOS (amd64 processor, 
-macosx-amd64), Linux (amd64 processor, linux-amd64), Windows (amd64 
+Compiled versions are available for macOS (amd64 and M1 processor, 
+macos-amd64, macos-arm64), Linux (amd64 processor, linux-amd64), Windows (amd64 
 processor, windows-amd64) and Rapsberry Pi (ARM7 processor, raspbian-arm7).
 
 ```
 | Platform    | Zip Filename                            |
 |-------------|-----------------------------------------|
 | Windows     | mkpage-VERSION_NUMBER-windows-amd64.zip |
-| macOS       | mkpage-VERSION_NUMBER-macosx-amd64.zip  |
+| macOS       | mkpage-VERSION_NUMBER-macos-amd64.zip  |
+| macOS       | mkpage-VERSION_NUMBER-macos-arm64.zip  |
 | Linux/Intel | mkpage-VERSION_NUMBER-linux-amd64.zip   |
 | Raspbery Pi | mkpage-VERSION_NUMBER-raspbian-arm7.zip |
 ```
 
 
-## The basic recipe 
+The basic recipe 
+----------------
 
 + Download the zip file matching your platform 
 + Unzip it 
@@ -52,7 +55,7 @@ downloading the zip file.
 
 ```shell
     cd Downloads/
-    unzip mkpage-*-macosx-amd64.zip
+    unzip mkpage-*-macos-amd64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -122,7 +125,8 @@ downloading the zip file.
 ```
 
 
-## Compiling from source
+Compiling from source
+---------------------
 
 _mkpage_ is "go gettable".  Use the "go get" command to download the 
 dependant packages as well as _mkpage_'s source code.

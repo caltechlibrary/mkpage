@@ -6,7 +6,7 @@
 ## DESCRIPTION
 
 
-frontmatter extracts a front matter from a Markdown file. If no front matter is present then an empty file is returned. Note frontmatter doesn’t process the data extracted. It returns it unprocessed. Other tools can be used to process the front matter appropriately. By default frontmatter reads from standard in and writes to standard out. This makes it very suitable for pipeline processing or for passing JSON formatted front matter back to mkpage for integration into the templates processed.
+frontmatter extracts JSON front matter from a Markdown file. If no front matter is present then an empty file is returned. Note frontmatter doesn’t process the data extracted. It returns it unprocessed. Other tools can be used to process the front matter appropriately. By default frontmatter reads from standard in and writes to standard out. This makes it very suitable for pipeline processing or for passing JSON formatted front matter back to mkpage for integration into the templates processed.
 
 
 ## OPTIONS

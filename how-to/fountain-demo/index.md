@@ -18,20 +18,21 @@ front matter of the document.
 You can see the fountain source at [interview-with-a-dog.fountain](interview-with-a-dog.fountain) and an HTML rendering in [interview-with-a-dog.html](interview-with-a-dog.html).
 
 
-The TOML front matter configures how the fountain document is rendered.
+The JSON front matter configures how the fountain document is rendered.
 
-```TOML
-    +++
-    [fountain]
-    page = false
-    link_css = true
-    css = "fountain.css"
-    +++
+```json
+    {
+       "fountain": {
+            "page": false,
+            "link_css": true,
+            "css": "fountain.css"
+       }
+    }
 ```
 
-The "+++" indicate the front matter is TOML. The fountain processor is looking for a heading of "[fountain]" then for the various settings, e.g. page (rendering full HTML page), link_css (using a link element to bring the CSS into the page), inline_css (use an inline style element for style the content), css (the CSS file to reference, either for inline content or as a link).
+The fountain processor is looking for a heading of attribute "fountain" then for the various settings, e.g. page (rendering full HTML page), link_css (using a link element to bring the CSS into the page), inline_css (use an inline style element for style the content), css (the CSS file to reference, either for inline content or as a link).
 
-**mkpage** support three types of front matter. TOML, JSON and YAML. TOML and JSON are preferred and the best tested.
+**mkpage** support JONS front matter. It does not support TOML or YAML.
 
 Processing our document can be done with the following command.
 

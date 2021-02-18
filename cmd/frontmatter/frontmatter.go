@@ -4,7 +4,7 @@
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
-// Copyright (c) 2020, Caltech
+// Copyright (c) 2021, Caltech
 // All rights not granted herein are expressly reserved by Caltech.
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -20,17 +20,10 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
-
-	// 3rd Party packages
-	"github.com/BurntSushi/toml"
-	//"gopkg.in/yaml.v2"
-	// ghodss Yaml implements the yaml 2 json func, wraps go-yaml
-	"github.com/ghodss/yaml"
 
 	// My packages
 	"github.com/caltechlibrary/cli"
@@ -39,7 +32,7 @@ import (
 
 var (
 	description = `
-%s extracts a front matter from a Markdown file. If no front matter is present then an empty file is returned. Note %s doesn’t process the data extracted. It returns it unprocessed. Other tools can be used to process the front matter appropriately. By default %s reads from standard in and writes to standard out. This makes it very suitable for pipeline processing or for passing JSON formatted front matter back to mkpage for integration into the templates processed.
+%s extracts JSON front matter from a Markdown file. If no front matter is present then an empty file is returned. Note %s doesn’t process the data extracted. It returns it unprocessed. Other tools can be used to process the front matter appropriately. By default %s reads from standard in and writes to standard out. This makes it very suitable for pipeline processing or for passing JSON formatted front matter back to mkpage for integration into the templates processed.
 `
 
 	examples = `
@@ -139,33 +132,10 @@ func main() {
 	if len(frontMatterSrc) > 0 {
 		if jsonFormat {
 			obj := make(map[string]interface{})
-			switch {
-			case bytes.HasPrefix(buf, []byte("+++\n")):
-				// Make sure we have valid Toml
-				if err := toml.Unmarshal(frontMatterSrc, &obj); err != nil {
-					fmt.Fprintf(app.Eout, "Toml error: %s", err)
-					os.Exit(1)
-				}
-			case bytes.HasPrefix(buf, []byte("%%%\n")):
-				// Make sure we have valid Toml
-				if err := toml.Unmarshal(frontMatterSrc, &obj); err != nil {
-					fmt.Fprintf(app.Eout, "Toml error: %s", err)
-					os.Exit(1)
-				}
-			case bytes.HasPrefix(buf, []byte("---\n")):
-				if src, err := yaml.YAMLToJSON(frontMatterSrc); err != nil {
-					fmt.Fprintf(app.Eout, "Yaml to JSON error: %s", err)
-					os.Exit(1)
-				} else {
-					fmt.Fprintf(app.Out, "%s", src)
-					os.Exit(0)
-				}
-			default:
-				// Make sure we have valid JSON
-				if err := json.Unmarshal(frontMatterSrc, &obj); err != nil {
-					fmt.Fprintf(app.Eout, "JSON error: %s", err)
-					os.Exit(1)
-				}
+			// Make sure we have valid JSON
+			if err := json.Unmarshal(frontMatterSrc, &obj); err != nil {
+				fmt.Fprintf(app.Eout, "JSON error: %s", err)
+				os.Exit(1)
 			}
 			if src, err := json.MarshalIndent(obj, "", "    "); err != nil {
 				fmt.Fprintf(app.Eout, "%+v\n", obj)

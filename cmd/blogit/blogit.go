@@ -4,7 +4,7 @@
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
-// Copyright (c) 2020, Caltech
+// Copyright (c) 2021, Caltech
 // All rights not granted herein are expressly reserved by Caltech.
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -41,17 +41,17 @@ for inclusion in navigation.
 
 	examples = `
 I have a Markdown file called, "my-vacation-day.md". I want to
-add it to my blog for the date July 1, 2020.  I've written
+add it to my blog for the date July 1, 2021.  I've written
 "my-vacation-day.md" in my home "Documents" folder and my blog
 repository is in my "Sites" folder under "Sites/me.example.org".
 Adding "my-vacation-day.md" to the blog me.example.org would
 use the following command.
 
    cd Sites/me.example.org
-   %s my-vacation-day.md 2020-07-01
+   %s my-vacation-day.md 2021-07-01
 
 The *%s* command will copy "my-vacation-day.md", creating any
-necessary file directories to "Sites/me.example.org/2020/06/01".
+necessary file directories to "Sites/me.example.org/2021/06/01".
 It will also update article lists (index.md) at the year level, 
 month, and day level and month level of the directory tree and
 and generate/update a posts.json in the "Sites/my.example.org"
@@ -63,9 +63,9 @@ the blog posting.  In this way you could have separate blogs
 structures for things like podcasts or videocasts.
 
     # Add a landing page for the podcast
-    %s -prefix=podcast my-vacation.md 2020-07-01
+    %s -prefix=podcast my-vacation.md 2021-07-01
     # Add an audio file containing the podcast
-    %s -prefix=podcast my-vacation.wav 2020-07-01
+    %s -prefix=podcast my-vacation.wav 2021-07-01
 
 Where "-p, -prefix" sets the prefix path before the YYYY/MM/DD path.
 
@@ -74,7 +74,7 @@ If you have an existing blog paths in the form of
 PREFIX/YYYY/MM/DD you can use blogit to create/update/recreate
 the blog.json file.
 
-    %s -prefix=blog -refresh=2020
+    %s -prefix=blog -refresh=2021
 
 The option "-refresh" is what indicates you want to crawl
 for blog posts for that year.

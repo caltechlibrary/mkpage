@@ -45,7 +45,7 @@
 MkPage Project
 </h1>
 <p>
-<strong>MkPage Project</strong> is a collection of tools for rendering static websites. Featured is the <em>mkpage</em> command, a front end to <a href="https://pandoc.org">Pandoc</a> (&gt;= v2.10.x). Pandoc supports converting from many <a href="https://pandoc.org/" title="Pandoc&#39;s list of supported formats">lightweight markup languages</a>. <em>mkpage</em> supports metadata encoded as front matter<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> using <a href="https://yaml.org">YAML</a>, <a href="https://github.com/toml-lang/toml">TOML</a> and <a href="https://www.json.org/json-en.html">JSON</a> as well as additional data sources expressed on the command line in a simple command language. Content is rendered using Pandoc’s <a href="https://pandoc.org/MANUAL.html#templates">template language</a>.
+<strong>MkPage Project</strong> is a collection of tools for rendering static websites. Featured is the <em>mkpage</em> command, a front end to <a href="https://pandoc.org">Pandoc</a> (&gt;= v2.10.x). Pandoc supports converting from many <a href="https://pandoc.org/" title="Pandoc&#39;s list of supported formats">lightweight markup languages</a>. <em>mkpage</em> supports metadata encoded as <a href="https://www.json.org/json-en.html">JSON</a> front matter<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, as well as additional data sources expressed on the command line in a simple command language. Content is rendered using Pandoc’s <a href="https://pandoc.org/MANUAL.html#templates">template language</a>.
 </p>
 <p>
 <strong>MkPage Project</strong> was inspired by deconstructing more complex content management systems and distilling the rendering functions down to a core set of simple command line tools. It is well suited for building sites hosted on services like GitHub Pages or Amazon’s S3. It uses the widely adopted <a href="https://pandoc.org">Pandoc</a> as its markup conversion engine and <a href="https://pandoc.org/MANUAL.html#templates">template engine</a>. As such you can create your website using a variety of light weight markup languages such as <a href="https://daringfireball.net/projects/markdown/">Markdown</a>, <a href="http://redcloth.org/textile">Textile</a>, <a href="https://docutils.sourceforge.io/docs/ref/rst/introduction.html">ReStructureText</a> and <a href="https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all">Jira’s</a> wiki markup.
@@ -62,9 +62,9 @@ A quick tour <em>mkpage</em> command
 <p>
 The <em>mkpage</em> command accepts key/value pairs as command line parameters. The pairs can be explicit data types, files on disc or resources from the web. Additionally <em>mkpage</em> will merge in any front matter found in your light weight markup such as Markdown documents. <em>mkpage</em> assembles the all metadata into a JSON structure which will be processed by Pandoc when rendering a Pandoc template. Additionally <em>mkpage</em> understands the <a href="https://fountain.io">Fountain</a> markup language will will handle conversion before passing to onto Pandoc.
 </p>
-<h3 id="mkpages-command-language">
+<h2 id="mkpages-command-language">
 <em>mkpage</em>’s command language
-</h3>
+</h2>
 <p>
 The “key” in our key/value pairs is used to map into the <a href="https://pandoc.org/MANUAL.html">Pandoc</a> templates you want rendered. If a key was called “content” the template element would be like <code><span class="math inline"><em>c</em><em>o</em><em>n</em><em>t</em><em>e</em><em>n</em><em>t</em> &lt; /<em>c</em><em>o</em><em>d</em><em>e</em> &gt; .<em>T</em><em>h</em><em>e</em><em>v</em><em>a</em><em>l</em><em>u</em><em>e</em><em>o</em><em>f</em>“ <em>c</em><em>o</em><em>n</em><em>t</em><em>e</em><em>n</em><em>t</em>” <em>w</em><em>o</em><em>u</em><em>l</em><em>d</em><em>r</em><em>e</em><em>p</em><em>l</em><em>a</em><em>c</em><em>e</em> &lt; <em>c</em><em>o</em><em>d</em><em>e</em>&gt;</span>{content}</code> in the Pandoc template. Pandoc templates can combine logic and iteration to make more complex pages. See the Pandoc <a href="https://pandoc.org/MANUAL.html#templates">User Guide</a> for more details.
 </p>
@@ -155,7 +155,7 @@ mkrss
 frontmatter
 </h4>
 <p>
-<a href="docs/frontmatter/">frontmatter</a> will extract a light weight markup files’ (e.g. Markdown) front matter so you can process it with another tool. It can optional convert the front matter into JSON even if the front matter was defined in YAML or TOML.
+<a href="docs/frontmatter/">frontmatter</a> will extract JSON front matter from a plain text file (e.g. a Markdown document).
 </p>
 <h4 id="byline">
 byline
@@ -246,7 +246,7 @@ License
 <ol>
 <li id="fn1" role="doc-endnote">
 <p>
-Front matter in light weight markup languages like Markdown start at the top of the file and begin and end with a simple set of delimiters. <code>—</code> (three dashes) is used for YAML, <code>+++</code> (three plus signs) for TOML, open and close curly braces are used by JSON.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a>
+Front matter in light weight markup languages like Markdown start at the top of the file and begin and end with a simple set of delimiters. JSON front matter uses open and close curly braces are used by JSON.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a>
 </p>
 </li>
 <li id="fn2" role="doc-endnote">
@@ -260,7 +260,7 @@ Common POSIX compatible systems include macOS, Linux, and recent versions of Win
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2021 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>
