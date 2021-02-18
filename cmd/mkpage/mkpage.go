@@ -4,7 +4,7 @@
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
-// Copyright (c) 2020, Caltech
+// Copyright (c) 2021, Caltech
 // All rights not granted herein are expressly reserved by Caltech.
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -71,13 +71,14 @@ That would be expressed on the command line as follows
 `
 
 	// Standard Options
-	showHelp         bool
-	showVersion      bool
-	showLicense      bool
-	showExamples     bool
-	inputFName       string
-	outputFName      string
-	generateMarkdown bool
+	showHelp          bool
+	showVersion       bool
+	showPandocVersion bool
+	showLicense       bool
+	showExamples      bool
+	inputFName        string
+	outputFName       string
+	generateMarkdown  bool
 
 	// Application Options
 	codesnip bool
@@ -101,6 +102,7 @@ func main() {
 	// Standard Options
 	app.BoolVar(&showHelp, "h,help", false, "display help")
 	app.BoolVar(&showVersion, "v,version", false, "display version")
+	app.BoolVar(&showPandocVersion, "pandoc-version", false, "display Pandoc version found")
 	app.BoolVar(&showExamples, "examples", false, "display example(s)")
 	app.BoolVar(&showLicense, "l,license", false, "display license")
 	app.StringVar(&inputFName, "i,input", "", "input filename")
@@ -130,10 +132,13 @@ func main() {
 	}
 	if showVersion {
 		fmt.Fprintln(app.Out, app.Version())
+		os.Exit(0)
+	}
+	if showPandocVersion {
 		if pandocVersion, err := mkpage.GetPandocVersion(); err != nil {
-			fmt.Fprintf(os.Stdout, "%s\n%s\n", pandocVersion, err)
+			fmt.Fprintf(os.Stdout, "\n\n%s\n%s\n", pandocVersion, err)
 		} else {
-			fmt.Fprintf(app.Out, "%s\n", pandocVersion)
+			fmt.Fprintf(app.Out, "\n\n%s\n", pandocVersion)
 		}
 		os.Exit(0)
 	}

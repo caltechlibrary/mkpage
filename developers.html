@@ -49,22 +49,19 @@ Requirements
 Pandoc needs to be installed, it is used to convert markup formats to HTMLand as the template engine for HTML output.
 </li>
 <li>
-go 1.14 or better
+go 1.16 or better
 </li>
 <li>
 <em>make</em> if you want to the <em>Makefile</em> to build the project.
 </li>
 <li>
-<a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> for generating a new <em>assets.go</em>
+<em>pkgassets</em> from <a href="https://github.com/caltechlibrary/cli">cli</a> for generating a new <em>assets.go</em>
 </li>
 <li>
 Caltech Library Go Packages
 <ul>
 <li>
 github.com/caltechlibrary/cli
-</li>
-<li>
-github.com/caltechlibrary/tmplfn
 </li>
 <li>
 github.com/caltechlibrary/rss2
@@ -78,7 +75,7 @@ Compiling from source
 <p>
 Using <em>go get</em>
 </p>
-<pre class="shell"><code>    go get -u github.com/caltechlibrary/pkgassets/...
+<pre class="shell"><code>    go get -u github.com/caltechlibrary/cli/...
     go get -u github.com/caltechlibrary/mkpage/...</code></pre>
 <p>
 Manual using only the go command
@@ -100,7 +97,7 @@ If you’re not modifying the contents of the defaults directory you do not need
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2021 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>

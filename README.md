@@ -1,23 +1,21 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
-# MkPage Project
+MkPage Project
+==============
 
 **MkPage Project** is a collection of tools for rendering static websites.
 Featured is the _mkpage_ command, a front end to
 [Pandoc](https://pandoc.org) (>= v2.10.x). Pandoc supports converting from many
 [lightweight markup languages](https://pandoc.org/ "Pandoc's list of supported formats"). _mkpage_ supports metadata encoded as
-front matter[^frontmatter] using [YAML](https://yaml.org),
-[TOML](https://github.com/toml-lang/toml) and
-[JSON](https://www.json.org/json-en.html)
+[JSON](https://www.json.org/json-en.html) front matter[^frontmatter],
 as well as additional data sources expressed on the command line
 in a simple command language. Content is rendered using Pandoc's
 [template language](https://pandoc.org/MANUAL.html#templates).
 
 [^frontmatter]: Front matter in light weight markup languages like
 Markdown start at the top of the file and begin and end with a simple
-set of delimiters. `---` (three dashes) is used for YAML, `+++`
-(three plus signs) for TOML, open and close curly braces are used by
-JSON.
+set of delimiters. JSON front matter uses open and close curly braces
+are used by JSON.
 
 **MkPage Project** was inspired by deconstructing more complex
 content management systems and distilling the rendering functions
@@ -48,7 +46,8 @@ workflow and build process that best fits your needs.
 
 [^posix]: Common POSIX compatible systems include macOS, Linux, and recent versions of Windows 10
 
-## A quick tour _mkpage_ command
+A quick tour _mkpage_ command
+-----------------------------
 
 The _mkpage_ command accepts key/value pairs as command line parameters.
 The pairs can be explicit data types, files on disc or resources from the
@@ -59,7 +58,8 @@ processed by Pandoc when rendering a Pandoc template.
 Additionally _mkpage_ understands the [Fountain](https://fountain.io)
 markup language will will handle conversion before passing to onto Pandoc.
 
-### _mkpage_'s command language
+_mkpage_'s command language
+---------------------------
 
 The "key" in our key/value pairs is used to map into the
 [Pandoc](https://pandoc.org/MANUAL.html) templates you want rendered.
@@ -164,10 +164,8 @@ files with corresponding HTML files and generate an RSS feed.
 
 #### frontmatter
 
-[frontmatter](docs/frontmatter/) will extract a light weight markup
-files' (e.g. Markdown) front matter so you can process it with another
-tool. It can optional convert the front matter into JSON even if the
-front matter was defined in YAML or TOML.
+[frontmatter](docs/frontmatter/) will extract JSON front matter from
+a plain text file (e.g. a Markdown document).
 
 #### byline
 
@@ -249,16 +247,19 @@ mysite.example.org then your could point your web browser at
 _http://mysite.example.org_ and see the web content you have in
 _Site/mysite.example.org_ directory.
 
-## Problem Reporting and lending a hand
+Problem Reporting and lending a hand
+------------------------------------
 
 **MkPage** project is hosted at [GitHub](https://github.com/caltechlibrary/mkpage) and bugs can be reported via the [Issue Tracker](https://github.com/caltechlibrary/mkpage/issues). As an open source project 
 pull requests as well as bug reports are appreciated.
 
-## Getting your copy of **MkPage Project**
+Getting your copy of **MkPage Project**
+---------------------------------------
 
 You can find releases of **MkPage Project** at [github.com/caltechlibrary/mkpage](https://github.com/caltechlibrary/mkpage/releases)
 
-## License
+License
+-------
 
 **MkPage Project** is released under an open source [license](license.html).
 

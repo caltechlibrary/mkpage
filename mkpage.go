@@ -3,7 +3,7 @@
 //
 // @author R. S. Doiel, <rsdoiel@caltech.edu>
 //
-// Copyright (c) 2020, Caltech
+// Copyright (c) 2021, Caltech
 // All rights not granted herein are expressly reserved by Caltech
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -30,10 +30,6 @@ import (
 	"regexp"
 	"strings"
 	"time"
-
-	// 3rd Party Packages
-	"github.com/pelletier/go-toml"
-	"gopkg.in/yaml.v3"
 
 	// Fountain support for scripts, interviews and narration
 	"github.com/rsdoiel/fountain"
@@ -81,10 +77,6 @@ const (
 
 	// ConfigIsUnknown means front matter and we can't parse it
 	ConfigIsUnknown = iota
-	// ConfigIsYAML means that YAML has been detected in the front matter (per Hugo style fencing)
-	ConfigIsYAML
-	// ConfigIsTOML means we have TOML Front Matter based on Hugo fencing or Mmarkdown fencing
-	ConfigIsTOML
 	// ConfigIsJSON means we have detected JSON front matter
 	ConfigIsJSON
 )
@@ -111,67 +103,10 @@ func normalizeEOL(input []byte) []byte {
 	return input
 }
 
-func yamlToJson(src []byte) ([]byte, error) {
-	m1 := make(map[interface{}]interface{})
-	err := yaml.Unmarshal(src, &m1)
-	if err != nil {
-		return nil, err
-	}
-	m2 := make(map[string]interface{})
-	for key, value := range m1 {
-		switch key.(type) {
-		case string:
-			m2[key.(string)] = value
-		case int:
-			m2[fmt.Sprintf("%d", key)] = value
-		case float64:
-			m2[fmt.Sprintf("%f", key)] = value
-		default:
-			return nil, fmt.Errorf("JSON conversion failed, can't convert %T, %+v to string", key, key)
-		}
-	}
-	return json.MarshalIndent(m2, "", "    ")
-}
-
 // SplitFrontMatter takes a []byte input splits it into front matter type,
 // front matter source and Markdown source. If either is missing an
 // empty []byte is returned for the missing element.
 func SplitFrontMatter(input []byte) (int, []byte, []byte) {
-	// YAML front matter uses ---, note this conflicts with Mmark practice, do I want to support YAML like this?
-	if bytes.HasPrefix(input, []byte("---\n")) {
-		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("---\n")), []byte("\n---\n"), 2)
-		if len(parts) > 1 {
-			return ConfigIsYAML, parts[0], parts[1]
-		}
-		if len(parts) > 0 {
-			return ConfigIsYAML, parts[0], []byte("")
-		}
-		return ConfigIsYAML, []byte(""), []byte("")
-	}
-	// TOML front matter as used in Hugo
-	if bytes.HasPrefix(input, []byte("+++\n")) {
-		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("+++\n")), []byte("\n+++\n"), 2)
-		if len(parts) > 1 {
-			return ConfigIsTOML, parts[0], parts[1]
-		}
-		if len(parts) > 0 {
-			return ConfigIsTOML, parts[0], []byte("")
-		}
-		return ConfigIsTOML, []byte(""), []byte("")
-	}
-	// TOML front matter identified in Mmark as three % or dashes,
-	// We can support the %, dashes are taken by Hugo style, but
-	// maybe I don't want to support that?
-	if bytes.HasPrefix(input, []byte("%%%\n")) {
-		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("%%%\n")), []byte("\n%%%\n"), 2)
-		if len(parts) > 1 {
-			return ConfigIsTOML, parts[0], parts[1]
-		}
-		if len(parts) > 0 {
-			return ConfigIsTOML, parts[0], []byte("")
-		}
-		return ConfigIsTOML, []byte(""), []byte("")
-	}
 	// JSON front matter, most Markdown processors.
 	if bytes.HasPrefix(input, []byte("{\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("{\n")), []byte("\n}\n"), 2)
@@ -186,37 +121,19 @@ func SplitFrontMatter(input []byte) (int, []byte, []byte) {
 }
 
 // UnmarshalFrontMatter takes a []byte of front matter source
-// and unmarshalls using either JSON, TOML and YAML unmarshalling
-// methods.
+// and unmarshalls using only JSON frontmatter
+// NOTE: removed yaml, toml support as of v0.2.4
 func UnmarshalFrontMatter(srcType int, src []byte, obj *map[string]interface{}) error {
-	switch srcType {
-	case ConfigIsTOML:
-		// Make sure we have valid Toml
-		if err := toml.Unmarshal(src, obj); err != nil {
-			return err
-		}
-	case ConfigIsYAML:
-		// With YAML we go through two step conversion
-		// YAML to JSON then Unmarshal JSON into our
-		// map.
-		if jsonSrc, err := yamlToJson(src); err != nil {
-			return err
-		} else {
-			if err := json.Unmarshal(jsonSrc, &obj); err != nil {
-				return err
-			}
-		}
-	default:
-		// Make sure we have valid JSON
-		if err := json.Unmarshal(src, &obj); err != nil {
-			return err
-		}
+	// Make sure we have valid JSON
+	if err := json.Unmarshal(src, &obj); err != nil {
+		return err
 	}
 	return nil
 }
 
 // ProcessorConfig takes front matter and returns
 // a map[string]interface{} containing configuration
+// NOTE: removed yaml, toml support as of v0.2.4
 func ProcessorConfig(configType int, frontMatterSrc []byte) (map[string]interface{}, error) {
 	//FIXME: Need to merge with .Config and return the merged result.
 	m := map[string]interface{}{}
@@ -226,27 +143,13 @@ func ProcessorConfig(configType int, frontMatterSrc []byte) (map[string]interfac
 	}
 	// Convert Front Matter to JSON
 	switch configType {
-	case ConfigIsYAML:
-		// YAML Front Matter
-		jsonSrc, err := yamlToJson(frontMatterSrc)
-		if err != nil {
-			return nil, fmt.Errorf("Can't parse YAML front matter, %s", err)
-		}
-		if err = json.Unmarshal(jsonSrc, &m); err != nil {
-			return nil, err
-		}
-	case ConfigIsTOML:
-		// TOML Front Matter
-		if err := toml.Unmarshal(frontMatterSrc, &m); err != nil {
-			return nil, err
-		}
 	case ConfigIsJSON:
 		// JSON Front Matter
 		if err := json.Unmarshal(frontMatterSrc, &m); err != nil {
 			return nil, err
 		}
 	default:
-		return nil, fmt.Errorf("unknown front matter format")
+		return nil, fmt.Errorf("unknown supported front matter format")
 	}
 	return m, nil
 }

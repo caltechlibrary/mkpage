@@ -6,13 +6,16 @@
 }
 
 
-# Pandoc intergation with MkPage
+Pandoc intergation with MkPage
+==============================
 
-## A future for MkPage
+A future for MkPage
+-------------------
 
 This is a distillation of my thinking about Markdown processors and **mkpage** as static website generator.  I am excited about the current state of [Pandoc](https://pandoc.org/) because of Mike Hucka's [Pangolin](https://github.com/mhucka/pangolin-notebook).
 
-## What's Pandoc?
+What's Pandoc?
+--------------
 
 Pandoc is a document conversion tool. It converts to and from a ridiculous number of formats.  In addition to HTML it includes output formats I want to use in the near future like ePub2, ePub3, PDF. Pandoc has excellent support Mathematical text.  Pandoc is [R Studio](https://rstudio.com/)'s Markdown to HTML engine. This is important as that means people who use R Studio to create web content will know Pandoc's dialect of Markdown even if they don't know they are using Pandoc. Pandoc can be extended using [Lua](https://lua.org). Pandoc itself is written in [Haskell](https://www.haskell.org/) which is an interesting language.
 
@@ -49,7 +52,8 @@ Where does this leave `mkpage` project? At a really interesting crossroads (at l
 
 `mkpage` is an Un-CMS, a distillation of the rendering features of complex CMS.  It is a set of tools for leveraging metadata provided as JSON documents, command line options and front matter in plain text documents.  Like Pandoc it is highly scriptable from languages like Bash, Python and Make. With the option of switching template languages or content processors it remains a useful but simple abstraction in website/content rendering. When you know your "content structure" it is easy automate site construction with simple scripts.
 
-## Where does **mkpage** go from here?
+Where does **mkpage** go from here?
+-----------------------------------
 
 **mkpage** is adopting Pandoc has its Markdown to HTML engine. **mkpage** is adding Pandoc as the default template engine.  Pandoc's integration also means **mkpage** inherits support for other markup systems like Textile, RestructText, and Jira Text. Pandoc integration should be complete for the v0.0.33 release of **mkpage**.
 

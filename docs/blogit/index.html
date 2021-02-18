@@ -59,11 +59,7 @@
 <h1 id="usage">
 USAGE
 </h1>
-<blockquote>
-<p>
-blogit [OPTIONS] DOCUMENT_NAME [DATE]
-</p>
-</blockquote>
+<pre><code>blogit [OPTIONS] DOCUMENT_NAME [DATE]</code></pre>
 <h2 id="description">
 DESCRIPTION
 </h2>
@@ -100,38 +96,39 @@ Below are a set of options available.
 EXAMPLES
 </h2>
 <p>
-I have a Markdown file called, “my-vacation-day.md”. I want to add it to my blog for the date July 1, 2020. I’ve written “my-vacation-day.md” in my home “Documents” folder and my blog repository is in my “Sites” folder under “Sites/me.example.org”. Adding “my-vacation-day.md” to the blog me.example.org would use the following command.
+I have a Markdown file called, “my-vacation-day.md”. I want to add it to my blog for the date July 1, 2021. I’ve written “my-vacation-day.md” in my home “Documents” folder and my blog repository is in my “Sites” folder under “Sites/me.example.org”. Adding “my-vacation-day.md” to the blog me.example.org would use the following command.
 </p>
-<pre><code>   cd Sites/me.example.org
-   blogit my-vacation-day.md 2020-07-01</code></pre>
 <p>
-The <em>blogit</em> command will copy “my-vacation-day.md”, creating any necessary file directories to “Sites/me.example.org/2020/06/01”. It will also update article lists (index.md) at the year level, month, and day level and month level of the directory tree and and generate/update a posts.json in the “Sites/my.example.org” that can be used in your home page template for listing recent posts.
+cd Sites/me.example.org blogit my-vacation-day.md 2021-07-01
+</p>
+<p>
+The <em>blogit</em> command will copy “my-vacation-day.md”, creating any necessary file directories to “Sites/me.example.org/2021/06/01”. It will also update article lists (index.md) at the year level, month, and day level and month level of the directory tree and and generate/update a posts.json in the “Sites/my.example.org” that can be used in your home page template for listing recent posts.
 </p>
 <p>
 <em>blogit</em> includes an option to set the prefix path to the blog posting. In this way you could have separate blogs structures for things like podcasts or videocasts.
 </p>
-<pre><code>    # Add a landing page for the podcast
-    blogit -prefix=podcast my-vacation.md 2020-07-01
-    # Add an audio file containing the podcast
-    blogit -prefix=podcast my-vacation.wav 2020-07-01</code></pre>
+<pre><code># Add a landing page for the podcast
+blogit -prefix=podcast my-vacation.md 2021-07-01
+# Add an audio file containing the podcast
+blogit -prefix=podcast my-vacation.wav 2021-07-01</code></pre>
 <p>
-Where <code>-p, -prefix</code> sets the prefix path before the YYYY/MM/DD path.
+Where “-p, -prefix” sets the prefix path before the YYYY/MM/DD path.
 </p>
 <p>
 If you have an existing blog paths in the form of PREFIX/YYYY/MM/DD you can use blogit to create/update/recreate the blog.json file.
 </p>
-<pre><code>    blogit -prefix=blog -year=2020</code></pre>
+<pre><code>blogit -prefix=blog -refresh=2021</code></pre>
 <p>
-The option “-year” is what indicates you want to crawl for blog posts for that year.
+The option “-refresh” is what indicates you want to crawl for blog posts for that year.
 </p>
 <p>
-blogit v0.1.1
+blogit v0.2.4
 </p>
 </section>
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2021 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>

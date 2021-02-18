@@ -44,10 +44,9 @@ If we included other key/value pairs not mentioned in the template they
 would be silently ignored.
 
 If we made a typo in *hello-world.tmpl* then we would see an error
-message from the [pandoc template
-engine](https://pandoc.org/MANUAL.html#exit-codes). NOTE: \"5
-PandocTemplateError\" is the one that tells you you have a template
-error.
+message from the 
+[pandoc template engine](https://pandoc.org/MANUAL.html#exit-codes). 
+NOTE: \"5 PandocTemplateError\" is the one that tells you you have a template error.
 
 Try the following to get a feel for how key/value pairs work with
 *mkpage*. The first two will render but display `Hello`. The first

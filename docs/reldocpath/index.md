@@ -1,15 +1,19 @@
 
-# USAGE
+USAGE
+=====
 
->	reldocpath \[OPTIONS\] SOURCE_DOC_PATH TARGET_DOC_PATH
+	reldocpath [OPTIONS] SOURCE_DOC_PATH TARGET_DOC_PATH
 
-## DESCRIPTION
+DESCRIPTION
+-----------
+
 
 Given a source document path, a target document path calculate and
 the implied common base path calculate the relative path for target.
 
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -23,19 +27,17 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
+
 
 Given
 
-```
     reldocpath chapter-01/lesson-03.html css/site.css
-```
 
 would output
 
-```
     .../css/site.css
-```
 
-reldocpath v0.1.1
 
+reldocpath v0.2.4

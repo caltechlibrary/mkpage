@@ -62,18 +62,66 @@ VERSION_NUMBER is a <a href="http://semver.org/">symantic version number</a> (e.
 </blockquote>
 <blockquote>
 <p>
-PLATFROM_NAME is a description of a platform (e.g. windows-amd64, macosx-amd64).
+PLATFROM_NAME is a description of a platform (e.g. windows-amd64, macos-amd64).
 </p>
 </blockquote>
 <p>
-Compiled versions are available for macOS (amd64 processor, macosx-amd64), Linux (amd64 processor, linux-amd64), Windows (amd64 processor, windows-amd64) and Rapsberry Pi (ARM7 processor, raspbian-arm7).
+Compiled versions are available for macOS (amd64 and M1 processor, macos-amd64, macos-arm64), Linux (amd64 processor, linux-amd64), Windows (amd64 processor, windows-amd64) and Rapsberry Pi (ARM7 processor, raspbian-arm7).
 </p>
-<pre><code>| Platform    | Zip Filename                            |
-|-------------|-----------------------------------------|
-| Windows     | mkpage-VERSION_NUMBER-windows-amd64.zip |
-| macOS       | mkpage-VERSION_NUMBER-macosx-amd64.zip  |
-| Linux/Intel | mkpage-VERSION_NUMBER-linux-amd64.zip   |
-| Raspbery Pi | mkpage-VERSION_NUMBER-raspbian-arm7.zip |</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>
+Platform
+</th>
+<th>
+Zip Filename
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>
+Windows
+</td>
+<td>
+mkpage-VERSION_NUMBER-windows-amd64.zip
+</td>
+</tr>
+<tr class="even">
+<td>
+macOS
+</td>
+<td>
+mkpage-VERSION_NUMBER-macos-amd64.zip
+</td>
+</tr>
+<tr class="odd">
+<td>
+macOS
+</td>
+<td>
+mkpage-VERSION_NUMBER-macos-arm64.zip
+</td>
+</tr>
+<tr class="even">
+<td>
+Linux/Intel
+</td>
+<td>
+mkpage-VERSION_NUMBER-linux-amd64.zip
+</td>
+</tr>
+<tr class="odd">
+<td>
+Raspbery Pi
+</td>
+<td>
+mkpage-VERSION_NUMBER-raspbian-arm7.zip
+</td>
+</tr>
+</tbody>
+</table>
 <h2 id="the-basic-recipe">
 The basic recipe
 </h2>
@@ -115,7 +163,7 @@ Test
 Here’s an example of the commands run in the Terminal App after downloading the zip file.
 </p>
 <pre class="shell"><code>    cd Downloads/
-    unzip mkpage-*-macosx-amd64.zip
+    unzip mkpage-*-macos-amd64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -228,7 +276,7 @@ Or clone the repository and then compile
 
 <footer>
 <span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2015 - 2020 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<span>&copy; 2021 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
 <address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
 <span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
 <span><a href="mailto:library@caltech.edu">Email Us</a></span>

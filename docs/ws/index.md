@@ -1,9 +1,13 @@
 
-# USAGE
+USAGE
+=====
 
->	ws \[OPTIONS\] \[DOCROOT\]
+	ws [OPTIONS] [DOCROOT]
 
-## DESCRIPTION
+DESCRIPTION
+-----------
+
+
 
 	a nimble web server
 
@@ -12,7 +16,9 @@ It uses Go's standard http libraries and can supports both http 1 and 2
 out of the box.  It is intended as a minimal wrapper for Go's standard
 http libraries supporting http/https versions 1 and 2 out of the box.
 
-## OPTIONS
+
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -35,19 +41,17 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
+
 
 Run web server using the content in the current directory
 
-```
    ws
-```
 
 Run web server using a specified directory
 
-```
    ws /www/htdocs
-```
 
-ws v0.1.1
 
+ws v0.2.4

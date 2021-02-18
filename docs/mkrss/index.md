@@ -1,9 +1,12 @@
 
-# USAGE
+USAGE
+=====
 
->	mkrss \[OPTIONS\] HTDOCS \[RSS_FILENAME\]
+	mkrss [OPTIONS] HTDOCS [RSS_FILENAME]
 
-## DESCRIPTION
+DESCRIPTION
+-----------
+
 
 mkrss walks the file system to generate a RSS2 file. It assumes 
 that the directory for HTDOCS is is the base directory containing 
@@ -12,7 +15,8 @@ YYYY/MM/DD (Year, Month, Day) corresponds to the publication date
 of ARTICLE_HTML.
 
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -41,21 +45,20 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
+
 
 If our htdocs folder is our document root and out blog is
 htdocs/myblog.
 
-```
     mkrss -channel-title="This Great Beyond" \
         -channel-description="Blog to save the world" \
         -channel-link="http://blog.example.org" \
         htdocs htdocs/rss.xml
-```
 
 This would build an RSS 2 file in htdocs/rss.xml from the
 articles in htdocs/myblog/YYYY/MM/DD.
 
 
-mkrss v0.1.1
-
+mkrss v0.2.4

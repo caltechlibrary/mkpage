@@ -176,6 +176,22 @@ dist/macos-amd64:
 	cd dist && zip -r $(PROJECT)-$(VERSION)-macos-amd64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
 	rm -fR dist/bin
 
+dist/macos-arm64:
+	mkdir -p dist/bin
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/mkpage cmd/mkpage/mkpage.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/mkrss cmd/mkrss/mkrss.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/sitemapper cmd/sitemapper/sitemapper.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/byline cmd/byline/byline.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/titleline cmd/titleline/titleline.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/reldocpath cmd/reldocpath/reldocpath.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/urlencode cmd/urlencode/urlencode.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/urldecode cmd/urldecode/urldecode.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/ws cmd/ws/ws.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/frontmatter cmd/frontmatter/frontmatter.go
+	env  GOOS=darwin GOARCH=arm64 go build -o dist/bin/blogit cmd/blogit/blogit.go
+	cd dist && zip -r $(PROJECT)-$(VERSION)-macos-arm64.zip README.md LICENSE INSTALL.md bin/* docs/* how-to/* templates/*
+	rm -fR dist/bin
+
 dist/raspbian-arm7:
 	mkdir -p dist/bin
 	env  GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/mkpage cmd/mkpage/mkpage.go
@@ -201,18 +217,14 @@ distribute_docs:
 	cp -vR docs/* dist/docs/
 	cp -vR how-to/* dist/how-to/
 	cp -vR templates dist/
-	#FIXME: need to pull package versions from go.mod file.
-	#./package-versions.bash > dist/package-versions.txt
 
-release: clean website distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macos-amd64 dist/raspbian-arm7
+release: clean website distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macos-amd64 dist/macos-arm64 dist/raspbian-arm7
 
 website:
 	./mk_website.py
 	cd how-to/fountain-demo && make
 
-publish:
-	./mk_website.py
-	cd how-to/fountain-demo && make
+publish: website
 	./publish.bash
 
 .FORCE:

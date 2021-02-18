@@ -1,14 +1,19 @@
 
-# USAGE
+USAGE
+=====
 
->	mkpage \[OPTIONS\] \[KEY/VALUE DATA PAIRS\] \[TEMPLATE_FILENAMES\]
+	mkpage [OPTIONS] [KEY/VALUE DATA PAIRS] [TEMPLATE_FILENAMES]
 
-## DESCRIPTION
+DESCRIPTION
+-----------
+
 
 Using the key/value pairs populate the template(s) and render to stdout.
+MkPage renders markdown using Pandoc (version >= v2.10). 
 
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -16,21 +21,24 @@ Below are a set of options available.
     -code                outout just code blocks for specific language, e.g. shell or json, reads from standard input
     -codesnip            output just the code bocks, reads from standard input
     -examples            display example(s)
+    -f, -from            set the from value (e.g. markdown) used by pandoc
     -generate-markdown   generate markdown documentation
     -h, -help            display help
     -i, -input           input filename
     -l, -license         display license
     -o, -output          output filename
-    -t, -templates       colon delimited list of Go text templates to use
+    -pandoc-version      display Pandoc version found
+    -t, -to              set the from value (e.g. html) used by pandoc
     -v, -version         display version
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
+
 
 Template (named "examples/weather.tmpl")
     
-```
     Date: $now$
     
     Hello $name$,
@@ -44,7 +52,6 @@ Template (named "examples/weather.tmpl")
     Thank you
     
     $signature$
-```
 
 Render the template above (i.e. examples/weather.tmpl) would be 
 accomplished from the following data sources--
@@ -57,12 +64,11 @@ accomplished from the following data sources--
 
 That would be expressed on the command line as follows
 
-```
     mkpage "now=text:$(date)" "name=text:Little Frieda" \
         "weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&lon=144.74977715100056&FcstType=json" \
         signature=examples/signature.txt \
         examples/weather.tmpl     
-```
 
-mkpage v0.1.1
 
+
+mkpage v0.2.4
