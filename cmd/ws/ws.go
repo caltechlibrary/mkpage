@@ -34,7 +34,6 @@ import (
 	"github.com/caltechlibrary/cli"
 	"github.com/caltechlibrary/mkpage"
 	"github.com/caltechlibrary/wsfn"
-	// Other packages
 )
 
 // Flag options
