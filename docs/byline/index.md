@@ -1,9 +1,11 @@
 
-# USAGE
+USAGE
+=====
 
->	byline \[OPTIONS\]
+	byline [OPTIONS]
 
-## DESCRIPTION
+DESCRIPTION
+-----------
 
 
 byline extracts a byline from a Markdown file. By default it reads
@@ -11,7 +13,8 @@ from standard in and writes to standard out but can read/write
 to specific files using an option.
 
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -28,17 +31,15 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
 
 
 Extract a byline from article.md.
 
-```
     cat article.md | byline
-```
 
 This will display the byline if one is found in article.md.
 
 
-byline v0.1.1
-
+byline v0.2.4

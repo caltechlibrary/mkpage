@@ -1,9 +1,11 @@
 
-# USAGE
+USAGE
+=====
 
->	blogit \[OPTIONS\] DOCUMENT_NAME \[DATE\]
+	blogit [OPTIONS] DOCUMENT_NAME [DATE]
 
-## DESCRIPTION
+DESCRIPTION
+-----------
 
 
 Blogit provides a quick tool to add or replace blog content
@@ -12,7 +14,8 @@ placing documents it also will generate simple markdown documents
 for inclusion in navigation.
 
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -40,23 +43,22 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
 
 
 I have a Markdown file called, "my-vacation-day.md". I want to
-add it to my blog for the date July 1, 2020.  I've written
+add it to my blog for the date July 1, 2021.  I've written
 "my-vacation-day.md" in my home "Documents" folder and my blog
 repository is in my "Sites" folder under "Sites/me.example.org".
 Adding "my-vacation-day.md" to the blog me.example.org would
 use the following command.
 
-```
    cd Sites/me.example.org
-   blogit my-vacation-day.md 2020-07-01
-```
+   blogit my-vacation-day.md 2021-07-01
 
 The *blogit* command will copy "my-vacation-day.md", creating any
-necessary file directories to "Sites/me.example.org/2020/06/01".
+necessary file directories to "Sites/me.example.org/2021/06/01".
 It will also update article lists (index.md) at the year level, 
 month, and day level and month level of the directory tree and
 and generate/update a posts.json in the "Sites/my.example.org"
@@ -67,26 +69,22 @@ posts.
 the blog posting.  In this way you could have separate blogs 
 structures for things like podcasts or videocasts.
 
-```
     # Add a landing page for the podcast
-    blogit -prefix=podcast my-vacation.md 2020-07-01
+    blogit -prefix=podcast my-vacation.md 2021-07-01
     # Add an audio file containing the podcast
-    blogit -prefix=podcast my-vacation.wav 2020-07-01
-```
+    blogit -prefix=podcast my-vacation.wav 2021-07-01
 
-Where `-p, -prefix` sets the prefix path before the YYYY/MM/DD path.
+Where "-p, -prefix" sets the prefix path before the YYYY/MM/DD path.
 
 
 If you have an existing blog paths in the form of
 PREFIX/YYYY/MM/DD you can use blogit to create/update/recreate
 the blog.json file.
 
-```
-    blogit -prefix=blog -year=2020
-```
+    blogit -prefix=blog -refresh=2021
 
-The option "-year" is what indicates you want to crawl
+The option "-refresh" is what indicates you want to crawl
 for blog posts for that year.
 
-blogit v0.1.1
 
+blogit v0.2.4

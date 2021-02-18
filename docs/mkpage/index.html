@@ -59,16 +59,12 @@
 <h1 id="usage">
 USAGE
 </h1>
-<blockquote>
-<p>
-mkpage [OPTIONS] [KEY/VALUE DATA PAIRS] [TEMPLATE_FILENAMES]
-</p>
-</blockquote>
+<pre><code>mkpage [OPTIONS] [KEY/VALUE DATA PAIRS] [TEMPLATE_FILENAMES]</code></pre>
 <h2 id="description">
 DESCRIPTION
 </h2>
 <p>
-Using the key/value pairs populate the template(s) and render to stdout.
+Using the key/value pairs populate the template(s) and render to stdout. MkPage renders markdown using Pandoc (version &gt;= v2.10).
 </p>
 <h2 id="options">
 OPTIONS
@@ -79,12 +75,14 @@ Below are a set of options available.
 <pre><code>    -code                outout just code blocks for specific language, e.g. shell or json, reads from standard input
     -codesnip            output just the code bocks, reads from standard input
     -examples            display example(s)
+    -f, -from            set the from value (e.g. markdown) used by pandoc
     -generate-markdown   generate markdown documentation
     -h, -help            display help
     -i, -input           input filename
     -l, -license         display license
     -o, -output          output filename
-    -t, -templates       colon delimited list of Go text templates to use
+    -pandoc-version      display Pandoc version found
+    -t, -to              set the from value (e.g. html) used by pandoc
     -v, -version         display version</code></pre>
 <h2 id="examples">
 EXAMPLES
@@ -92,19 +90,19 @@ EXAMPLES
 <p>
 Template (named “examples/weather.tmpl”)
 </p>
-<pre><code>    Date: $now$
+<pre><code>Date: $now$
+
+Hello $name$,
     
-    Hello $name$,
-        
-    The weather forcast is
-    
-    $if(weather.data.weather)$
-      $weather.data.weather[; ]$
-    $endif$
-    
-    Thank you
-    
-    $signature$</code></pre>
+The weather forcast is
+
+$if(weather.data.weather)$
+  $weather.data.weather[; ]$
+$endif$
+
+Thank you
+
+$signature$</code></pre>
 <p>
 Render the template above (i.e. examples/weather.tmpl) would be accomplished from the following data sources–
 </p>
@@ -130,12 +128,12 @@ Render the template above (i.e. examples/weather.tmpl) would be accomplished fr
 <p>
 That would be expressed on the command line as follows
 </p>
-<pre><code>    mkpage &quot;now=text:$(date)&quot; &quot;name=text:Little Frieda&quot; \
-        &quot;weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
-        signature=examples/signature.txt \
-        examples/weather.tmpl     </code></pre>
+<pre><code>mkpage &quot;now=text:$(date)&quot; &quot;name=text:Little Frieda&quot; \
+    &quot;weatherForecast=http://forecast.weather.gov/MapClick.php?lat=13.47190933300044&amp;lon=144.74977715100056&amp;FcstType=json&quot; \
+    signature=examples/signature.txt \
+    examples/weather.tmpl     </code></pre>
 <p>
-mkpage v0.1.1
+mkpage v0.2.4
 </p>
 </section>
 

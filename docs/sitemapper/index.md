@@ -1,14 +1,18 @@
 
-# USAGE
+USAGE
+=====
 
->	sitemapper \[OPTIONS\] HTDOCS_PATH MAP_FILENAME PUBLIC_BASE_URL
+	sitemapper [OPTIONS] HTDOCS_PATH MAP_FILENAME PUBLIC_BASE_URL
 
-## DESCRIPTION
+DESCRIPTION
+-----------
+
 
 sitemapper generates a sitemap for the website.
 
 
-## ENVIRONMENT
+ENVIRONMENT
+-----------
 
 Environment variables can be overridden by corresponding options
 
@@ -18,7 +22,8 @@ Environment variables can be overridden by corresponding options
     MKPAGE_SITEURL   # set the site url
 ```
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available. Options will override any corresponding environment settings.
 
@@ -38,11 +43,11 @@ Below are a set of options available. Options will override any corresponding en
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
 
-```
+
     sitemapper htdocs htdocs/sitemap.xml http://eprints.example.edu
-```
 
-sitemapper v0.1.1
 
+sitemapper v0.2.4

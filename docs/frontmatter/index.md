@@ -1,15 +1,18 @@
 
-# USAGE
+USAGE
+=====
 
->	frontmatter \[OPTIONS\]
+	frontmatter [OPTIONS]
 
-## DESCRIPTION
+DESCRIPTION
+-----------
 
 
 frontmatter extracts JSON front matter from a Markdown file. If no front matter is present then an empty file is returned. Note frontmatter doesn’t process the data extracted. It returns it unprocessed. Other tools can be used to process the front matter appropriately. By default frontmatter reads from standard in and writes to standard out. This makes it very suitable for pipeline processing or for passing JSON formatted front matter back to mkpage for integration into the templates processed.
 
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -26,22 +29,19 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
 
 
 Extract a front matter from article.md.
 
-```
     cat article.md | frontmatter
-```
 
 This will display the front matter if found in article.md.
 
-```
     frontmatter -i article.md
-```
 
 Will also do the same.
 
-frontmatter v0.1.1
 
+frontmatter v0.2.4
