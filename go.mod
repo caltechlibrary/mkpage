@@ -7,4 +7,5 @@ require (
 	github.com/caltechlibrary/rss2 v0.0.6
 	github.com/caltechlibrary/wsfn v0.0.7
 	github.com/rsdoiel/fountain v0.0.3
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )

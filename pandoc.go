@@ -25,6 +25,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 var (
@@ -33,6 +34,74 @@ var (
 	// Set a default -t (to) value used by Pandoc
 	PandocTo string
 )
+
+// MetadataBlock holds the Pandoc style Metadata block delimited
+// by start '%' at the being of the line in the start of a text file.
+type MetadataBlock struct {
+	Title   string   `json:"title"`
+	Authors []string `json:"authors"`
+	Date    string   `json:"date"`
+}
+
+func (block *MetadataBlock) String() string {
+	return fmt.Sprintf("%% %s\n%% %s\n%% %s", block.Title, strings.Join(block.Authors, "; "), block.Date)
+}
+
+func (block *MetadataBlock) Unmarshal(src []byte) error {
+	lines := bytes.Split(src, []byte("\n"))
+	fieldCnt := 0
+	key := ""
+	block.Title = ""
+	block.Authors = []string{}
+	block.Date = ""
+	for i := 0; i < len(lines); i++ {
+		line := lines[i]
+		if bytes.HasPrefix(line, []byte("% ")) {
+			fieldCnt += 1
+			switch fieldCnt {
+			case 1:
+				key = "title"
+			case 2:
+				key = "authors"
+			case 3:
+				key = "date"
+			default:
+				key = ""
+			}
+			line = bytes.TrimPrefix(line, []byte("% "))
+		}
+		if (len(key) > 0) && (fieldCnt <= 3) {
+			switch key {
+			case "title":
+				if len(block.Title) > 0 {
+					block.Title = fmt.Sprintf("%s\n%s", block.Title, bytes.TrimSpace(line))
+				} else {
+					block.Title = fmt.Sprintf("%s", bytes.TrimSpace(line))
+				}
+			case "authors":
+				if bytes.Contains(line, []byte(";")) {
+					parts := bytes.Split(line, []byte(";"))
+					for _, part := range parts {
+						block.Authors = append(block.Authors, fmt.Sprintf("%s", bytes.TrimSpace(part)))
+					}
+				} else {
+					block.Authors = append(block.Authors, fmt.Sprintf("%s", bytes.TrimSpace(line)))
+				}
+			case "date":
+				block.Date = fmt.Sprintf("%s", bytes.TrimSpace(line))
+				key = ""
+			}
+		}
+	}
+	if fieldCnt != 3 {
+		return fmt.Errorf("Missing or ill formed metablock, expecting title, author(s), date")
+	}
+	return nil
+}
+
+func (block *MetadataBlock) Marshal() ([]byte, error) {
+	return json.Marshal(block)
+}
 
 // Return the Pandoc version that will be used when calling Pandoc.
 func GetPandocVersion() (string, error) {

@@ -48,7 +48,7 @@ bin/urldecode$(EXT): version.go cmd/urldecode/urldecode.go
 bin/ws$(EXT): version.go mkpage.go cmd/ws/ws.go
 	go build -o bin/ws$(EXT) cmd/ws/ws.go
 
-bin/frontmatter$(EXT): version.go mkpage.go cmd/frontmatter/frontmatter.go
+bin/frontmatter$(EXT): version.go mkpage.go pandoc.go cmd/frontmatter/frontmatter.go
 	go build -o bin/frontmatter$(EXT) cmd/frontmatter/frontmatter.go
 
 bin/blogit$(EXT): version.go blogit.go mkpage.go cmd/blogit/blogit.go
