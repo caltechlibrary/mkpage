@@ -1,6 +1,4 @@
 package mkpage
 
-const (
-	// Version holds the semver assocaited with this version of mkpage.
-	Version = `v0.2.5`
-)
+const Version = "0.2.5"
+
