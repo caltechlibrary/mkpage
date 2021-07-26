@@ -1,4 +1,4 @@
 package mkpage
 
-const Version = "0.2.5"
+const Version = "1.0.0"
 
