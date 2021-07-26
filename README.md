@@ -6,7 +6,8 @@ MkPage Project
 **MkPage Project** is a collection of tools for rendering static websites.
 Featured is the _mkpage_ command, a front end to
 [Pandoc](https://pandoc.org) (>= v2.10.x). Pandoc supports converting from many
-[lightweight markup languages](https://pandoc.org/ "Pandoc's list of supported formats"). _mkpage_ supports metadata encoded as
+[lightweight markup languages](https://pandoc.org/ "Pandoc's list of supported formats").
+_mkpage_ supports metadata encoded as
 [JSON](https://www.json.org/json-en.html) front matter[^frontmatter],
 as well as additional data sources expressed on the command line
 in a simple command language. Content is rendered using Pandoc's
@@ -26,7 +27,9 @@ conversion engine and [template engine](https://pandoc.org/MANUAL.html#templates
 As such you can create your website using a variety of light weight 
 markup languages such as [Markdown](https://daringfireball.net/projects/markdown/),
 [Textile](http://redcloth.org/textile),
-[ReStructureText](https://docutils.sourceforge.io/docs/ref/rst/introduction.html) and [Jira's](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all) wiki markup.
+[ReStructureText](https://docutils.sourceforge.io/docs/ref/rst/introduction.html)
+and [Jira's](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all)
+wiki markup.
 
 The **MkPage Project**'s tools can run on machines as small as 
 a Raspberry Pi.  Their small foot print and minimal dependencies 

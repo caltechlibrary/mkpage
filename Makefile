@@ -120,7 +120,7 @@ distribute_docs:
 	@cp -vR docs dist/
 	@cp -vR how-to dist/
 	
-release: distribute_docs dist/linux-amd64 dist/macos-amd64 dist/macos-arm64 dist/windows-amd64 dist/raspberry_pi_os-arm7
+release: build distribute_docs dist/linux-amd64 dist/macos-amd64 dist/macos-arm64 dist/windows-amd64 dist/raspberry_pi_os-arm7
 
 
 .FORCE:
