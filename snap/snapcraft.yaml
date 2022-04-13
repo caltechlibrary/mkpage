@@ -1,7 +1,7 @@
 name: mkpage # Caltech Library Make Page Project
 base: core20 # the base snap is the execution environment for this snap
 version: '1.0.1' # Development semver
-summary: MkPage Project includes tools for rendering static websites including a Pandoc preprocessor
+summary: MkPage provides tools for rendering static websites
 description: |
         MkPage Project is a collection of tools for rendering static websites. Featured is the mkpage command, a front end to Pandoc (>= v2.10.x). Pandoc supports converting from many lightweight markup languages. mkpage supports metadata encoded as JSON front matter1, as well as additional data sources expressed on the command line in a simple command language. Content is rendered using Pandoc's template language.
 license: BSD-3-Clause
