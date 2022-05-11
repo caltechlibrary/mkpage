@@ -11,7 +11,7 @@ description: |
   language. Content is rendered using Pandoc's template language.
 license: BSD-3-Clause
 grade: stable # must be 'stable' to release into candidate/stable channels
-confinement: clasic # mkpage cli can access resource via URL
+confinement: classic # mkpage cli can access resource via URL
 
 apps:
   blogit:
@@ -56,14 +56,16 @@ apps:
       - home
   ws:
     command: bin/ws
-    daemon: simple
     plugs:
       - home
+
 parts:
   mkpage:
-  plugin: go
-  go-channel: stable
-  build-environment:
-    - "CGO_ENABLED" : "0"
-  source-type: git
-  source: https://github.com/caltechlibrary/mkpage
+    plugin: go
+    go-channel: stable
+    build-environment:
+      - "CGO_ENABLED" : "0"
+    source-type: git
+    source: https://github.com/caltechlibrary/mkpage
+
+
