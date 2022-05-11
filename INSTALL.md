@@ -29,7 +29,7 @@ processor, windows-amd64) and Rapsberry Pi (ARM7 processor, raspbian-arm7).
 | macOS       | mkpage-VERSION_NUMBER-macos-amd64.zip  |
 | macOS       | mkpage-VERSION_NUMBER-macos-arm64.zip  |
 | Linux/Intel | mkpage-VERSION_NUMBER-linux-amd64.zip   |
-| Raspbery Pi | mkpage-VERSION_NUMBER-raspbian-arm7.zip |
+| Raspbery Pi | mkpage-VERSION_NUMBER-raspberry_pi_os-arm7.zip |
 
 
 The basic recipe 
@@ -116,7 +116,7 @@ downloading the zip file.
 
 ```shell
     cd Downloads/
-    unzip mkpage-*-raspbian-arm7.zip
+    unzip mkpage-*-raspberry_pi_os-arm7.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH

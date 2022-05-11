@@ -31,6 +31,9 @@ import (
 	"strings"
 	"time"
 
+	// 3rd Part support (e.g. YAML)
+	"gopkg.in/yaml.v3"
+
 	// Fountain support for scripts, interviews and narration
 	"github.com/rsdoiel/fountain"
 )
@@ -73,12 +76,25 @@ const (
 	// TitleExp is the default format used by mkpage utilities
 	TitleExp = `^#\s+(\w|\s|.)+$`
 
-	// Config types for Front Matter
+	//
+	// Supported types for Front Matter
+	//
 
-	// ConfigIsUnknown means front matter and we can't parse it
-	ConfigIsUnknown = iota
-	// ConfigIsJSON means we have detected JSON front matter
-	ConfigIsJSON
+	// FrontMatterIsUnknown means front matter and we can't parse it
+	FrontMatterIsUnknown = iota
+	// FrontMatterIsJSON means we have detected JSON front matter
+	FrontMatterIsJSON
+	// FrontMatterIsPandocMetadata means we have detected a Pandoc
+	// style metadata block, e.g. opening lines start with
+	// '%' attribute name followed by value(s)
+	// E.g.
+	//      % title
+	//      % author(s)
+	//      % date
+	FrontMatterIsPandocMetadata
+	// FrontMatterIsYAML means we have detected a Pandoc YAML
+	// front matter block.
+	FrontMatterIsYAML
 )
 
 var (
@@ -106,27 +122,81 @@ func normalizeEOL(input []byte) []byte {
 // SplitFrontMatter takes a []byte input splits it into front matter type,
 // front matter source and Markdown source. If either is missing an
 // empty []byte is returned for the missing element.
+// NOTE: removed yaml, toml support as of v0.2.4
+// NOTE: Added support for Pandoc title blocks v0.2.5
 func SplitFrontMatter(input []byte) (int, []byte, []byte) {
 	// JSON front matter, most Markdown processors.
 	if bytes.HasPrefix(input, []byte("{\n")) {
 		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("{\n")), []byte("\n}\n"), 2)
 		src := []byte(fmt.Sprintf("{\n%s\n}\n", parts[0]))
 		if len(parts) > 1 {
-			return ConfigIsJSON, src, parts[1]
+			return FrontMatterIsJSON, src, parts[1]
 		}
-		return ConfigIsJSON, src, []byte("")
+		return FrontMatterIsJSON, src, []byte("")
+	}
+	if bytes.HasPrefix(input, []byte("---\n")) {
+		parts := bytes.SplitN(bytes.TrimPrefix(input, []byte("---\n")), []byte("\n---\n"), 2)
+		src := []byte(fmt.Sprintf("---\n%s\n---\n", parts[0]))
+		if len(parts) > 1 {
+			return FrontMatterIsYAML, src, parts[1]
+		}
+		return FrontMatterIsYAML, src, []byte("")
+	}
+	if bytes.HasPrefix(input, []byte("% ")) {
+		lines := bytes.Split(input, []byte("\n"))
+		i := 0
+		fieldCnt := 0
+		src := []byte{}
+		for ; (i < len(lines)) && (fieldCnt < 3); i++ {
+			if bytes.HasPrefix(lines[i], []byte("% ")) {
+				fieldCnt += 1
+				src = append(append(src, lines[i]...), []byte("\n")...)
+			} else if fieldCnt < 3 {
+				//NOTE: Dates can only one line, so we stop extra
+				// line consumption with authors.
+				src = append(append(src, lines[i]...), []byte("\n")...)
+			}
+		}
+		if fieldCnt == 3 {
+			return FrontMatterIsPandocMetadata, src, input[len(src):]
+		}
 	}
 	// Handle case of no front matter
-	return ConfigIsUnknown, []byte(""), input
+	return FrontMatterIsUnknown, []byte(""), input
 }
 
 // UnmarshalFrontMatter takes a []byte of front matter source
 // and unmarshalls using only JSON frontmatter
 // NOTE: removed yaml, toml support as of v0.2.4
-func UnmarshalFrontMatter(srcType int, src []byte, obj *map[string]interface{}) error {
-	// Make sure we have valid JSON
-	if err := json.Unmarshal(src, &obj); err != nil {
-		return err
+// NOTE: Added support for Pandoc title blocks as of v0.2.5
+func UnmarshalFrontMatter(configType int, src []byte, obj *map[string]interface{}) error {
+	var (
+		txt []byte
+		err error
+	)
+	switch configType {
+	case FrontMatterIsPandocMetadata:
+		block := MetadataBlock{}
+		if err = block.Unmarshal(txt); err != nil {
+			return err
+		}
+		if txt, err = block.Marshal(); err != nil {
+			return nil
+		}
+		if err = json.Unmarshal(txt, &obj); err != nil {
+			return err
+		}
+	case FrontMatterIsJSON:
+		// Make sure we have valid JSON
+		if err = json.Unmarshal(src, &obj); err != nil {
+			return err
+		}
+	case FrontMatterIsYAML:
+		if err = yaml.Unmarshal(src, &obj); err != nil {
+			return err
+		}
+	default:
+		return fmt.Errorf("Unsupported Front matter format")
 	}
 	return nil
 }
@@ -134,6 +204,7 @@ func UnmarshalFrontMatter(srcType int, src []byte, obj *map[string]interface{}) 
 // ProcessorConfig takes front matter and returns
 // a map[string]interface{} containing configuration
 // NOTE: removed yaml, toml support as of v0.2.4
+// NOTE: added Pandoc Metadata block as of v0.2.5
 func ProcessorConfig(configType int, frontMatterSrc []byte) (map[string]interface{}, error) {
 	//FIXME: Need to merge with .Config and return the merged result.
 	m := map[string]interface{}{}
@@ -143,7 +214,15 @@ func ProcessorConfig(configType int, frontMatterSrc []byte) (map[string]interfac
 	}
 	// Convert Front Matter to JSON
 	switch configType {
-	case ConfigIsJSON:
+	case FrontMatterIsPandocMetadata:
+		block := MetadataBlock{}
+		if err := block.Unmarshal(frontMatterSrc); err != nil {
+			return nil, err
+		}
+		m["title"] = block.Title
+		m["authors"] = block.Authors
+		m["date"] = block.Date
+	case FrontMatterIsJSON:
 		// JSON Front Matter
 		if err := json.Unmarshal(frontMatterSrc, &m); err != nil {
 			return nil, err

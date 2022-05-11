@@ -25,6 +25,9 @@ import (
 	"io/ioutil"
 	"os"
 
+	// 3rd Party
+	"gopkg.in/yaml.v3"
+
 	// My packages
 	"github.com/caltechlibrary/cli"
 	"github.com/caltechlibrary/mkpage"
@@ -128,15 +131,33 @@ func main() {
 		fmt.Fprintf(app.Eout, "%s", err)
 		os.Exit(1)
 	}
-	_, frontMatterSrc, _ := mkpage.SplitFrontMatter(buf)
+	configType, frontMatterSrc, _ := mkpage.SplitFrontMatter(buf)
 	if len(frontMatterSrc) > 0 {
-		if jsonFormat {
-			obj := make(map[string]interface{})
+		obj := make(map[string]interface{})
+		switch configType {
+		case mkpage.FrontMatterIsJSON:
 			// Make sure we have valid JSON
 			if err := json.Unmarshal(frontMatterSrc, &obj); err != nil {
 				fmt.Fprintf(app.Eout, "JSON error: %s", err)
 				os.Exit(1)
 			}
+		case mkpage.FrontMatterIsYAML:
+			// Make surew e ahve valid YAML
+			if err := yaml.Unmarshal(frontMatterSrc, &obj); err != nil {
+				fmt.Fprintf(app.Eout, "YAML error: %s", err)
+				os.Exit(1)
+			}
+		case mkpage.FrontMatterIsPandocMetadata:
+			block := new(mkpage.MetadataBlock)
+			if err := block.Unmarshal(frontMatterSrc); err != nil {
+				fmt.Fprintf(app.Eout, "Pandoc Metadata Block error: %s", err)
+				os.Exit(1)
+			}
+			obj["title"] = block.Title
+			obj["authors"] = block.Authors
+			obj["date"] = block.Date
+		}
+		if jsonFormat {
 			if src, err := json.MarshalIndent(obj, "", "    "); err != nil {
 				fmt.Fprintf(app.Eout, "%+v\n", obj)
 				fmt.Fprintf(app.Eout, "%s\n", src)
