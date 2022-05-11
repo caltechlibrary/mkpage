@@ -11,7 +11,7 @@ description: |
   language. Content is rendered using Pandoc's template language.
 license: BSD-3-Clause
 grade: stable # must be 'stable' to release into candidate/stable channels
-confinement: classic # mkpage cli can access resource via URL
+confinement: strict
 
 apps:
   blogit:
