@@ -30,8 +30,6 @@ apps:
     command: bin/mkpage
     plugs:
       - home
-      - /usr/bin
-      - /usr/local/bin
       - network
   mkrss:
     command: bin/mkrss
@@ -63,6 +61,9 @@ apps:
       - home
       - network
 
+layout:
+  /usr/bin/pandoc:
+    bind: $SNAP/usr/bin/pandoc
 
 parts:
   mkpage:
