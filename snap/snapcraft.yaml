@@ -35,8 +35,6 @@ apps:
     command: bin/mkrss
     plugs:
       - home
-    environment:
-      - PATH: /bin:/usr/bin:/usr/local/bin:/opt/bin:/opt/usr/bin:/opt/localbin
   reldocpath:
     command: bin/reldocpath
     plugs:
