@@ -30,10 +30,13 @@ apps:
     command: bin/mkpage
     plugs:
       - home
+      - network
   mkrss:
     command: bin/mkrss
     plugs:
       - home
+    environment:
+      - PATH: /bin:/usr/bin:/usr/local/bin:/opt/bin:/opt/usr/bin:/opt/localbin
   reldocpath:
     command: bin/reldocpath
     plugs:
@@ -58,6 +61,13 @@ apps:
     command: bin/ws
     plugs:
       - home
+      - network
+  pandoc:
+    command: bin/pandoc
+    plugs:
+      - home
+      - removable-media
+
 
 parts:
   mkpage:
@@ -67,5 +77,8 @@ parts:
       - "CGO_ENABLED" : "0"
     source-type: git
     source: https://github.com/caltechlibrary/mkpage
+  pandoc:
+    plugin: dump
+    source: https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-linux-$SNAPCRAFT_TARGET_ARCH.tar.gz
 
 
