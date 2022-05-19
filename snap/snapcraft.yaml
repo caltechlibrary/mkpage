@@ -1,5 +1,5 @@
 name: mkpage # Caltech Library Make Page Project
-base: core20 # the base snap is the execution environment for this snap
+base: core22 # the base snap is the execution environment for this snap
 version: '1.0.1' # Development semver
 summary: MkPage provides tools for rendering static websites
 description: |
@@ -13,61 +13,72 @@ license: BSD-3-Clause
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
 
-plugs:
-  system-pandoc:
-    interface: system-files
-    read:
-      - /usr/bin/pandoc
-      - /usr/local/bin/pandoc
 
 apps:
   blogit:
     command: bin/blogit
     plugs:
       - home
+      - removable-media
   byline:
     command: bin/byline
     plugs:
       - home
+      - removable-media
   frontmatter:
     command: bin/frontmatter
     plugs:
       - home
+      - removable-media
   mkpage:
     command: bin/mkpage
     plugs:
       - home
+      - removable-media
       - network
-      - system-pandoc
   mkrss:
     command: bin/mkrss
     plugs:
       - home
+      - removable-media
   reldocpath:
     command: bin/reldocpath
     plugs:
       - home
+      - removable-media
   sitemapper:
     command: bin/sitemapper
     plugs:
       - home
+      - removable-media
   titleline:
     command: bin/titleline
     plugs:
       - home
+      - removable-media
   urlencode:
     command: bin/urlencode
     plugs:
       - home
+      - removable-media
   urldecode:
     command: bin/urldecode
     plugs:
       - home
+      - removable-media
   ws:
     command: bin/ws
     plugs:
       - home
+      - removable-media
       - network
+  pandoc:
+    command: bin/pandoc
+    plugs:
+      - home
+      - removable-media
+    environment:
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib:$SNAP/lib:
 
 parts:
   mkpage:
@@ -77,3 +88,14 @@ parts:
       - "CGO_ENABLED" : "1"
     source-type: git
     source: https://github.com/caltechlibrary/mkpage
+  pandoc:
+    plugin: nil
+    stage-packages:
+      - libatomic1
+      - pandoc
+      - pandoc-data
+    organize:
+      usr/bin/: bin/
+      usr/lib/: lib/
+    prime:
+      - bin/pandoc
