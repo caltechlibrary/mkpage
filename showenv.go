@@ -13,6 +13,6 @@ func ShowEnvironment() {
 	keys := os.Environ()
 	sort.Strings(keys)
 	for i, key := range keys {
-		fmt.Printf("%d %s = %q\n", i, key, os.Getenv(key))
+		fmt.Printf("%d %s\n", i, key)
 	}
 }
