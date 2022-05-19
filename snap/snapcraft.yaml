@@ -60,6 +60,10 @@ apps:
     plugs:
       - home
       - network
+  pandoc:
+    command: bin/pandoc
+    plugs:
+      - home
 
 parts:
   mkpage:
@@ -69,14 +73,14 @@ parts:
       - "CGO_ENABLED" : "0"
     source-type: git
     source: https://github.com/caltechlibrary/mkpage
-##   pandoc:
-##     plugin: nil
-##     stage-packages:
-##       - libatomic1
-##       - pandoc
-##       - pandoc-data
-##     organize:
-##       usr/bin/: bin/
-##       usr/lib/: lib/
-##     prime:
-##       - bin/pandoc
+  pandoc:
+    plugin: nil
+    stage-packages:
+      - libatomic1
+      - pandoc
+      - pandoc-data
+    organize:
+      usr/bin/: bin/
+      usr/lib/: lib/
+    prime:
+      - bin/pandoc
