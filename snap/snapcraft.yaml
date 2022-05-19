@@ -61,10 +61,6 @@ apps:
       - home
       - network
 
-layout:
-  /usr/bin/pandoc:
-    bind: $SNAP/usr/bin/pandoc
-
 parts:
   mkpage:
     plugin: go
@@ -73,4 +69,14 @@ parts:
       - "CGO_ENABLED" : "0"
     source-type: git
     source: https://github.com/caltechlibrary/mkpage
-
+##   pandoc:
+##     plugin: nil
+##     stage-packages:
+##       - libatomic1
+##       - pandoc
+##       - pandoc-data
+##     organize:
+##       usr/bin/: bin/
+##       usr/lib/: lib/
+##     prime:
+##       - bin/pandoc

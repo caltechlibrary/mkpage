@@ -195,7 +195,7 @@ func main() {
 	// Make the page with Pandoc
 	err = mkpage.MakePandoc(app.Out, templateName, data)
 	if err != nil {
-		fmt.Fprintf(app.Eout, "Pandoc error, %s\n", err)
+		fmt.Fprintf(app.Eout, "%s\n", err)
 		os.Exit(1)
 	}
 	os.Exit(0)
