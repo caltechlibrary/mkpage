@@ -17,10 +17,8 @@ plugs:
   system-pandoc:
     interface: system-files
     read:
-      - /usr/bin
-      - /usr/local/bin
-      - /opt/bin
-      - /opt/local/bin
+      - /usr/bin/pandoc
+      - /usr/local/bin/pandoc
 
 apps:
   blogit:
