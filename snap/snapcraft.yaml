@@ -1,5 +1,5 @@
 name: mkpage # Caltech Library Make Page Project
-base: core22 # the base snap is the execution environment for this snap
+base: core20 # the base snap is the execution environment for this snap
 version: '1.0.1' # Development semver
 summary: MkPage provides tools for rendering static websites
 description: |
@@ -13,6 +13,9 @@ license: BSD-3-Clause
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
 
+layout:
+  /usr/share/pandoc/data/abbreviations:
+    bind-file: $SNAP_DATA/usr/share/pandoc/data/abbreviations
 
 apps:
   blogit:
@@ -77,8 +80,9 @@ apps:
     plugs:
       - home
       - removable-media
-    environment:
-      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib:$SNAP/lib
+      - desktop
+##    environment:
+##      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib:$SNAP/lib
 
 parts:
   mkpage:
@@ -88,6 +92,20 @@ parts:
       - "CGO_ENABLED" : "1"
     source-type: git
     source: https://github.com/caltechlibrary/mkpage
+  libatomic1:
+    plugin: nil
+    stage-packages:
+      - libatomic1
+    organize:
+      usr/lib/: lib/
+      usr/share/: share/
+  pandoc-data:
+    plugin: nil
+    stage-packages:
+      - pandoc-data
+    organize:
+      usr/lib/: lib/
+      usr/share/: share/
   pandoc:
     plugin: nil
     stage-packages:
@@ -97,5 +115,6 @@ parts:
     organize:
       usr/bin/: bin/
       usr/lib/: lib/
+      usr/share/: share/
     prime:
       - bin/pandoc

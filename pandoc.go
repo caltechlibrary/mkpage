@@ -104,6 +104,9 @@ func (block *MetadataBlock) Marshal() ([]byte, error) {
 }
 
 func fmtPandocError(err error) error {
+	if err == nil {
+		return nil
+	}
 	parts := []string{
 		"Pandoc error (see https://pandoc.org), ",
 		fmt.Sprintf("%s", err),
