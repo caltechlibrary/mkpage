@@ -14,8 +14,8 @@ grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
 
 layout:
-  /usr/share/pandoc/:
-    bind: $SNAP_DATA/usr/share/pandoc/
+  /usr/share/pandoc:
+    bind: $SNAP_DATA/usr/share/pandoc
 
 apps:
   blogit:
