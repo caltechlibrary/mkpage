@@ -22,67 +22,88 @@ apps:
     command: bin/blogit
     plugs:
       - home
+      - desktop
       - removable-media
+    aliases: [blogit]
   byline:
     command: bin/byline
     plugs:
       - home
+      - desktop
       - removable-media
+    aliases: [byline]
   frontmatter:
     command: bin/frontmatter
     plugs:
       - home
+      - desktop
       - removable-media
+    aliases: [frontmatter]
   mkpage:
     command: bin/mkpage
     plugs:
       - home
+      - desktop
       - removable-media
       - network
+    aliases: [mkpage]
   mkrss:
     command: bin/mkrss
     plugs:
       - home
+      - desktop
       - removable-media
+    aliases: [mkrss]
   reldocpath:
     command: bin/reldocpath
     plugs:
       - home
+      - desktop
       - removable-media
+    aliases: [reldocpath]
   sitemapper:
     command: bin/sitemapper
     plugs:
       - home
+      - desktop
       - removable-media
+    aliases: [sitemapper]
   titleline:
     command: bin/titleline
     plugs:
       - home
+      - desktop
       - removable-media
+    aliases: [titleline]
   urlencode:
     command: bin/urlencode
     plugs:
       - home
+      - desktop
       - removable-media
+    aliases: [urlencode]
   urldecode:
     command: bin/urldecode
     plugs:
       - home
+      - desktop
       - removable-media
+    aliases: [urldecode]
   ws:
     command: bin/ws
     plugs:
       - home
+      - desktop
       - removable-media
       - network
+    aliases: [ws]
   pandoc:
     command: bin/pandoc
     plugs:
       - home
-      - removable-media
       - desktop
-#    environment:
-#      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib:$SNAP/lib
+      - removable-media
+    aliases: [pandoc]
 
 parts:
   mkpage:
