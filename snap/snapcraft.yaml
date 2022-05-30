@@ -89,9 +89,12 @@ parts:
     plugin: go
     go-channel: stable
     build-environment:
-      - "CGO_ENABLED" : "1"
+      - "CGO_ENABLED" : "0"
     source-type: git
     source: https://github.com/caltechlibrary/mkpage
+    organize:
+      usr/lib/: lib/
+      usr/share/: share/
   libatomic1:
     plugin: nil
     stage-packages:
@@ -106,6 +109,10 @@ parts:
     organize:
       usr/lib/: lib/
       usr/share/: share/
+      usr/share/pandoc/: usr/share/pandoc/
+      usr/share/pandoc/data/: usr/share/pandoc/data/
+      usr/share/pandoc/data/templates: usr/share/pandoc/data/templates/
+      usr/share/pandoc/data/abbreviations/: usr/share/pandoc/data/abbreviations/
   pandoc:
     plugin: nil
     stage-packages:
@@ -119,5 +126,6 @@ parts:
       usr/share/pandoc/: usr/share/pandoc/
       usr/share/pandoc/data/: usr/share/pandoc/data/
       usr/share/pandoc/data/templates: usr/share/pandoc/data/templates/
+      usr/share/pandoc/data/abbreviations/: usr/share/pandoc/data/abbreviations/
     prime:
       - bin/pandoc
