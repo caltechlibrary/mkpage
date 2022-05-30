@@ -13,9 +13,15 @@ license: BSD-3-Clause
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
 
-#layout:
-#  /usr/share/pandoc/data:
-#    bind: $SNAP_DATA/usr/share/pandoc/data
+layout:
+  /usr/share:
+    bind: $SNAP_DATA/usr/share
+  /usr/share/pandoc:
+    bind: $SNAP_DATA/usr/share/pandoc
+  /usr/share/pandoc/data:
+    bind: $SNAP_DATA/usr/share/pandoc/data
+  /usr/share/pandoc/data/abbreviations:
+    symlink: $SNAP_DATA/usr/share/pandoc/data/abbreviations
 
 apps:
   blogit:
