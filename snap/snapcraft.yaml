@@ -135,5 +135,5 @@ parts:
       usr/share/pandoc/: share/pandoc/
     prime:
       - bin/pandoc
-      - usr/share/pandoc
+      - share/pandoc
 
