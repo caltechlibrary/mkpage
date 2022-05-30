@@ -109,10 +109,9 @@ parts:
     organize:
       usr/lib/: lib/
       usr/share/: share/
-      usr/share/pandoc/: usr/share/pandoc/
-      usr/share/pandoc/data/: usr/share/pandoc/data/
-      usr/share/pandoc/data/templates: usr/share/pandoc/data/templates/
-      usr/share/pandoc/data/abbreviations/: usr/share/pandoc/data/abbreviations/
+      usr/share/pandoc/: share/pandoc/
+      usr/share/pandoc/data/: share/pandoc/data/
+      usr/share/pandoc/data/templates/: share/pandoc/data/templates/
   pandoc:
     plugin: nil
     stage-packages:
@@ -123,9 +122,8 @@ parts:
       usr/bin/: bin/
       usr/lib/: lib/
       usr/share/: share/
-      usr/share/pandoc/: usr/share/pandoc/
-      usr/share/pandoc/data/: usr/share/pandoc/data/
-      usr/share/pandoc/data/templates: usr/share/pandoc/data/templates/
-      usr/share/pandoc/data/abbreviations/: usr/share/pandoc/data/abbreviations/
+      usr/share/pandoc/: share/pandoc/
+      usr/share/pandoc/data/: share/pandoc/data/
+      usr/share/pandoc/data/templates/: share/pandoc/data/templates/
     prime:
       - bin/pandoc
