@@ -13,10 +13,6 @@ license: BSD-3-Clause
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
 
-layout:
-  /usr/share/pandoc:
-    bind: $SNAP_DATA/usr/share/pandoc
-
 apps:
   blogit:
     command: bin/blogit
@@ -24,21 +20,21 @@ apps:
       - home
       - desktop
       - removable-media
-    aliases: [blogit]
+#    aliases: [blogit]
   byline:
     command: bin/byline
     plugs:
       - home
       - desktop
       - removable-media
-    aliases: [byline]
+#    aliases: [byline]
   frontmatter:
     command: bin/frontmatter
     plugs:
       - home
       - desktop
       - removable-media
-    aliases: [frontmatter]
+#    aliases: [frontmatter]
   mkpage:
     command: bin/mkpage
     plugs:
@@ -46,49 +42,49 @@ apps:
       - desktop
       - removable-media
       - network
-    aliases: [mkpage]
+#    aliases: [mkpage]
   mkrss:
     command: bin/mkrss
     plugs:
       - home
       - desktop
       - removable-media
-    aliases: [mkrss]
+#    aliases: [mkrss]
   reldocpath:
     command: bin/reldocpath
     plugs:
       - home
       - desktop
       - removable-media
-    aliases: [reldocpath]
+#    aliases: [reldocpath]
   sitemapper:
     command: bin/sitemapper
     plugs:
       - home
       - desktop
       - removable-media
-    aliases: [sitemapper]
+#    aliases: [sitemapper]
   titleline:
     command: bin/titleline
     plugs:
       - home
       - desktop
       - removable-media
-    aliases: [titleline]
+#    aliases: [titleline]
   urlencode:
     command: bin/urlencode
     plugs:
       - home
       - desktop
       - removable-media
-    aliases: [urlencode]
+#    aliases: [urlencode]
   urldecode:
     command: bin/urldecode
     plugs:
       - home
       - desktop
       - removable-media
-    aliases: [urldecode]
+#    aliases: [urldecode]
   ws:
     command: bin/ws
     plugs:
@@ -96,14 +92,14 @@ apps:
       - desktop
       - removable-media
       - network
-    aliases: [ws]
+#    aliases: [ws]
   pandoc:
     command: bin/pandoc
     plugs:
       - home
       - desktop
       - removable-media
-    aliases: [pandoc]
+#    aliases: [pandoc]
 
 parts:
   mkpage:
@@ -113,9 +109,6 @@ parts:
       - "CGO_ENABLED" : "1"
     source-type: git
     source: https://github.com/caltechlibrary/mkpage
-    organize:
-      usr/lib/: lib/
-      usr/share/: share/
   libatomic1:
     plugin: nil
     stage-packages:
@@ -129,10 +122,7 @@ parts:
       - pandoc-data
     organize:
       usr/lib/: lib/
-      usr/share/: share/
       usr/share/pandoc/: share/pandoc/
-      usr/share/pandoc/data/: share/pandoc/data/
-      usr/share/pandoc/data/templates/: share/pandoc/data/templates/
   pandoc:
     plugin: nil
     stage-packages:
@@ -142,9 +132,8 @@ parts:
     organize:
       usr/bin/: bin/
       usr/lib/: lib/
-      usr/share/: share/
       usr/share/pandoc/: share/pandoc/
-      usr/share/pandoc/data/: share/pandoc/data/
-      usr/share/pandoc/data/templates/: share/pandoc/data/templates/
     prime:
       - bin/pandoc
+      - usr/share/pandoc
+
