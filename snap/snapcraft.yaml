@@ -81,8 +81,8 @@ apps:
       - home
       - removable-media
       - desktop
-##    environment:
-##      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib:$SNAP/lib
+#    environment:
+#      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib:$SNAP/lib
 
 parts:
   mkpage:
@@ -116,5 +116,8 @@ parts:
       usr/bin/: bin/
       usr/lib/: lib/
       usr/share/: share/
+      usr/share/pandoc/: usr/share/pandoc/
+      usr/share/pandoc/data/: usr/share/pandoc/data/
+      usr/share/pandoc/data/templates: usr/share/pandoc/data/templates/
     prime:
       - bin/pandoc
