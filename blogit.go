@@ -266,10 +266,22 @@ func (dy *DayObj) updatePosts(ymd []string, targetName string) error {
 		post.Creators = unpackCreators(creators.([]interface{}))
 	}
 	if dt, ok := obj["date"]; ok {
-		post.Created = dt.(string)
+		switch dt.(type) {
+		case string:
+			post.Created = dt.(string)
+		case time.Time:
+			t := dt.(time.Time)
+			post.Created = t.Format("2006-01-02")
+		}
 	}
 	if updated, ok := obj["updated"]; ok {
-		post.Updated = updated.(string)
+		switch updated.(type) {
+		case string:
+			post.Updated = updated.(string)
+		case time.Time:
+			t := updated.(time.Time)
+			post.Updated = t.Format("2006-01-02")
+		}
 	}
 
 	i := dy.postIndex(post.Slug)
