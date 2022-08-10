@@ -6,12 +6,15 @@ Requirements
 ------------
 
 + Pandoc needs to be installed, it is used to convert markup formats to HTMLand as the template engine for HTML output.
-+ go 1.16 or better
++ go 1.19 or better
 + _make_ if you want to the _Makefile_ to build the project.
 + _pkgassets_ from [cli](https://github.com/caltechlibrary/cli) for generating a new _assets.go_
 + Caltech Library Go Packages
     + github.com/caltechlibrary/cli
     + github.com/caltechlibrary/rss2
++ Website and documentation generation
+    + mkpage 1.0.2 or better
+    + datatools' codemeta2cff
 
 Compiling from source
 ---------------------
