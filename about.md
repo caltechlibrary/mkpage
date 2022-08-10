@@ -5,14 +5,15 @@ title: mkpage
 About this software
 ===================
 
-mkpage 1.0.2
+mkpage 1.0.3
 ----------------
 
 ### Authors
 
 - Robert Doiel
 
-Command line tools for web content generation and publishing using Markdown, Fountain, JSON and Pandoc template.
+Command line tools for web content generation and publishing using
+Markdown, Fountain, JSON and Pandoc template.
 
 
 - License: https://data.caltech.edu/license
