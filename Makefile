@@ -25,8 +25,13 @@ ifeq ($(OS), Windows)
         EXT = .exe
 endif
 
-build: version.go $(PROGRAMS)
+build: version.go $(PROGRAMS) CITATION.cff
 
+CITATION.cff: codemeta.json
+	codemeta2cff codemeta.json CITATION.cff
+
+	
+	
 version.go: .FORCE
 	@echo "package $(PROJECT)" >version.go
 	@echo '' >>version.go
@@ -42,8 +47,11 @@ $(PROGRAMS): $(PACKAGE)
 test: $(PACKAGE)
 	go test
 
-website:
+website: build about.md
 	./mk_website.py
+
+about.md: codemeta.json
+	./bin/mkpage codemeta=codemeta.json codemeta-md.tmpl>about.md
 
 status:
 	git status
@@ -68,7 +76,7 @@ clean:
 
 install: build
 	@echo "Installing programs in $(PREFIX)/bin"
-	@for FNAME in $(PROGRAMS); do if [ -f "./bin/$${FNAME}$(EXT)" ]; then cp -v "./bin/$${FNAME}$(EXT)" "$(PREFIX)/bin/$${FNAME}$(EXT)"; fi; done
+	@for FNAME in $(PROGRAMS); do if [ -f "./bin/$${FNAME}$(EXT)" ]; then mv -v "./bin/$${FNAME}$(EXT)" "$(PREFIX)/bin/$${FNAME}$(EXT)"; fi; done
 	@echo ""
 	@echo "Make sure $(PREFIX)/bin is in your PATH"
 
@@ -104,6 +112,12 @@ dist/windows-amd64: $(PROGRAMS)
 	@cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
 	@rm -fR dist/bin
 
+dist/windows-arm64: $(PROGRAMS)
+	@mkdir -p dist/bin
+	@for FNAME in $(PROGRAMS); do env GOOS=windows GOARCH=arm64 go build -o "dist/bin/$${FNAME}.exe" cmd/$${FNAME}/*.go; done
+	@cd dist && zip -r $(PROJECT)-$(VERSION)-windows-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
+	@rm -fR dist/bin
+
 
 dist/raspberry_pi_os-arm7: $(PROGRAMS)
 	@mkdir -p dist/bin
@@ -121,7 +135,7 @@ distribute_docs:
 	@cp -vR docs dist/
 	@cp -vR how-to dist/
 	
-release: build distribute_docs dist/linux-amd64 dist/macos-amd64 dist/macos-arm64 dist/windows-amd64 dist/raspberry_pi_os-arm7
+release: build distribute_docs dist/linux-amd64 dist/macos-amd64 dist/macos-arm64 dist/windows-amd64 dist/windows-arm64 dist/raspberry_pi_os-arm7
 
 
 .FORCE:

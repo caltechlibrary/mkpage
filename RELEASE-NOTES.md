@@ -2,6 +2,29 @@
 Release Notes
 =============
 
+v1.0.3
+------
+
++ Minimum expected Go is 1.19
++ Snapcraft experimental install includes a pandoc 2.9 via conda
++ Added template example for generating an "about.md" file directly from a codemeta.json file
++ Added experimental release of mkpage for Windows on ARM64
+
+v1.0.2
+------
+
++ Upgraded dependent packages
+
+v1.0.1
+------
+
++ Added experimental snapcraft support
+
+v1.0.0
+------
+
++ Stable release
+
 v0.2.4
 ------
 

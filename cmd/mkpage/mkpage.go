@@ -85,6 +85,9 @@ That would be expressed on the command line as follows
 	codeType string
 	from     string
 	to       string
+
+	// Debugging setup options
+	showEnv bool
 )
 
 func main() {
@@ -115,6 +118,9 @@ func main() {
 	app.StringVar(&from, "f,from", "", "set the from value (e.g. markdown) used by pandoc")
 	app.StringVar(&to, "t,to", "html", "set the from value (e.g. html) used by pandoc")
 
+	// Debuggin setup options
+	app.BoolVar(&showEnv, "env", false, "display the environment that mkpage is running in (e.g. what the container sees)")
+
 	app.Parse()
 	args := app.Args()
 
@@ -140,6 +146,10 @@ func main() {
 		} else {
 			fmt.Fprintf(app.Out, "\n\n%s\n", pandocVersion)
 		}
+		os.Exit(0)
+	}
+	if showEnv {
+		mkpage.ShowEnvironment()
 		os.Exit(0)
 	}
 
@@ -195,7 +205,7 @@ func main() {
 	// Make the page with Pandoc
 	err = mkpage.MakePandoc(app.Out, templateName, data)
 	if err != nil {
-		fmt.Fprintf(app.Eout, "Pandoc error, %s\n", err)
+		fmt.Fprintf(app.Eout, "%s\n", err)
 		os.Exit(1)
 	}
 	os.Exit(0)

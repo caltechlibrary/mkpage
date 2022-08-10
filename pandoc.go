@@ -103,6 +103,22 @@ func (block *MetadataBlock) Marshal() ([]byte, error) {
 	return json.Marshal(block)
 }
 
+func fmtPandocError(err error) error {
+	if err == nil {
+		return nil
+	}
+	parts := []string{
+		"Pandoc error (see https://pandoc.org), ",
+		fmt.Sprintf("%s", err),
+	}
+
+	// Provide context where error is related to the PATH
+	if strings.Contains(parts[1], "PATH") {
+		parts = append(parts, fmt.Sprintf("PATH is %q", os.Getenv("PATH")))
+	}
+	return fmt.Errorf("%s", strings.Join(parts, "\n  "))
+}
+
 // Return the Pandoc version that will be used when calling Pandoc.
 func GetPandocVersion() (string, error) {
 	var (
@@ -110,7 +126,7 @@ func GetPandocVersion() (string, error) {
 	)
 	pandoc, err := exec.LookPath("pandoc")
 	if err != nil {
-		return "", err
+		return "", fmtPandocError(err)
 	}
 	cmd := exec.Command(pandoc, "--version")
 	cmd.Stdout = &out
@@ -122,12 +138,12 @@ func GetPandocVersion() (string, error) {
 		} else {
 			err = fmt.Errorf("%q exit error, %s", pandoc, err)
 		}
-		return "", err
+		return "", fmtPandocError(err)
 	}
 	if eOut.Len() > 0 {
 		fmt.Fprintf(os.Stderr, "%q warns, %s", pandoc, eOut.String())
 	}
-	return out.String(), err
+	return out.String(), fmtPandocError(err)
 }
 
 // pandocProcessor accepts an array of bytes as input and returns
@@ -146,7 +162,7 @@ func pandocProcessor(input []byte, from string, to string) ([]byte, error) {
 	}
 	pandoc, err := exec.LookPath("pandoc")
 	if err != nil {
-		return nil, err
+		return nil, fmtPandocError(err)
 	}
 	options := []string{}
 	if from != "" {
@@ -166,12 +182,12 @@ func pandocProcessor(input []byte, from string, to string) ([]byte, error) {
 		} else {
 			err = fmt.Errorf("%q exit error, %s", pandoc, err)
 		}
-		return nil, err
+		return nil, fmtPandocError(err)
 	}
 	if eOut.Len() > 0 {
 		fmt.Fprintf(os.Stderr, "%q warns, %s", pandoc, eOut.String())
 	}
-	return out.Bytes(), err
+	return out.Bytes(), fmtPandocError(err)
 }
 
 // MakePandoc resolves key/value map rendering metadata suitable for processing with pandoc along with template information
@@ -184,7 +200,7 @@ func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) 
 
 	pandoc, err := exec.LookPath("pandoc")
 	if err != nil {
-		return fmt.Errorf("Pandoc (see https://pandoc.org): %q", err)
+		return fmtPandocError(err)
 	}
 	data, err := ResolveData(keyValues)
 	if err != nil {
@@ -248,13 +264,13 @@ func MakePandoc(wr io.Writer, templateName string, keyValues map[string]string) 
 		} else {
 			err = fmt.Errorf("%q exit error, %s", pandoc, err)
 		}
-		return err
+		return fmtPandocError(err)
 	}
 	if eOut.Len() > 0 {
 		fmt.Fprintf(os.Stderr, "%q warns, %s", pandoc, eOut.String())
 	}
 	wr.Write(out.Bytes())
-	return err
+	return fmtPandocError(err)
 }
 
 // MakePandocString resolves key/value map rendering metadata suitable for processing with pandoc along with template information
@@ -267,7 +283,7 @@ func MakePandocString(tmplSrc string, keyValues map[string]string) (string, erro
 
 	pandoc, err := exec.LookPath("pandoc")
 	if err != nil {
-		return "", fmt.Errorf("Pandoc (see https://pandoc.org): %q", err)
+		return "", fmtPandocError(err)
 	}
 	data, err := ResolveData(keyValues)
 	if err != nil {
@@ -321,7 +337,7 @@ func MakePandocString(tmplSrc string, keyValues map[string]string) (string, erro
 		} else {
 			err = fmt.Errorf("%q exit error, %s", pandoc, err)
 		}
-		return "", err
+		return "", fmtPandocError(err)
 	}
 	if eOut.Len() > 0 {
 		return "", fmt.Errorf("%q warns, %s", pandoc, eOut.String())

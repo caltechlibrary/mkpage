@@ -1,8 +1,8 @@
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/caltechlibrary/cli v0.0.16/go.mod h1:BVT+6d/QqcN4UApWR3ufjkkKj2O6+48B4G6iUpP8m38=
-github.com/caltechlibrary/cli v0.0.17 h1:vGNSZOxv5tMYLDrtI+kBkoI/ZzvKuit+Ps0RVhlb2dI=
-github.com/caltechlibrary/cli v0.0.17/go.mod h1:9crFPycCNeyTWautZ0t/YjaW8Clsr9uQZfq/SNNwhak=
+github.com/caltechlibrary/cli v0.0.18 h1:Z1NjhJ2ar2lWCFlA00wVDa5j0qnsL2XeI/qtgX2wOXU=
+github.com/caltechlibrary/cli v0.0.18/go.mod h1:9crFPycCNeyTWautZ0t/YjaW8Clsr9uQZfq/SNNwhak=
 github.com/caltechlibrary/rss2 v0.0.6 h1:byjRrYUkcCJRxAlo2Qv6+KjTutkeGoQPT5Zf/WWXTuE=
 github.com/caltechlibrary/rss2 v0.0.6/go.mod h1:WWvU7vz5KsaaCHlMskkebGnyZY7OcDWL05ySSxJV8ok=
 github.com/caltechlibrary/wsfn v0.0.8 h1:PVf3npGOnts9q33grCmM22Pe0Hfvyo2t0aD1myNgWPE=
@@ -20,5 +20,5 @@ golang.org/x/term v0.0.0-20201117132131-f5c789dd3221/go.mod h1:Nr5EML6q2oocZ2LXR
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
-gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b h1:h8qDotaEPuJATrMmW04NCwg7v22aHH28wwpauUhK9Oo=
-gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
+gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=

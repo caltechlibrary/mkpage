@@ -14,58 +14,104 @@ grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
 
 apps:
-  blogit:
-    command: bin/blogit
-    plugs:
-      - home
-  byline:
-    command: bin/byline
-    plugs:
-      - home
-  frontmatter:
-    command: bin/frontmatter
-    plugs:
-      - home
   mkpage:
     command: bin/mkpage
     plugs:
       - home
+      - desktop
+      - removable-media
+      - network
+#    aliases: [mkpage]
+  blogit:
+    command: bin/blogit
+    plugs:
+      - home
+      - desktop
+      - removable-media
+#    aliases: [blogit]
+  byline:
+    command: bin/byline
+    plugs:
+      - home
+      - desktop
+      - removable-media
+#    aliases: [byline]
+  frontmatter:
+    command: bin/frontmatter
+    plugs:
+      - home
+      - desktop
+      - removable-media
+#    aliases: [frontmatter]
   mkrss:
     command: bin/mkrss
     plugs:
       - home
+      - desktop
+      - removable-media
+#    aliases: [mkrss]
   reldocpath:
     command: bin/reldocpath
     plugs:
       - home
+      - desktop
+      - removable-media
+#    aliases: [reldocpath]
   sitemapper:
     command: bin/sitemapper
     plugs:
       - home
+      - desktop
+      - removable-media
+#    aliases: [sitemapper]
   titleline:
     command: bin/titleline
     plugs:
       - home
+      - desktop
+      - removable-media
+#    aliases: [titleline]
   urlencode:
     command: bin/urlencode
     plugs:
       - home
+      - desktop
+      - removable-media
+#    aliases: [urlencode]
   urldecode:
     command: bin/urldecode
     plugs:
       - home
+      - desktop
+      - removable-media
+#    aliases: [urldecode]
   ws:
     command: bin/ws
     plugs:
       - home
+      - desktop
+      - removable-media
+      - network
+#    aliases: [ws]
+  pandoc:
+    command: bin/pandoc
+    plugs:
+      - home
+      - desktop
+      - removable-media
+#    aliases: [pandoc]
 
 parts:
+  pandoc:
+    plugin: conda
+    conda-packages:
+      - -c
+      - conda-forge
+      - pandoc
   mkpage:
     plugin: go
     go-channel: stable
     build-environment:
-      - "CGO_ENABLED" : "0"
+      - "CGO_ENABLED" : "1"
     source-type: git
     source: https://github.com/caltechlibrary/mkpage
-
-
