@@ -1,6 +1,6 @@
 name: mkpage # Caltech Library Make Page Project
 base: core20 # the base snap is the execution environment for this snap
-version: '1.0.1' # Development semver
+version: '1.0.3' # Development semver
 summary: MkPage provides tools for rendering static websites
 description: |
   MkPage Project is a collection of tools for rendering static websites.
