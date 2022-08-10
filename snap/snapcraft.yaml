@@ -14,6 +14,14 @@ grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
 
 apps:
+  mkpage:
+    command: bin/mkpage
+    plugs:
+      - home
+      - desktop
+      - removable-media
+      - network
+#    aliases: [mkpage]
   blogit:
     command: bin/blogit
     plugs:
@@ -35,14 +43,6 @@ apps:
       - desktop
       - removable-media
 #    aliases: [frontmatter]
-  mkpage:
-    command: bin/mkpage
-    plugs:
-      - home
-      - desktop
-      - removable-media
-      - network
-#    aliases: [mkpage]
   mkrss:
     command: bin/mkrss
     plugs:
@@ -102,6 +102,12 @@ apps:
 #    aliases: [pandoc]
 
 parts:
+  pandoc:
+    plugin: conda
+    conda-packages:
+      - -c
+      - conda-forge
+      - pandoc
   mkpage:
     plugin: go
     go-channel: stable
@@ -109,31 +115,3 @@ parts:
       - "CGO_ENABLED" : "1"
     source-type: git
     source: https://github.com/caltechlibrary/mkpage
-  libatomic1:
-    plugin: nil
-    stage-packages:
-      - libatomic1
-    organize:
-      usr/lib/: lib/
-      usr/share/: share/
-  pandoc-data:
-    plugin: nil
-    stage-packages:
-      - pandoc-data
-    organize:
-      usr/lib/: lib/
-      usr/share/pandoc/: share/pandoc/
-  pandoc:
-    plugin: nil
-    stage-packages:
-      - libatomic1
-      - pandoc
-      - pandoc-data
-    organize:
-      usr/bin/: bin/
-      usr/lib/: lib/
-      usr/share/pandoc/: share/pandoc/
-    prime:
-      - bin/pandoc
-      - share/pandoc
-
