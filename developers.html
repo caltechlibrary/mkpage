@@ -32,6 +32,9 @@
 <a href="RELEASE-NOTES.html">Release Notes</a>
 </li>
 <li>
+<a href="about.html">About</a>
+</li>
+<li>
 <a href="https://github.com/caltechlibrary/mkpage">Github</a>
 </li>
 </ul>
@@ -46,8 +49,7 @@ Requirements
 </h2>
 <ul>
 <li>
-Pandoc needs to be installed, it is used to convert markup formats to
-HTMLand as the template engine for HTML output.
+Pandoc needs to be installed, it is used to convert markup formats to HTMLand as the template engine for HTML output.
 </li>
 <li>
 go 1.16 or better
@@ -56,9 +58,7 @@ go 1.16 or better
 <em>make</em> if you want to the <em>Makefile</em> to build the project.
 </li>
 <li>
-<em>pkgassets</em> from <a
-href="https://github.com/caltechlibrary/cli">cli</a> for generating a
-new <em>assets.go</em>
+<em>pkgassets</em> from <a href="https://github.com/caltechlibrary/cli">cli</a> for generating a new <em>assets.go</em>
 </li>
 <li>
 Caltech Library Go Packages
@@ -90,16 +90,11 @@ Manual using only the go command
 regenerating assets.go
 </h3>
 <p>
-<em>assets.go</em> holds the go source code for a map containing the
-contents of the <em>defaults</em> directory (e.g. templates/page.tmpl
-and templates/slides.tmpl). If you modify those files you’ll need to
-recreate <em>assets.go</em>. You can do so with the <a
-href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> tool.
+<em>assets.go</em> holds the go source code for a map containing the contents of the <em>defaults</em> directory (e.g. templates/page.tmpl and templates/slides.tmpl). If you modify those files you’ll need to recreate <em>assets.go</em>. You can do so with the <a href="https://github.com/caltechlibrary/pkgassets">pkgassets</a> tool.
 </p>
 <pre class="shell"><code>    pkgassets -o assets.go -p mkpage Defaults defaults</code></pre>
 <p>
-If you’re not modifying the contents of the defaults directory you do
-not need to regenerate <em>assets.go</em>.
+If you’re not modifying the contents of the defaults directory you do not need to regenerate <em>assets.go</em>.
 </p>
 </section>
 

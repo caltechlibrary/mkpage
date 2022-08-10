@@ -1,0 +1,59 @@
+---
+title: $codemeta.name$
+---
+
+About this software
+===================
+
+$codemeta.name$ $codemeta.version$
+----------------
+
+$if(codemeta.author)$
+### Authors
+
+$for(codemeta.author)$
+- $it.givenName$ $it.familyName$
+$endfor$
+$endif$
+
+$if(codemeta.description)$
+$codemeta.description$
+$endif$
+
+
+$if(codemeta.license)$- License: $codemeta.license$$endif$
+$if(codemeta.codeRepository)$- GitHub: $codemeta.codeRepository$$endif$
+$if(codemeta.issueTracker)$- Issues: $codemeta.issueTracker$$endif$
+
+
+$if(codemeta.programmingLanguage)$
+### Programming languages
+
+$for(codemeta.programmingLanguage)$
+- $codemeta.programmingLanguage$
+$endfor$
+$endif$
+
+$if(codemeta.operatingSystem)$
+### Operating Systems
+
+$for(codemeta.operatingSystem)$
+- $codemeta.operatingSystem$
+$endfor$
+$endif$
+
+$if(codemeta.softwareRequirements)$
+### Software Requiremets
+
+$for(codemeta.softwareRequirements)$
+- $codemeta.softwareRequirements$
+$endfor$
+$endif$
+
+$if(codemeta.relatedLink)$
+### Related Links
+
+$for(codemeta.relatedLink)$
+- [$it$]($it$)
+$endfor$
+$endif$

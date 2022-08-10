@@ -25,8 +25,13 @@ ifeq ($(OS), Windows)
         EXT = .exe
 endif
 
-build: version.go $(PROGRAMS)
+build: version.go $(PROGRAMS) CITATION.cff
 
+CITATION.cff: codemeta.json
+	codemeta2cff codemeta.json CITATION.cff
+
+	
+	
 version.go: .FORCE
 	@echo "package $(PROJECT)" >version.go
 	@echo '' >>version.go
@@ -42,8 +47,11 @@ $(PROGRAMS): $(PACKAGE)
 test: $(PACKAGE)
 	go test
 
-website:
+website: build about.md
 	./mk_website.py
+
+about.md: codemeta.json
+	./bin/mkpage codemeta=codemeta.json codemeta-md.tmpl>about.md
 
 status:
 	git status

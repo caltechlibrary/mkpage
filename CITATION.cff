@@ -1,10 +1,22 @@
-
-cff-version: 1.1.0
+cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-authors:
-   - family-names: Doiel
-     given-names: Robert
-     orcid: https://orcid.org/0000-0003-0900-6903
-version: 1.0.0
 title: mkpage
-date-released: 2021-07-26
+authors:
+  - family-names: Doiel
+    given-names: Robert
+    orcid: https://orcid.org/0000-0003-0900-6903
+abstract: Command line tools for web content generation and publishing using Markdown, Fountain, JSON and Pandoc template.
+repository-code: "https://github.com/caltechlibrary/mkpage"
+type: software
+version: 1.0.2
+license-url: "https://data.caltech.edu/license"
+keywords:
+  - content management
+  - webpage generation
+  - static site generation
+  - web server
+  - blogging
+  - markdown
+  - fountain
+  - pandoc
+date-released: 2022-08-10

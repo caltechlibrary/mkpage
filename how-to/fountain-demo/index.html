@@ -36,47 +36,31 @@
 Fountain Demo
 </h1>
 <p>
-<strong>mkpage</strong> supports processing <a
-href="https://fountain.io">Fountain</a> markup. This is helpful if
-you’re transcribing and scriptting an interview or presentation. Of
-course Fountain is also used to write screenplays and plays.
+<strong>mkpage</strong> supports processing <a href="https://fountain.io">Fountain</a> markup. This is helpful if you’re transcribing and scriptting an interview or presentation. Of course Fountain is also used to write screenplays and plays.
 </p>
 <p>
-<strong>mkpage</strong> will recognize fountain documents by their
-extensions, e.g. .spmd and .fountain. It will then invoke the fountain
-markup engine rather than the Markdown engine to turn the Fountain text
-into HTML. You can set the options for the fountain processor in the
-front matter of the document.
+<strong>mkpage</strong> will recognize fountain documents by their extensions, e.g. .spmd and .fountain. It will then invoke the fountain markup engine rather than the Markdown engine to turn the Fountain text into HTML. You can set the options for the fountain processor in the front matter of the document.
 </p>
 <p>
-You can see the fountain source at <a
-href="interview-with-a-dog.fountain">interview-with-a-dog.fountain</a>
-and an HTML rendering in <a
-href="interview-with-a-dog.html">interview-with-a-dog.html</a>.
+You can see the fountain source at <a href="interview-with-a-dog.fountain">interview-with-a-dog.fountain</a> and an HTML rendering in <a href="interview-with-a-dog.html">interview-with-a-dog.html</a>.
 </p>
 <p>
 The JSON front matter configures how the fountain document is rendered.
 </p>
 <div id="cb1" class="sourceCode">
-<pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>       <span class="dt">&quot;fountain&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;page&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;link_css&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;css&quot;</span><span class="fu">:</span> <span class="st">&quot;fountain.css&quot;</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>       <span class="fu">}</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span></code></pre>
+<pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>    <span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>       <span class="dt">&quot;fountain&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>            <span class="dt">&quot;page&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>            <span class="dt">&quot;link_css&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>            <span class="dt">&quot;css&quot;</span><span class="fu">:</span> <span class="st">&quot;fountain.css&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>       <span class="fu">}</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>    <span class="fu">}</span></span></code></pre>
 </div>
 <p>
-The fountain processor is looking for a heading of attribute “fountain”
-then for the various settings, e.g. page (rendering full HTML page),
-link_css (using a link element to bring the CSS into the page),
-inline_css (use an inline style element for style the content), css (the
-CSS file to reference, either for inline content or as a link).
+The fountain processor is looking for a heading of attribute “fountain” then for the various settings, e.g. page (rendering full HTML page), link_css (using a link element to bring the CSS into the page), inline_css (use an inline style element for style the content), css (the CSS file to reference, either for inline content or as a link).
 </p>
 <p>
-<strong>mkpage</strong> support JONS front matter. It does not support
-TOML or YAML.
+<strong>mkpage</strong> support JONS front matter. It does not support TOML or YAML.
 </p>
 <p>
 Processing our document can be done with the following command.
