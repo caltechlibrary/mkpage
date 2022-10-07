@@ -20,18 +20,23 @@ ifneq ($(prefix),)
         PREFIX = $(prefix)
 endif
 
-EXT = 
+EXT =
 ifeq ($(OS), Windows)
         EXT = .exe
 endif
 
-build: version.go $(PROGRAMS) CITATION.cff
+PANDOC = $(shell which pandoc)
 
-CITATION.cff: codemeta.json
-	codemeta2cff codemeta.json CITATION.cff
+build: version.go $(PROGRAMS) CITATION.cff about.md
 
-	
-	
+CITATION.cff: codemeta.json .FORCE
+	cat codemeta.json | sed -E   's/"@context"/"at__context"/g;s/"@type"/"at__type"/g;s/"@id"/"at__id"/g' >_codemeta.json
+	if [ -f $(PANDOC) ]; then echo "" | $(PANDOC) --metadata title="Citation $(PROJECT)" --metadata-file=_codemeta.json --template=codemeta-cff.tmpl >CITATION.cff; fi
+
+about.md: codemeta.json .FORCE
+	cat codemeta.json | sed -E   's/"@context"/"at__context"/g;s/"@type"/"at__type"/g;s/"@id"/"at__id"/g' >_codemeta.json
+	if [ -f $(PANDOC) ]; then echo "" | $(PANDOC) --metadata title="About $(PROJECT)" --metadata-file=_codemeta.json --template=codemeta-md.tmpl >about.md; fi
+
 version.go: .FORCE
 	@echo "package $(PROJECT)" >version.go
 	@echo '' >>version.go
@@ -50,9 +55,6 @@ test: $(PACKAGE)
 website: build about.md
 	./mk_website.py
 
-about.md: codemeta.json
-	./bin/mkpage codemeta=codemeta.json codemeta-md.tmpl>about.md
-
 status:
 	git status
 
@@ -68,7 +70,7 @@ publish:
 	./mk_website.py
 	./publish.bash
 
-clean: 
+clean:
 	@if [ -f version.go ]; then rm version.go; fi
 	@if [ -d bin ]; then rm -fR bin; fi
 	@if [ -d dist ]; then rm -fR dist; fi
@@ -97,14 +99,14 @@ dist/macos-amd64: $(PROGRAMS)
 	@for FNAME in $(PROGRAMS); do env GOOS=darwin GOARCH=amd64 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
 	@cd dist && zip -r $(PROJECT)-$(VERSION)-macos-amd64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
 	@rm -fR dist/bin
-	
+
 
 dist/macos-arm64: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env GOOS=darwin GOARCH=arm64 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
 	@cd dist && zip -r $(PROJECT)-$(VERSION)-macos-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
 	@rm -fR dist/bin
-	
+
 
 dist/windows-amd64: $(PROGRAMS)
 	@mkdir -p dist/bin
@@ -134,7 +136,7 @@ distribute_docs:
 	@cp -v INSTALL.md dist/
 	@cp -vR docs dist/
 	@cp -vR how-to dist/
-	
+
 release: build distribute_docs dist/linux-amd64 dist/macos-amd64 dist/macos-arm64 dist/windows-amd64 dist/windows-arm64 dist/raspberry_pi_os-arm7
 
 
