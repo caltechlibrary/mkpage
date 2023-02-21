@@ -10,7 +10,7 @@ authors:
     orcid: "https://orcid.org/0000-0003-0900-6903"
 
 repository-code: "https://github.com/caltechlibrary/mkpage"
-version: 1.0.3
+version: 1.0.4
 license-url: "https://data.caltech.edu/license"
 keywords: [ "content management", "webpage generation", "static site
 generation", "web
