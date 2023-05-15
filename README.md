@@ -6,7 +6,7 @@ MkPage Project
 
 **MkPage Project** is a collection of tools for rendering static websites.
 Featured is the _mkpage_ command, a front end to
-[Pandoc](https://pandoc.org) (>= v2.10.x). Pandoc supports converting from many
+[Pandoc](https://pandoc.org) (>= v3). Pandoc supports converting from many
 [lightweight markup languages](https://pandoc.org/ "Pandoc's list of supported formats").
 _mkpage_ supports metadata encoded as
 [JSON](https://www.json.org/json-en.html) front matter[^frontmatter],
