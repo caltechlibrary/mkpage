@@ -6,6 +6,21 @@ Installation
 like Bash.  NOTE: *mkpage* depends on
 [Pandoc](https://pandoc.org/installing.html) (>= v3).
 
+Quick install using curl
+------------------------
+
+The following experimental installer should work for macOS and Linux
+(e.g. Debian, Ubuntu, Raspberry Pi OS)
+
+Copy and run the following command in your shell (e.g. Terminal)
+
+~~~
+curl https://caltechlibrary.github.io/mkpage/installer.sh | sh
+~~~
+
+Installing manually from GitHub release
+---------------------------------------
+
 For latest the released versions of `mkpage` go to the project page
 on GitHub and click latest release
 
