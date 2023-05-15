@@ -27,7 +27,7 @@ endif
 
 PANDOC = $(shell which pandoc)
 
-build: version.go $(PROGRAMS) CITATION.cff about.md installer
+build: version.go $(PROGRAMS) CITATION.cff about.md installer.sh
 
 CITATION.cff: codemeta.json .FORCE
 	cat codemeta.json | sed -E   's/"@context"/"at__context"/g;s/"@type"/"at__type"/g;s/"@id"/"at__id"/g' >_codemeta.json
@@ -71,7 +71,7 @@ publish:
 	./publish.bash
 
 installer.sh: .FORCE
-	echo '' | pandoc --metadata-file codemeta.json --template codemeta-installer.tmpl >installer.sh
+	echo '' | pandoc --metadata title="$(PACKAGE)" --metadata-file codemeta.json --template codemeta-installer.tmpl >installer.sh
 	chmod 775 installer.sh
 	git add -f installer.sh
 
@@ -143,7 +143,7 @@ distribute_docs:
 	@cp -vR docs dist/
 	@cp -vR how-to dist/
 
-release: build installer.sh distribute_docs dist/linux-amd64 dist/macos-amd64 dist/macos-arm64 dist/windows-amd64 dist/windows-arm64 dist/raspberry_pi_os-arm7
+release: build distribute_docs dist/linux-amd64 dist/macos-amd64 dist/macos-arm64 dist/windows-amd64 dist/windows-arm64 dist/raspberry_pi_os-arm7
 
 
 .FORCE:
