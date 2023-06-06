@@ -11,6 +11,8 @@ RELEASE_HASH=$(shell git log --pretty=format:'%h' -n 1)
 
 PROGRAMS = $(shell ls -1 cmd/)
 
+MAN_PAGES = $(shell ls -1 *.1.md | sed -E 's/\.1.md/.1/g')
+
 PACKAGE = $(shell ls -1 *.go)
 
 VERSION = $(shell grep '"version":' codemeta.json | cut -d\"  -f 4)
@@ -54,6 +56,12 @@ version.go: .FORCE
 $(PROGRAMS): $(PACKAGE)
 	@mkdir -p bin
 	go build -o "bin/$@$(EXT)" cmd/$@/*.go
+
+man: $(MAN_PAGES)
+
+$(MAN_PAGES): .FORCE
+	mkdir -p man/man1
+	pandoc $@.md --from markdown --to man -s >man/man1/$@
 
 test: $(PACKAGE)
 	go test
@@ -101,53 +109,53 @@ uninstall: .FORCE
 dist/Linux-x86_64: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env  GOOS=linux GOARCH=amd64 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-$(VERSION)-Linux-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
 	@rm -fR dist/bin
 
 dist/Linux-aarch64: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env  GOOS=linux GOARCH=arm64 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-$(VERSION)-Linux-aarch64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-aarch64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
 	@rm -fR dist/bin
 
 
 dist/macOS-x86_64: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env GOOS=darwin GOARCH=amd64 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-$(VERSION)-macOS-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-macOS-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
 	@rm -fR dist/bin
 
 
 dist/macOS-arm64: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env GOOS=darwin GOARCH=arm64 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-$(VERSION)-macOS-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
+	@cd dist && zip -r $(PROJECT)-$(VERSION)-macOS-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
 	@rm -fR dist/bin
 
 
 dist/Windows-x86_64: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env GOOS=windows GOARCH=amd64 go build -o "dist/bin/$${FNAME}.exe" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-$(VERSION)-windows-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
 	@rm -fR dist/bin
 
 dist/Windows-arm64: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env GOOS=windows GOARCH=arm64 go build -o "dist/bin/$${FNAME}.exe" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-$(VERSION)-Windows-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
 	@rm -fR dist/bin
 
 # Raspberry Pi OS (32 bit), as reported by Raspberry Pi 3B+
 dist/Linux-armv7l: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env GOOS=linux GOARCH=arm GOARM=7 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-$(VERSION)-Linux-armv7l.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-armv7l.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
 	@rm -fR dist/bin
 
 dist/RaspberryPiOS-arm7: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env GOOS=linux GOARCH=arm GOARM=7 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-$(VERSION)-RaspberryPiOS-arm7.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-RaspberryPiOS-arm7.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
 	@rm -fR dist/bin
 
 distribute_docs:
@@ -160,8 +168,9 @@ distribute_docs:
 	@cp -v installer.sh dist/
 	@cp -vR docs dist/
 	@cp -vR how-to dist/
+	@cp -vR man dist/
 
-release: .FORCE build distribute_docs dist/Linux-x86_64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64 dist/RaspberryPiOs-arm7 dist/Linux-aarch64 dist/Linux-armv7l
+release: .FORCE build man distribute_docs dist/Linux-x86_64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64 dist/RaspberryPiOS-arm7 dist/Linux-aarch64 dist/Linux-armv7l
 
 
 .FORCE:

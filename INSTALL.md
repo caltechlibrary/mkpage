@@ -33,18 +33,19 @@ You will seea list of filenames is in the form of
 
 > PLATFROM_NAME is a description of a platform (e.g. windows-amd64, macos-amd64).
 
-Compiled versions are available for macOS (amd64 and M1 processor, 
-macos-amd64, macos-arm64), Linux (amd64 processor, linux-amd64), Windows (amd64 
-processor, windows-amd64) and Rapsberry Pi (ARM7 processor, raspbian-arm7).
+Compiled versions are available for macOS (Intel and M1/M2 processors, 
+macOS-x86_64, macOS-arm64), Linux (Intel processor, Linux-x86_64), Windows (Intel processor, Windows-x86_64) and Rapsberry Pi (ARM7 processor, RaspberryPiOS-arm7).
 
 
-| Platform    | Zip Filename                            |
-|-------------|-----------------------------------------|
-| Windows     | mkpage-VERSION_NUMBER-windows-amd64.zip |
-| macOS       | mkpage-VERSION_NUMBER-macos-amd64.zip  |
-| macOS       | mkpage-VERSION_NUMBER-macos-arm64.zip  |
-| Linux/Intel | mkpage-VERSION_NUMBER-linux-amd64.zip   |
-| Raspbery Pi | mkpage-VERSION_NUMBER-raspberry_pi_os-arm7.zip |
+| Platform        | Zip Filename                             |
+|-----------------|------------------------------------------|
+| Windows (Intel) | mkpage-VERSION_NUMBER-Windows-x86_64.zip |
+| Windows (ARM64) | mkpage-VERSION_NUMBER-Windows-x86_64.zip |
+| macOS (Intel)   | mkpage-VERSION_NUMBER-macOS-x86_64.zip   |
+| macOS (M1/M2)   | mkpage-VERSION_NUMBER-macOS-arm64.zip    |
+| Linux (Intel)   | mkpage-VERSION_NUMBER-Linux-x86_64.zip   |
+| Linux (ARM64)   | mkpage-VERSION_NUMBER-Linux-aarch64.zip  |
+| Raspbery Pi     | mkpage-VERSION_NUMBER-RaspberryPiOS-arm7.zip |
 
 
 The basic recipe 
@@ -69,7 +70,7 @@ downloading the zip file.
 
 ```shell
     cd Downloads/
-    unzip mkpage-*-macos-amd64.zip
+    unzip mkpage-*-macOS-x86_64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -88,7 +89,7 @@ downloading the zip file.
 
 ```shell
     cd Downloads/
-    unzip mkpage-*-windows-amd64.zip
+    unzip mkpage-*-Windows-x86_64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -108,7 +109,7 @@ downloading the zip file.
 
 ```shell
     cd Downloads/
-    unzip mkpage-*-linux-amd64.zip
+    unzip mkpage-*-Linux-x86_64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -131,7 +132,7 @@ downloading the zip file.
 
 ```shell
     cd Downloads/
-    unzip mkpage-*-raspberry_pi_os-arm7.zip
+    unzip mkpage-*-RaspberryPiOS-arm7.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
