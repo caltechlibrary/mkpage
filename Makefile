@@ -129,7 +129,7 @@ dist/macOS-x86_64: $(PROGRAMS)
 dist/macOS-arm64: $(PROGRAMS)
 	@mkdir -p dist/bin
 	@for FNAME in $(PROGRAMS); do env GOOS=darwin GOARCH=arm64 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-$(VERSION)-macOS-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-macOS-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* docs/* how-to/* man/*
 	@rm -fR dist/bin
 
 
