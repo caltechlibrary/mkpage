@@ -68,6 +68,7 @@ test: $(PACKAGE)
 
 website: build about.md
 	./mk_website.py
+	git add *.1.html
 
 status:
 	git status
@@ -82,6 +83,7 @@ refresh:
 
 publish:
 	./mk_website.py
+	git add *.1.html
 	./publish.bash
 
 installer.sh: .FORCE

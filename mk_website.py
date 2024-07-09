@@ -93,6 +93,8 @@ def main(args):
     # Find the .md files and render them with template unless nav.md.
     # crawl docs_dir and ingest files into data collection.
     for path, folders, files in os.walk("."):
+        if path.find('dist') > -1:
+            continue
         for filename in files:
             in_name = ""
             out_name = ""
