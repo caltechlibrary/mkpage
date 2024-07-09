@@ -89,10 +89,10 @@ macos-amd64).
 </p>
 </blockquote>
 <p>
-Compiled versions are available for macOS (amd64 and M1 processor,
-macos-amd64, macos-arm64), Linux (amd64 processor, linux-amd64), Windows
-(amd64 processor, windows-amd64) and Rapsberry Pi (ARM7 processor,
-raspbian-arm7).
+Compiled versions are available for macOS (Intel and M1/M2 processors,
+macOS-x86_64, macOS-arm64), Linux (Intel processor, Linux-x86_64),
+Windows (Intel processor, Windows-x86_64) and Rapsberry Pi (ARM7
+processor, RaspberryPiOS-arm7).
 </p>
 <table>
 <thead>
@@ -108,34 +108,50 @@ Zip Filename
 <tbody>
 <tr class="odd">
 <td>
-Windows
+Windows (Intel)
 </td>
 <td>
-mkpage-VERSION_NUMBER-windows-amd64.zip
+mkpage-VERSION_NUMBER-Windows-x86_64.zip
 </td>
 </tr>
 <tr class="even">
 <td>
-macOS
+Windows (ARM64)
 </td>
 <td>
-mkpage-VERSION_NUMBER-macos-amd64.zip
+mkpage-VERSION_NUMBER-Windows-x86_64.zip
 </td>
 </tr>
 <tr class="odd">
 <td>
-macOS
+macOS (Intel)
 </td>
 <td>
-mkpage-VERSION_NUMBER-macos-arm64.zip
+mkpage-VERSION_NUMBER-macOS-x86_64.zip
 </td>
 </tr>
 <tr class="even">
 <td>
-Linux/Intel
+macOS (M1/M2)
 </td>
 <td>
-mkpage-VERSION_NUMBER-linux-amd64.zip
+mkpage-VERSION_NUMBER-macOS-arm64.zip
+</td>
+</tr>
+<tr class="odd">
+<td>
+Linux (Intel)
+</td>
+<td>
+mkpage-VERSION_NUMBER-Linux-x86_64.zip
+</td>
+</tr>
+<tr class="even">
+<td>
+Linux (ARM64)
+</td>
+<td>
+mkpage-VERSION_NUMBER-Linux-aarch64.zip
 </td>
 </tr>
 <tr class="odd">
@@ -143,7 +159,7 @@ mkpage-VERSION_NUMBER-linux-amd64.zip
 Raspbery Pi
 </td>
 <td>
-mkpage-VERSION_NUMBER-raspberry_pi_os-arm7.zip
+mkpage-VERSION_NUMBER-RaspberryPiOS-arm7.zip
 </td>
 </tr>
 </tbody>
@@ -191,7 +207,7 @@ Here’s an example of the commands run in the Terminal App after
 downloading the zip file.
 </p>
 <pre class="shell"><code>    cd Downloads/
-    unzip mkpage-*-macos-amd64.zip
+    unzip mkpage-*-macOS-x86_64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -218,7 +234,7 @@ Here’s an example of the commands run in from the Bash shell on Windows
 10 after downloading the zip file.
 </p>
 <pre class="shell"><code>    cd Downloads/
-    unzip mkpage-*-windows-amd64.zip
+    unzip mkpage-*-Windows-x86_64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -246,7 +262,7 @@ Here’s an example of the commands run in from the Bash shell after
 downloading the zip file.
 </p>
 <pre class="shell"><code>    cd Downloads/
-    unzip mkpage-*-linux-amd64.zip
+    unzip mkpage-*-Linux-x86_64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -278,7 +294,7 @@ Here’s an example of the commands run in from the Bash shell after
 downloading the zip file.
 </p>
 <pre class="shell"><code>    cd Downloads/
-    unzip mkpage-*-raspberry_pi_os-arm7.zip
+    unzip mkpage-*-RaspberryPiOS-arm7.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
