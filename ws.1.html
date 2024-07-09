@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="index.html">README</a>
+</li>
+<li>
+<a href="license.html">LICENSE</a>
+</li>
+<li>
+<a href="install.html">INSTALL</a>
+</li>
+<li>
+<a href="docs/">Documentation</a>
+</li>
+<li>
+<a href="how-to/">HOW TO</a>
+</li>
+<li>
+<a href="RELEASE-NOTES.html">Release Notes</a>
+</li>
+<li>
+<a href="about.html">About</a>
+</li>
+<li>
+<a href="https://github.com/caltechlibrary/mkpage">Github</a>
+</li>
+</ul>
+</nav>
+
+<section>
+<p>
+USAGE: ws [OPTIONS] [DOCROOT]
+</p>
+<p>
+DESCRIPTION
+</p>
+<p>
+a nimble web server
+</p>
+<p>
+ws is a command line utility for developing and testing static websites.
+It uses Go’s standard http libraries and can supports both http 1 and 2
+out of the box. It is intended as a minimal wrapper for Go’s standard
+http libraries supporting http/https versions 1 and 2 out of the box.
+</p>
+<p>
+OPTIONS
+</p>
+<pre><code>-c, -cert            Set the path for the SSL Cert
+-cors-origin         Set the CORS Origin Policy to a specific host or *
+-d, -docs            Set the htdocs path
+-example             display example(s)
+-generate-markdown   generate markdown documentation
+-h                   display help
+-help                display help
+-k, -key             Set the path for the SSL Key
+-l                   display license
+-license             display license
+-quiet               suppress error messages
+-redirects-csv       Use target,destination replacement paths defined in CSV file
+-u, -url             The protocol and hostname listen for as a URL
+-v                   display version
+-version             display version</code></pre>
+<p>
+EXAMPLES
+</p>
+<p>
+Run web server using the content in the current directory
+</p>
+<p>
+ws
+</p>
+<p>
+Run web server using a specified directory
+</p>
+<p>
+ws /www/htdocs
+</p>
+<p>
+ws 1.0.4
+</p>
+</section>
+
+<footer>
+<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
+<span>&copy; 2021 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<a class="cl-hide" href="sitemap.xml">Site Map</a>
+</footer>
+</body>
+</html>
